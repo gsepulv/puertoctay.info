@@ -1,0 +1,28 @@
+# Configuracion local (contiene credenciales)
+tenants/*/config.php
+
+# Storage
+storage/cache/*
+storage/logs/*
+storage/sessions/*
+!storage/cache/.gitkeep
+!storage/logs/.gitkeep
+!storage/sessions/.gitkeep
+
+# Uploads de usuarios
+public/uploads/negocios/*
+public/uploads/noticias/*
+public/uploads/eventos/*
+public/uploads/galeria/*
+!public/uploads/**/.gitkeep
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbbs.db
+
+# Archivos diagnosticos (NUNCA en produccion)
+*.test.php
+*debug*.php
+phpinfo.php
