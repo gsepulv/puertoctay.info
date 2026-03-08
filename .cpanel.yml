@@ -1,4 +1,4 @@
 ---
 deployment:
   tasks:
-    - /bin/true
+    - /bin/cp -R public/* /home/puertoctay/public_html/
