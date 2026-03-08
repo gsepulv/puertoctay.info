@@ -111,6 +111,7 @@
                 <a href="<?= SITE_URL ?>/categorias">Categorías</a>
                 <a href="<?= SITE_URL ?>/turismo">Turismo</a>
                 <a href="<?= SITE_URL ?>/patrimonio">Patrimonio</a>
+                <a href="<?= SITE_URL ?>/noticias">Noticias</a>
                 <a href="<?= SITE_URL ?>/mapa">Mapa</a>
                 <a href="<?= SITE_URL ?>/buscar">Buscar</a>
             </nav>

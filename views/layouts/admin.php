@@ -81,6 +81,7 @@
         </div>
         <nav>
             <a href="<?= SITE_URL ?>/admin/negocios">📋 Negocios</a>
+            <a href="<?= SITE_URL ?>/admin/noticias">📰 Noticias</a>
             <a href="<?= SITE_URL ?>/" target="_blank">🌐 Ver sitio</a>
             <a href="<?= SITE_URL ?>/admin/logout">🚪 Cerrar sesión</a>
         </nav>

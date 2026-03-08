@@ -75,6 +75,44 @@ class SeoHelper
         return '<script type="application/ld+json">' . json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
     }
 
+    /**
+     * Schema.org NewsArticle JSON-LD.
+     */
+    public static function schemaNewsArticle(array $noticia): string
+    {
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => $noticia['schema_type'] ?? 'NewsArticle',
+            'headline' => $noticia['titulo'],
+            'description' => $noticia['bajada'] ?? mb_substr(strip_tags($noticia['contenido'] ?? ''), 0, 160),
+            'url' => SITE_URL . '/noticias/' . $noticia['slug'],
+            'datePublished' => date('c', strtotime($noticia['publicado_en'] ?? $noticia['created_at'])),
+            'dateModified' => date('c', strtotime($noticia['updated_at'] ?? $noticia['created_at'])),
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => SITE_NAME,
+                'url' => SITE_URL,
+            ],
+        ];
+
+        if (!empty($noticia['autor'])) {
+            $schema['author'] = [
+                '@type' => 'Person',
+                'name' => $noticia['autor'],
+            ];
+        }
+
+        if (!empty($noticia['foto_destacada'])) {
+            $schema['image'] = SITE_URL . '/uploads/' . $noticia['foto_destacada'];
+        }
+
+        if (!empty($noticia['tiempo_lectura'])) {
+            $schema['timeRequired'] = 'PT' . (int) $noticia['tiempo_lectura'] . 'M';
+        }
+
+        return '<script type="application/ld+json">' . json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+    }
+
     private static function currentUrl(): string
     {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';

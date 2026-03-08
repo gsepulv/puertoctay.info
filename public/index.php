@@ -29,6 +29,11 @@ $router->add('GET', '/patrimonio', 'NegocioController@patrimonio');
 $router->add('GET', '/mapa', 'MapaController@index');
 $router->add('GET', '/buscar', 'BuscarController@index');
 
+// Noticias
+$router->add('GET', '/noticias', 'NoticiaController@index');
+$router->add('GET', '/noticias/categoria/{slug}', 'NoticiaController@porCategoria');
+$router->add('GET', '/noticias/{slug}', 'NoticiaController@show');
+
 // API
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
 
@@ -40,6 +45,16 @@ $router->add('GET', '/admin/negocios/{id}/editar', 'AdminNegocioController@edita
 $router->add('POST', '/admin/negocios/{id}/actualizar', 'AdminNegocioController@actualizar');
 $router->add('POST', '/admin/negocios/{id}/eliminar', 'AdminNegocioController@eliminar');
 $router->add('POST', '/admin/negocios/{id}/verificar', 'AdminNegocioController@verificar');
+
+// Admin — Noticias
+$router->add('GET', '/admin/noticias', 'AdminNoticiaController@index');
+$router->add('GET', '/admin/noticias/crear', 'AdminNoticiaController@crear');
+$router->add('POST', '/admin/noticias/guardar', 'AdminNoticiaController@guardar');
+$router->add('GET', '/admin/noticias/{id}/editar', 'AdminNoticiaController@editar');
+$router->add('POST', '/admin/noticias/{id}/actualizar', 'AdminNoticiaController@actualizar');
+$router->add('POST', '/admin/noticias/{id}/eliminar', 'AdminNoticiaController@eliminar');
+$router->add('POST', '/admin/noticias/{id}/estado', 'AdminNoticiaController@estado');
+$router->add('POST', '/admin/noticias/{id}/destacar', 'AdminNoticiaController@destacar');
 
 // Despachar
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
