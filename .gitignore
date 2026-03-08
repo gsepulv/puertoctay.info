@@ -1,0 +1,10 @@
+config.php
+config.php.txt
+storage/cache/*
+storage/logs/*
+storage/sessions/*
+public/uploads/*
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
