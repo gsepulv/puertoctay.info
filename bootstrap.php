@@ -38,6 +38,9 @@ spl_autoload_register(function (string $class): void {
     }
 });
 
+// Funciones helper globales (definidas fuera de clases)
+require_once ROOT_PATH . '/middleware/CsrfMiddleware.php';
+
 // Conexión PDO singleton
 function getDB(): PDO
 {
