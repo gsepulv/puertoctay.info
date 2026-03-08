@@ -1,3 +1,4 @@
+<?php $badges = AdminHelper::sidebarBadges(getDB()); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,39 +20,104 @@
 
         /* Layout */
         .admin-layout { display: flex; min-height: 100vh; }
-        .admin-sidebar { width: 240px; background: <?= COLOR_PRIMARY ?>; color: #fff; padding: 1.5rem 0; flex-shrink: 0; }
-        .admin-sidebar .brand { padding: 0 1.2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 1rem; }
-        .admin-sidebar .brand h2 { font-size: 1.1rem; }
-        .admin-sidebar .brand small { opacity: 0.7; font-size: 0.8rem; }
-        .admin-sidebar nav a { display: block; padding: 0.6rem 1.2rem; color: rgba(255,255,255,0.8); font-size: 0.9rem; transition: background 0.2s; }
-        .admin-sidebar nav a:hover, .admin-sidebar nav a.active { background: rgba(255,255,255,0.1); color: #fff; text-decoration: none; }
-        .admin-main { flex: 1; padding: 1.5rem 2rem; overflow-x: auto; }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 250px; background: <?= COLOR_PRIMARY ?>; color: #fff;
+            flex-shrink: 0; display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto;
+        }
+        .admin-sidebar .brand {
+            padding: 1rem 1rem 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .admin-sidebar .brand h2 { font-size: 1.1rem; margin: 0; }
+        .admin-sidebar .brand small { opacity: 0.7; font-size: 0.75rem; }
+
+        .admin-sidebar .nav-section {
+            padding: 0.6rem 0 0.3rem;
+        }
+        .admin-sidebar .nav-label {
+            padding: 0.4rem 1rem 0.2rem; font-size: 0.65rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: rgba(255,255,255,0.4); font-weight: 700;
+        }
+        .admin-sidebar nav a {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.45rem 1rem; color: rgba(255,255,255,0.8);
+            font-size: 0.85rem; transition: background 0.15s;
+        }
+        .admin-sidebar nav a:hover,
+        .admin-sidebar nav a.active {
+            background: rgba(255,255,255,0.12); color: #fff; text-decoration: none;
+        }
+        .admin-sidebar .nav-badge {
+            background: rgba(255,255,255,0.2); color: #fff; padding: 0.1rem 0.45rem;
+            border-radius: 10px; font-size: 0.7rem; font-weight: 700; min-width: 20px; text-align: center;
+        }
+        .admin-sidebar .nav-badge.warn { background: #e74c3c; }
+
+        .admin-sidebar .sidebar-footer {
+            margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 0.8rem 1rem; font-size: 0.8rem;
+        }
+        .admin-sidebar .sidebar-footer .user-info {
+            margin-bottom: 0.5rem; line-height: 1.3;
+        }
+        .admin-sidebar .sidebar-footer .user-name { font-weight: 700; }
+        .admin-sidebar .sidebar-footer .user-role { opacity: 0.6; font-size: 0.75rem; }
+        .admin-sidebar .sidebar-footer a {
+            display: block; color: rgba(255,255,255,0.7); font-size: 0.8rem;
+            padding: 0.2rem 0;
+        }
+        .admin-sidebar .sidebar-footer a:hover { color: #fff; text-decoration: none; }
+
+        /* Main */
+        .admin-main { flex: 1; margin-left: 250px; padding: 1.5rem 2rem; overflow-x: auto; min-height: 100vh; }
 
         /* Top bar */
         .admin-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .admin-topbar h1 { font-size: 1.5rem; font-weight: 700; color: <?= COLOR_PRIMARY ?>; }
+        .admin-topbar h1 { font-size: 1.4rem; font-weight: 700; color: <?= COLOR_PRIMARY ?>; }
+
+        /* Stat cards */
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card {
+            background: #fff; border-radius: 10px; padding: 1.2rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .stat-card .stat-icon { font-size: 1.8rem; margin-bottom: 0.3rem; }
+        .stat-card .stat-value { font-size: 1.8rem; font-weight: 700; color: <?= COLOR_PRIMARY ?>; }
+        .stat-card .stat-label { font-size: 0.8rem; color: #888; }
 
         /* Tabla */
         .admin-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-        .admin-table th { background: #f8f9fa; text-align: left; padding: 0.8rem 1rem; font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 0.03em; }
-        .admin-table td { padding: 0.8rem 1rem; border-top: 1px solid #eee; font-size: 0.9rem; }
+        .admin-table th { background: #f8f9fa; text-align: left; padding: 0.7rem 0.8rem; font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 0.03em; }
+        .admin-table td { padding: 0.7rem 0.8rem; border-top: 1px solid #eee; font-size: 0.88rem; }
         .admin-table tr:hover td { background: #fafbfc; }
 
+        /* Dashboard sections */
+        .dash-section { background: #fff; border-radius: 10px; padding: 1.2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 1.5rem; }
+        .dash-section h3 { font-size: 1rem; font-weight: 700; color: <?= COLOR_PRIMARY ?>; margin-bottom: 0.8rem; }
+
+        /* Quick actions */
+        .quick-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
         /* Botones */
-        .btn { display: inline-block; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; font-size: 0.9rem; transition: opacity 0.2s; }
+        .btn { display: inline-block; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; font-size: 0.88rem; transition: opacity 0.2s; }
         .btn:hover { opacity: 0.85; text-decoration: none; }
         .btn-primary { background: <?= COLOR_PRIMARY ?>; color: #fff; }
         .btn-secondary { background: <?= COLOR_SECONDARY ?>; color: #fff; }
         .btn-danger { background: #dc3545; color: #fff; }
-        .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
-        .badge { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+        .btn-warning { background: #f39c12; color: #fff; }
+        .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.78rem; }
+        .badge { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.73rem; font-weight: 600; }
         .badge-green { background: #d4edda; color: #155724; }
         .badge-red { background: #f8d7da; color: #721c24; }
+        .badge-yellow { background: #fff3cd; color: #856404; }
+        .badge-blue { background: #d1ecf1; color: #0c5460; }
         .badge-gold { background: <?= COLOR_ACCENT ?>; color: #fff; }
 
         /* Formulario */
         .form-group { margin-bottom: 1.2rem; }
-        .form-group label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.9rem; }
+        .form-group label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.88rem; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.55rem 0.8rem; border: 2px solid #dee2e6; border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: <?= COLOR_PRIMARY ?>; outline: none; }
         .form-group textarea { min-height: 100px; resize: vertical; }
@@ -64,9 +130,9 @@
         .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 
         @media (max-width: 768px) {
-            .admin-layout { flex-direction: column; }
-            .admin-sidebar { width: 100%; }
-            .admin-main { padding: 1rem; }
+            .admin-sidebar { position: static; width: 100%; }
+            .admin-main { margin-left: 0; padding: 1rem; }
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
             .form-row { grid-template-columns: 1fr; }
         }
     </style>
@@ -79,20 +145,72 @@
             <h2>⛵ <?= htmlspecialchars(SITE_NAME) ?></h2>
             <small>Panel de Administración</small>
         </div>
+
         <nav>
-            <a href="<?= SITE_URL ?>/admin/negocios">📋 Negocios</a>
-            <a href="<?= SITE_URL ?>/admin/noticias">📰 Noticias</a>
-            <a href="<?= SITE_URL ?>/" target="_blank">🌐 Ver sitio</a>
-            <a href="<?= SITE_URL ?>/admin/logout">🚪 Cerrar sesión</a>
+            <!-- PRINCIPAL -->
+            <div class="nav-section">
+                <div class="nav-label">Principal</div>
+                <a href="<?= SITE_URL ?>/admin">📊 Dashboard</a>
+                <a href="<?= SITE_URL ?>/admin/negocios">
+                    🏪 Negocios
+                    <?php if ($badges['negocios']): ?><span class="nav-badge"><?= $badges['negocios'] ?></span><?php endif; ?>
+                </a>
+                <a href="<?= SITE_URL ?>/admin/categorias">
+                    📂 Categorías
+                    <?php if ($badges['categorias']): ?><span class="nav-badge"><?= $badges['categorias'] ?></span><?php endif; ?>
+                </a>
+                <a href="<?= SITE_URL ?>/admin/eventos">📅 Eventos</a>
+                <a href="<?= SITE_URL ?>/admin/noticias">📰 Noticias</a>
+                <a href="<?= SITE_URL ?>/admin/blog">📝 Blog</a>
+                <a href="<?= SITE_URL ?>/admin/resenas">
+                    ⭐ Reseñas
+                    <?php if ($badges['resenas']): ?><span class="nav-badge warn"><?= $badges['resenas'] ?></span><?php endif; ?>
+                </a>
+            </div>
+
+            <!-- MARKETING -->
+            <div class="nav-section">
+                <div class="nav-label">Marketing</div>
+                <a href="<?= SITE_URL ?>/admin/banners">🖼 Banners</a>
+                <a href="<?= SITE_URL ?>/admin/estadisticas">📈 Estadísticas</a>
+                <a href="<?= SITE_URL ?>/admin/mensajes">
+                    📧 Mensajes
+                    <?php if ($badges['mensajes']): ?><span class="nav-badge warn"><?= $badges['mensajes'] ?></span><?php endif; ?>
+                </a>
+                <a href="<?= SITE_URL ?>/admin/nurturing">🔔 Nurturing</a>
+                <a href="<?= SITE_URL ?>/admin/correo">✉ Enviar Correo</a>
+                <a href="<?= SITE_URL ?>/admin/reportes">📊 Reportes</a>
+            </div>
+
+            <!-- CONFIGURACIÓN -->
+            <div class="nav-section">
+                <div class="nav-label">Configuración</div>
+                <a href="<?= SITE_URL ?>/admin/planes">💰 Planes</a>
+                <a href="<?= SITE_URL ?>/admin/seo">🔍 SEO</a>
+                <a href="<?= SITE_URL ?>/admin/redes-sociales">📱 Redes Sociales</a>
+                <a href="<?= SITE_URL ?>/admin/apariencia">🎨 Apariencia</a>
+                <a href="<?= SITE_URL ?>/admin/textos-legales">📄 Textos Legales</a>
+                <a href="<?= SITE_URL ?>/admin/paginas">📃 Páginas</a>
+                <a href="<?= SITE_URL ?>/admin/menu">☰ Menú</a>
+                <a href="<?= SITE_URL ?>/admin/usuarios">👥 Usuarios</a>
+                <a href="<?= SITE_URL ?>/admin/configuracion">⚙ Configuración</a>
+                <a href="<?= SITE_URL ?>/admin/mantenimiento">🔧 Mantenimiento</a>
+            </div>
         </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-name">👤 <?= htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Admin') ?></div>
+                <div class="user-role"><?= ucfirst(htmlspecialchars($_SESSION['usuario_rol'] ?? 'Administrador')) ?></div>
+            </div>
+            <a href="<?= SITE_URL ?>/" target="_blank">↗ Ver sitio</a>
+            <a href="<?= SITE_URL ?>/admin/logout">➜ Cerrar sesión</a>
+        </div>
     </aside>
 
     <div class="admin-main">
         <div class="admin-topbar">
             <h1><?= htmlspecialchars($pageTitle ?? 'Admin') ?></h1>
-            <span style="font-size:0.85rem; color:#888;">
-                <?= htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Admin') ?>
-            </span>
         </div>
 
         <?php

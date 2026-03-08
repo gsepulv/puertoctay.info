@@ -37,6 +37,9 @@ $router->add('GET', '/noticias/{slug}', 'NoticiaController@show');
 // API
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
 
+// Admin — Dashboard
+$router->add('GET', '/admin', 'AdminDashboardController@index');
+
 // Admin — Negocios
 $router->add('GET', '/admin/negocios', 'AdminNegocioController@index');
 $router->add('GET', '/admin/negocios/crear', 'AdminNegocioController@crear');
@@ -45,6 +48,22 @@ $router->add('GET', '/admin/negocios/{id}/editar', 'AdminNegocioController@edita
 $router->add('POST', '/admin/negocios/{id}/actualizar', 'AdminNegocioController@actualizar');
 $router->add('POST', '/admin/negocios/{id}/eliminar', 'AdminNegocioController@eliminar');
 $router->add('POST', '/admin/negocios/{id}/verificar', 'AdminNegocioController@verificar');
+
+// Admin — Categorías
+$router->add('GET', '/admin/categorias', 'AdminCategoriaController@index');
+$router->add('GET', '/admin/categorias/crear', 'AdminCategoriaController@crear');
+$router->add('POST', '/admin/categorias/guardar', 'AdminCategoriaController@guardar');
+$router->add('GET', '/admin/categorias/{id}/editar', 'AdminCategoriaController@editar');
+$router->add('POST', '/admin/categorias/{id}/actualizar', 'AdminCategoriaController@actualizar');
+$router->add('POST', '/admin/categorias/{id}/eliminar', 'AdminCategoriaController@eliminar');
+
+// Admin — Eventos
+$router->add('GET', '/admin/eventos', 'AdminEventoController@index');
+$router->add('GET', '/admin/eventos/crear', 'AdminEventoController@crear');
+$router->add('POST', '/admin/eventos/guardar', 'AdminEventoController@guardar');
+$router->add('GET', '/admin/eventos/{id}/editar', 'AdminEventoController@editar');
+$router->add('POST', '/admin/eventos/{id}/actualizar', 'AdminEventoController@actualizar');
+$router->add('POST', '/admin/eventos/{id}/eliminar', 'AdminEventoController@eliminar');
 
 // Admin — Noticias
 $router->add('GET', '/admin/noticias', 'AdminNoticiaController@index');
@@ -55,6 +74,38 @@ $router->add('POST', '/admin/noticias/{id}/actualizar', 'AdminNoticiaController@
 $router->add('POST', '/admin/noticias/{id}/eliminar', 'AdminNoticiaController@eliminar');
 $router->add('POST', '/admin/noticias/{id}/estado', 'AdminNoticiaController@estado');
 $router->add('POST', '/admin/noticias/{id}/destacar', 'AdminNoticiaController@destacar');
+
+// Admin — Reseñas
+$router->add('GET', '/admin/resenas', 'AdminResenaController@index');
+$router->add('POST', '/admin/resenas/{id}/aprobar', 'AdminResenaController@aprobar');
+$router->add('POST', '/admin/resenas/{id}/rechazar', 'AdminResenaController@rechazar');
+$router->add('POST', '/admin/resenas/{id}/eliminar', 'AdminResenaController@eliminar');
+
+// Admin — Usuarios
+$router->add('GET', '/admin/usuarios', 'AdminUsuarioController@index');
+$router->add('GET', '/admin/usuarios/crear', 'AdminUsuarioController@crear');
+$router->add('POST', '/admin/usuarios/guardar', 'AdminUsuarioController@guardar');
+$router->add('GET', '/admin/usuarios/{id}/editar', 'AdminUsuarioController@editar');
+$router->add('POST', '/admin/usuarios/{id}/actualizar', 'AdminUsuarioController@actualizar');
+$router->add('POST', '/admin/usuarios/{id}/eliminar', 'AdminUsuarioController@eliminar');
+
+// Admin — Placeholders
+$router->add('GET', '/admin/blog', 'AdminPlaceholderController@blog');
+$router->add('GET', '/admin/banners', 'AdminPlaceholderController@banners');
+$router->add('GET', '/admin/estadisticas', 'AdminPlaceholderController@estadisticas');
+$router->add('GET', '/admin/mensajes', 'AdminPlaceholderController@mensajes');
+$router->add('GET', '/admin/nurturing', 'AdminPlaceholderController@nurturing');
+$router->add('GET', '/admin/correo', 'AdminPlaceholderController@correo');
+$router->add('GET', '/admin/reportes', 'AdminPlaceholderController@reportes');
+$router->add('GET', '/admin/planes', 'AdminPlaceholderController@planes');
+$router->add('GET', '/admin/seo', 'AdminPlaceholderController@seo');
+$router->add('GET', '/admin/redes-sociales', 'AdminPlaceholderController@redesSociales');
+$router->add('GET', '/admin/apariencia', 'AdminPlaceholderController@apariencia');
+$router->add('GET', '/admin/textos-legales', 'AdminPlaceholderController@textosLegales');
+$router->add('GET', '/admin/paginas', 'AdminPlaceholderController@paginas');
+$router->add('GET', '/admin/menu', 'AdminPlaceholderController@menu');
+$router->add('GET', '/admin/configuracion', 'AdminPlaceholderController@configuracion');
+$router->add('GET', '/admin/mantenimiento', 'AdminPlaceholderController@mantenimiento');
 
 // Despachar
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
