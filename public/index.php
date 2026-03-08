@@ -37,6 +37,11 @@ $router->add('GET', '/noticias/{slug}', 'NoticiaController@show');
 // API
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
 
+// Admin — Auth
+$router->add('GET', '/admin/login', 'AdminAuthController@loginForm');
+$router->add('POST', '/admin/login', 'AdminAuthController@login');
+$router->add('GET', '/admin/logout', 'AdminAuthController@logout');
+
 // Admin — Dashboard
 $router->add('GET', '/admin', 'AdminDashboardController@index');
 
