@@ -1,5 +1,4 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/puertoctay/puertoctay_repo/
-    - /bin/cp -R * $DEPLOYPATH
+    - /bin/true
