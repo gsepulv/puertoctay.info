@@ -23,9 +23,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Autoload de clases: models/, controllers/, middleware/, helpers/
+// Autoload de clases: models/, controllers/, middleware/, helpers/ y subdirectorios
 spl_autoload_register(function (string $class): void {
-    $dirs = ['models', 'controllers', 'middleware', 'helpers'];
+    $dirs = [
+        'models', 'controllers', 'middleware', 'helpers',
+        'controllers/api', 'controllers/admin',
+    ];
     foreach ($dirs as $dir) {
         $file = ROOT_PATH . '/' . $dir . '/' . $class . '.php';
         if (file_exists($file)) {
