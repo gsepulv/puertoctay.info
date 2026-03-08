@@ -75,4 +75,21 @@ class NegocioController
         $esTurismo = true;
         require ROOT_PATH . '/views/layouts/main.php';
     }
+
+    public function patrimonio(): void
+    {
+        $sql = "SELECT n.*, c.nombre AS categoria_nombre, c.emoji AS categoria_emoji
+                FROM negocios n
+                LEFT JOIN categorias c ON c.id = n.categoria_id
+                WHERE n.activo = 1 AND c.slug IN ('patrimonio', 'educacion-cultura')
+                ORDER BY c.orden ASC, n.nombre ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $negocios = $stmt->fetchAll();
+
+        $pageTitle = 'Patrimonio y Cultura — ' . SITE_NAME;
+        $pageDescription = 'Arquitectura alemana, museos, sitios históricos y centros culturales de Puerto Octay.';
+        $viewName = 'public/patrimonio';
+        require ROOT_PATH . '/views/layouts/main.php';
+    }
 }

@@ -25,6 +25,7 @@ $router->add('GET', '/categoria/{slug}', 'CategoriaController@show');
 $router->add('GET', '/directorio', 'NegocioController@index');
 $router->add('GET', '/negocio/{slug}', 'NegocioController@show');
 $router->add('GET', '/turismo', 'NegocioController@turismo');
+$router->add('GET', '/patrimonio', 'NegocioController@patrimonio');
 $router->add('GET', '/mapa', 'MapaController@index');
 $router->add('GET', '/buscar', 'BuscarController@index');
 
