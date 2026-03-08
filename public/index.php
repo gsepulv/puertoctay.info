@@ -3,7 +3,14 @@
  * puertoctay.info — Punto de entrada
  */
 
-define('ROOT_PATH', dirname(__DIR__));
+// Local: bootstrap.php está en dirname(__DIR__)
+// Producción: public_html está separado del repo
+$parentDir = dirname(__DIR__);
+if (file_exists($parentDir . '/bootstrap.php')) {
+    define('ROOT_PATH', $parentDir);
+} else {
+    define('ROOT_PATH', '/home/puertoctay/puertoctay_repo');
+}
 
 require_once ROOT_PATH . '/bootstrap.php';
 require_once ROOT_PATH . '/router.php';
