@@ -196,6 +196,34 @@ CREATE TABLE IF NOT EXISTS page_cache (
     INDEX idx_expires (expires_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- 12. CONFIGURACIÓN
+CREATE TABLE IF NOT EXISTS configuracion (
+    id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    grupo       VARCHAR(50) NOT NULL,
+    clave       VARCHAR(100) NOT NULL,
+    valor       TEXT DEFAULT NULL,
+    tipo        ENUM('text','textarea','email','url','color','number','boolean') NOT NULL DEFAULT 'text',
+    etiqueta    VARCHAR(150) NOT NULL,
+    orden       TINYINT UNSIGNED DEFAULT 0,
+    updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_grupo_clave (grupo, clave),
+    INDEX idx_grupo (grupo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 13. PÁGINAS ESTÁTICAS
+CREATE TABLE IF NOT EXISTS paginas (
+    id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo      VARCHAR(200) NOT NULL,
+    slug        VARCHAR(200) NOT NULL UNIQUE,
+    contenido   LONGTEXT DEFAULT NULL,
+    meta_title  VARCHAR(200) DEFAULT NULL,
+    meta_description VARCHAR(300) DEFAULT NULL,
+    activo      TINYINT(1) NOT NULL DEFAULT 1,
+    orden       TINYINT UNSIGNED DEFAULT 0,
+    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- =====================================================
@@ -235,3 +263,35 @@ INSERT INTO categorias (nombre, slug, emoji, tipo, orden) VALUES
 INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES
 ('Gustavo Sepulveda', 'contacto@purranque.info',
  '$2y$10$xLRsYP9rKq1nX5YQzK3CDeVpmFGjU8RH6/AUfB6q5x1x6xMjKvGy', 'admin');
+
+-- Configuración general
+INSERT INTO configuracion (grupo, clave, valor, tipo, etiqueta, orden) VALUES
+('general', 'sitio_nombre',    'Visita Puerto Octay', 'text', 'Nombre del sitio', 1),
+('general', 'sitio_tagline',   'Guía turística y directorio comercial de Puerto Octay', 'text', 'Eslogan', 2),
+('general', 'sitio_email',     'contacto@puertoctay.info', 'email', 'Email de contacto', 3),
+('general', 'sitio_telefono',  '', 'text', 'Teléfono de contacto', 4),
+('general', 'sitio_direccion', 'Puerto Octay, Región de Los Lagos, Chile', 'text', 'Dirección', 5),
+('general', 'analytics_id',   '', 'text', 'Google Analytics ID', 6);
+
+-- SEO
+INSERT INTO configuracion (grupo, clave, valor, tipo, etiqueta, orden) VALUES
+('seo', 'meta_title',        'Visita Puerto Octay — Turismo y Comercio del Lago Llanquihue', 'text', 'Título global (meta title)', 1),
+('seo', 'meta_description',  'Descubre Puerto Octay: guía de turismo, comercio, gastronomía y patrimonio a orillas del Lago Llanquihue.', 'textarea', 'Descripción global (meta description)', 2),
+('seo', 'meta_keywords',     'Puerto Octay, turismo, lago Llanquihue, patrimonio, gastronomía', 'textarea', 'Palabras clave', 3),
+('seo', 'og_image',          '', 'url', 'Imagen Open Graph por defecto', 4),
+('seo', 'robots_txt',        'User-agent: *\nAllow: /\nSitemap: https://visitapuertoctay.cl/sitemap.xml', 'textarea', 'Contenido de robots.txt', 5),
+('seo', 'head_scripts',      '', 'textarea', 'Scripts adicionales en <head>', 6),
+('seo', 'body_scripts',      '', 'textarea', 'Scripts antes de </body>', 7);
+
+-- Redes sociales
+INSERT INTO configuracion (grupo, clave, valor, tipo, etiqueta, orden) VALUES
+('social', 'facebook',  '', 'url', 'Facebook', 1),
+('social', 'instagram', '', 'url', 'Instagram', 2),
+('social', 'youtube',   '', 'url', 'YouTube', 3),
+('social', 'tiktok',    '', 'url', 'TikTok', 4);
+
+-- Páginas estáticas
+INSERT INTO paginas (titulo, slug, contenido, meta_title, meta_description, activo, orden) VALUES
+('Acerca de', 'acerca-de', '<h2>Sobre Visita Puerto Octay</h2>\n<p>Somos una plataforma dedicada a promover el turismo, comercio y patrimonio de Puerto Octay.</p>', 'Acerca de — Visita Puerto Octay', 'Conoce nuestra misión de promover Puerto Octay.', 1, 1),
+('Términos de uso', 'terminos-de-uso', '<h2>Términos de uso</h2>\n<p>Al utilizar este sitio web, aceptas los siguientes términos y condiciones.</p>', 'Términos de uso — Visita Puerto Octay', 'Términos y condiciones de uso del sitio.', 1, 2),
+('Política de privacidad', 'politica-de-privacidad', '<h2>Política de privacidad</h2>\n<p>Tu privacidad es importante para nosotros.</p>', 'Política de privacidad — Visita Puerto Octay', 'Política de privacidad del sitio.', 1, 3);

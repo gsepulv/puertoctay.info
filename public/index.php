@@ -28,6 +28,7 @@ $router->add('GET', '/turismo', 'NegocioController@turismo');
 $router->add('GET', '/patrimonio', 'NegocioController@patrimonio');
 $router->add('GET', '/mapa', 'MapaController@index');
 $router->add('GET', '/buscar', 'BuscarController@index');
+$router->add('GET', '/pagina/{slug}', 'PaginaController@show');
 
 // Noticias
 $router->add('GET', '/noticias', 'NoticiaController@index');
@@ -94,7 +95,23 @@ $router->add('GET', '/admin/usuarios/{id}/editar', 'AdminUsuarioController@edita
 $router->add('POST', '/admin/usuarios/{id}/actualizar', 'AdminUsuarioController@actualizar');
 $router->add('POST', '/admin/usuarios/{id}/eliminar', 'AdminUsuarioController@eliminar');
 
-// Admin — Placeholders
+// Admin — Configuración
+$router->add('GET', '/admin/configuracion', 'AdminConfiguracionController@index');
+$router->add('POST', '/admin/configuracion/guardar', 'AdminConfiguracionController@guardar');
+
+// Admin — SEO
+$router->add('GET', '/admin/seo', 'AdminSeoController@index');
+$router->add('POST', '/admin/seo/guardar', 'AdminSeoController@guardar');
+
+// Admin — Páginas
+$router->add('GET', '/admin/paginas', 'AdminPaginaController@index');
+$router->add('GET', '/admin/paginas/crear', 'AdminPaginaController@crear');
+$router->add('POST', '/admin/paginas/guardar', 'AdminPaginaController@guardar');
+$router->add('GET', '/admin/paginas/{id}/editar', 'AdminPaginaController@editar');
+$router->add('POST', '/admin/paginas/{id}/actualizar', 'AdminPaginaController@actualizar');
+$router->add('POST', '/admin/paginas/{id}/eliminar', 'AdminPaginaController@eliminar');
+
+// Admin — Placeholders (módulos pendientes)
 $router->add('GET', '/admin/blog', 'AdminPlaceholderController@blog');
 $router->add('GET', '/admin/banners', 'AdminPlaceholderController@banners');
 $router->add('GET', '/admin/estadisticas', 'AdminPlaceholderController@estadisticas');
@@ -103,13 +120,10 @@ $router->add('GET', '/admin/nurturing', 'AdminPlaceholderController@nurturing');
 $router->add('GET', '/admin/correo', 'AdminPlaceholderController@correo');
 $router->add('GET', '/admin/reportes', 'AdminPlaceholderController@reportes');
 $router->add('GET', '/admin/planes', 'AdminPlaceholderController@planes');
-$router->add('GET', '/admin/seo', 'AdminPlaceholderController@seo');
 $router->add('GET', '/admin/redes-sociales', 'AdminPlaceholderController@redesSociales');
 $router->add('GET', '/admin/apariencia', 'AdminPlaceholderController@apariencia');
 $router->add('GET', '/admin/textos-legales', 'AdminPlaceholderController@textosLegales');
-$router->add('GET', '/admin/paginas', 'AdminPlaceholderController@paginas');
 $router->add('GET', '/admin/menu', 'AdminPlaceholderController@menu');
-$router->add('GET', '/admin/configuracion', 'AdminPlaceholderController@configuracion');
 $router->add('GET', '/admin/mantenimiento', 'AdminPlaceholderController@mantenimiento');
 
 // Despachar
