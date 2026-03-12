@@ -1,4 +1,5 @@
 ---
 deployment:
   tasks:
-    - /bin/cp -R public/* /home/puertoctay/public_html/
+    - export DEPLOYPATH=/home/visitapuertoctay/public_html/
+    - /bin/cp -rf %{home}/puertoctay_repo/public/* $DEPLOYPATH
