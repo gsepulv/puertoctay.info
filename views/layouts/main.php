@@ -134,6 +134,7 @@
 <footer class="site-footer">
     <div class="container">
         <p>&copy; <?= date('Y') ?> <?= htmlspecialchars(SITE_NAME) ?>. Todos los derechos reservados.</p>
+        <p style="text-align:center;font-size:0.8rem;color:#999;margin-top:1rem">visitapuertoctay.cl — Otro servicio de <a href="https://purranque.info" target="_blank" style="color:#999">PurranQUE.INFO</a></p>
     </div>
 </footer>
 
