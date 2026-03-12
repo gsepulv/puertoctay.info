@@ -9,7 +9,7 @@ $parentDir = dirname(__DIR__);
 if (file_exists($parentDir . '/bootstrap.php')) {
     define('ROOT_PATH', $parentDir);
 } else {
-    define('ROOT_PATH', '/home/puertoctay/puertoctay_repo');
+    define('ROOT_PATH', '/home/visitapuertoctay/puertoctay_repo');
 }
 
 require_once ROOT_PATH . '/bootstrap.php';
