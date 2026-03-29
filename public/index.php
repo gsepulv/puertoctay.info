@@ -13,7 +13,10 @@ if (file_exists($parentDir . '/bootstrap.php')) {
 }
 
 require_once ROOT_PATH . '/bootstrap.php';
+require_once ROOT_PATH . '/middleware/MaintenanceMiddleware.php';
 require_once ROOT_PATH . '/router.php';
+// Verificar modo construccion (permite admin y rutas /admin)
+MaintenanceMiddleware::check(getDB());
 
 // Instanciar router y definir rutas
 $router = new Router();
@@ -39,6 +42,7 @@ $router->add('GET', '/noticias/{slug}', 'NoticiaController@show');
 $router->add("GET", "/sitemap.xml", "SitemapController@index");
 // API
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
+$router->add('POST', '/api/subscribe', 'SubscribeApiController@store');
 
 // Contacto
 $router->add('GET', '/contacto', 'ContactoController@index');

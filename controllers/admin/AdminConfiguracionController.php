@@ -20,6 +20,7 @@ class AdminConfiguracionController
 
         $grupoLabels = [
             'general' => 'General',
+            'mantenimiento' => 'Modo Construccion',
             'seo'     => 'SEO',
             'social'  => 'Redes Sociales',
         ];
