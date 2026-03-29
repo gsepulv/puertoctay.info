@@ -38,10 +38,10 @@
                                 <span class="badge" style="margin-bottom:.5rem;"><?= htmlspecialchars($neg['categoria_nombre']) ?></span>
                             <?php endif; ?>
                             <?php if (!empty($neg['verificado'])): ?>
-                                <span class="badge badge-success">&#10003;</span>
+                                <span class="badge badge-success">✓</span>
                             <?php endif; ?>
                             <?php if (!empty($neg['direccion'])): ?>
-                                <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">&#128205; <?= htmlspecialchars($neg['direccion']) ?></p>
+                                <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">📍 <?= htmlspecialchars($neg['direccion']) ?></p>
                             <?php endif; ?>
                             <?php if (!empty($neg['descripcion_corta'])): ?>
                                 <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.5rem;line-height:1.5;"><?= htmlspecialchars(mb_strimwidth($neg['descripcion_corta'], 0, 120, '...')) ?></p>

@@ -41,37 +41,37 @@
                     <ul style="list-style:none;padding:0;margin:0 0 2rem;">
                         <?php if (isset($plan['max_fotos'])): ?>
                             <li style="padding:.4rem 0;display:flex;gap:.5rem;align-items:center;">
-                                <span style="color:var(--accent);">&#10003;</span>
+                                <span style="color:var(--accent);">✓</span>
                                 Hasta <?= intval($plan['max_fotos']) ?> fotos
                             </li>
                         <?php endif; ?>
                         <?php if (!empty($plan['badge'])): ?>
                             <li style="padding:.4rem 0;display:flex;gap:.5rem;align-items:center;">
-                                <span style="color:var(--accent);">&#10003;</span>
+                                <span style="color:var(--accent);">✓</span>
                                 Badge: <?= htmlspecialchars($plan['badge']) ?>
                             </li>
                         <?php endif; ?>
                         <?php if (!empty($plan['estadisticas'])): ?>
                             <li style="padding:.4rem 0;display:flex;gap:.5rem;align-items:center;">
-                                <span style="color:var(--accent);">&#10003;</span>
+                                <span style="color:var(--accent);">✓</span>
                                 Estadísticas de visitas
                             </li>
                         <?php endif; ?>
                         <?php if (!empty($plan['noticia_mensual'])): ?>
                             <li style="padding:.4rem 0;display:flex;gap:.5rem;align-items:center;">
-                                <span style="color:var(--accent);">&#10003;</span>
+                                <span style="color:var(--accent);">✓</span>
                                 Noticia mensual incluida
                             </li>
                         <?php endif; ?>
                         <?php if (!empty($plan['banner_portada'])): ?>
                             <li style="padding:.4rem 0;display:flex;gap:.5rem;align-items:center;">
-                                <span style="color:var(--accent);">&#10003;</span>
+                                <span style="color:var(--accent);">✓</span>
                                 Banner en portada
                             </li>
                         <?php endif; ?>
                         <?php if (isset($plan['max_cupos']) && $plan['max_cupos'] > 0): ?>
                             <li style="padding:.4rem 0;display:flex;gap:.5rem;align-items:center;">
-                                <span style="color:var(--accent);">&#10003;</span>
+                                <span style="color:var(--accent);">✓</span>
                                 <?= intval($plan['max_cupos']) ?> cupos disponibles
                             </li>
                         <?php endif; ?>

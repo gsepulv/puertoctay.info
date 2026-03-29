@@ -29,7 +29,7 @@
                     <span class="badge"><?= htmlspecialchars($negocio['categoria_nombre']) ?></span>
                 <?php endif; ?>
                 <?php if (!empty($negocio['verificado'])): ?>
-                    <span class="badge badge-success">&#10003; Verificado</span>
+                    <span class="badge badge-success">✓ Verificado</span>
                 <?php endif; ?>
             </div>
 
@@ -37,7 +37,7 @@
                 <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;">
                     <div class="stars">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
-                            <span class="star <?= $i <= round($rating) ? 'star-filled' : '' ?>">&#9733;</span>
+                            <span class="star <?= $i <= round($rating) ? 'star-filled' : '' ?>">★</span>
                         <?php endfor; ?>
                     </div>
                     <span><?= number_format($rating, 1) ?></span>
@@ -53,7 +53,7 @@
 
             <?php if (!empty($negocio['como_llegar'])): ?>
                 <div style="margin-bottom:2rem;">
-                    <h3 style="margin-bottom:.75rem;">&#128205; Como llegar</h3>
+                    <h3 style="margin-bottom:.75rem;">📍 Como llegar</h3>
                     <p style="line-height:1.7;"><?= nl2br(htmlspecialchars($negocio['como_llegar'])) ?></p>
                 </div>
             <?php endif; ?>
@@ -66,42 +66,42 @@
 
                 <?php if (!empty($negocio['direccion'])): ?>
                     <div style="display:flex;gap:.75rem;margin-bottom:1rem;">
-                        <span>&#128205;</span>
+                        <span>📍</span>
                         <span><?= htmlspecialchars($negocio['direccion']) ?></span>
                     </div>
                 <?php endif; ?>
 
                 <?php if (!empty($negocio['telefono'])): ?>
                     <div style="display:flex;gap:.75rem;margin-bottom:1rem;">
-                        <span>&#128222;</span>
+                        <span>📞</span>
                         <a href="tel:<?= htmlspecialchars($negocio['telefono']) ?>"><?= htmlspecialchars($negocio['telefono']) ?></a>
                     </div>
                 <?php endif; ?>
 
                 <?php if (!empty($negocio['email'])): ?>
                     <div style="display:flex;gap:.75rem;margin-bottom:1rem;">
-                        <span>&#9993;</span>
+                        <span>✉</span>
                         <a href="mailto:<?= htmlspecialchars($negocio['email']) ?>"><?= htmlspecialchars($negocio['email']) ?></a>
                     </div>
                 <?php endif; ?>
 
                 <?php if (!empty($negocio['sitio_web'])): ?>
                     <div style="display:flex;gap:.75rem;margin-bottom:1rem;">
-                        <span>&#127760;</span>
+                        <span>🌐</span>
                         <a href="<?= htmlspecialchars($negocio['sitio_web']) ?>" target="_blank" rel="noopener"><?= htmlspecialchars(preg_replace('#^https?://#', '', $negocio['sitio_web'])) ?></a>
                     </div>
                 <?php endif; ?>
 
                 <?php if (!empty($negocio['whatsapp'])): ?>
                     <div style="display:flex;gap:.75rem;margin-bottom:1rem;">
-                        <span>&#128172;</span>
+                        <span>💬</span>
                         <a href="https://wa.me/<?= htmlspecialchars(preg_replace('/[^0-9]/', '', $negocio['whatsapp'])) ?>" target="_blank" rel="noopener">WhatsApp</a>
                     </div>
                 <?php endif; ?>
 
                 <?php if (!empty($negocio['horario'])): ?>
                     <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);">
-                        <h4 style="margin-bottom:.5rem;">&#128336; Horario</h4>
+                        <h4 style="margin-bottom:.5rem;">🕐 Horario</h4>
                         <p style="line-height:1.7;"><?= nl2br(htmlspecialchars($negocio['horario'])) ?></p>
                     </div>
                 <?php endif; ?>
@@ -140,7 +140,7 @@
                             <strong><?= htmlspecialchars($resena['autor'] ?? 'Anonimo') ?></strong>
                             <div class="stars">
                                 <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <span class="star <?= $i <= ($resena['rating'] ?? 0) ? 'star-filled' : '' ?>">&#9733;</span>
+                                    <span class="star <?= $i <= ($resena['rating'] ?? 0) ? 'star-filled' : '' ?>">★</span>
                                 <?php endfor; ?>
                             </div>
                         </div>

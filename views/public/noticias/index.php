@@ -29,7 +29,7 @@
                     <img src="<?= htmlspecialchars($destacada['foto_destacada']) ?>" alt="<?= htmlspecialchars($destacada['titulo']) ?>" style="width:100%;height:320px;object-fit:cover;">
                 <?php else: ?>
                     <div style="width:100%;height:320px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;">
-                        <span style="font-size:4rem;opacity:.4;">&#128240;</span>
+                        <span style="font-size:4rem;opacity:.4;">📰</span>
                     </div>
                 <?php endif; ?>
                 <div style="padding:2rem;display:flex;flex-direction:column;justify-content:center;">
@@ -56,7 +56,7 @@
                             <img src="<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width:100%;height:200px;object-fit:cover;">
                         <?php else: ?>
                             <div style="width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
-                                <span style="font-size:2.5rem;opacity:.4;">&#128240;</span>
+                                <span style="font-size:2.5rem;opacity:.4;">📰</span>
                             </div>
                         <?php endif; ?>
                         <div style="padding:1.25rem;">

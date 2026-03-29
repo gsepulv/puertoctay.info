@@ -27,18 +27,18 @@
         <!-- Meta line -->
         <div style="display:flex;flex-wrap:wrap;gap:1.5rem;color:var(--text-muted);font-size:.9rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
             <?php if (!empty($noticia['autor'])): ?>
-                <span>&#128100; <?= htmlspecialchars($noticia['autor']) ?></span>
+                <span>👤 <?= htmlspecialchars($noticia['autor']) ?></span>
             <?php endif; ?>
             <?php if (!empty($noticia['publicado_en'])): ?>
-                <span>&#128197; <?= date('d \d\e F, Y', strtotime($noticia['publicado_en'])) ?></span>
+                <span>📅 <?= date('d \d\e F, Y', strtotime($noticia['publicado_en'])) ?></span>
             <?php endif; ?>
             <?php
             $wordCount = str_word_count(strip_tags($noticia['contenido'] ?? ''));
             $readingTime = max(1, ceil($wordCount / 200));
             ?>
-            <span>&#128337; <?= $readingTime ?> min de lectura</span>
+            <span>🕑 <?= $readingTime ?> min de lectura</span>
             <?php if (isset($noticia['visitas'])): ?>
-                <span>&#128065; <?= number_format($noticia['visitas']) ?> visitas</span>
+                <span>👁 <?= number_format($noticia['visitas']) ?> visitas</span>
             <?php endif; ?>
         </div>
 
@@ -49,7 +49,7 @@
             </div>
         <?php else: ?>
             <div style="width:100%;height:300px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-                <span style="font-size:4rem;opacity:.4;">&#128240;</span>
+                <span style="font-size:4rem;opacity:.4;">📰</span>
             </div>
         <?php endif; ?>
 
@@ -88,7 +88,7 @@
                             <img src="<?= htmlspecialchars($rel['imagen_portada']) ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" style="width:100%;height:150px;object-fit:cover;">
                         <?php else: ?>
                             <div style="width:100%;height:150px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
-                                <span style="font-size:2rem;opacity:.4;">&#128240;</span>
+                                <span style="font-size:2rem;opacity:.4;">📰</span>
                             </div>
                         <?php endif; ?>
                         <div style="padding:1rem;">

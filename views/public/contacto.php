@@ -57,7 +57,7 @@
                 <h3 style="margin-bottom:1.5rem;">Información</h3>
 
                 <div style="display:flex;gap:.75rem;margin-bottom:1.25rem;">
-                    <span>&#9993;</span>
+                    <span>✉</span>
                     <div>
                         <strong style="display:block;margin-bottom:.25rem;">Email</strong>
                         <a href="mailto:contacto@visitapuertoctay.cl">contacto@visitapuertoctay.cl</a>
@@ -65,7 +65,7 @@
                 </div>
 
                 <div style="display:flex;gap:.75rem;margin-bottom:1.25rem;">
-                    <span>&#128205;</span>
+                    <span>📍</span>
                     <div>
                         <strong style="display:block;margin-bottom:.25rem;">Ubicación</strong>
                         <span>Puerto Octay, Región de Los Lagos</span>

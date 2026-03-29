@@ -41,7 +41,7 @@
                 <a href="<?= SITE_URL ?>/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
                     <span class="emoji"><?= $cat['emoji'] ?? '📌' ?></span>
                     <span class="name"><?= htmlspecialchars($cat['nombre']) ?></span>
-                    <span class="count"><?= (int)($cat['total_negocios'] ?? 0) ?> negocios</span>
+                    <span class="count"><?= $n = (int)($cat['total_negocios'] ?? 0) ?> <?= $n === 1 ? 'negocio' : 'negocios' ?></span>
                 </a>
             <?php endforeach; ?>
         </div>

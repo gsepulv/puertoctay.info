@@ -99,7 +99,7 @@
                         for ($i = 1; $i <= 5; $i++):
                             $starColor = ($i <= floor($ratingVal)) ? '#f39c12' : '#ccc';
                         ?>
-                            <span style="color: <?= $starColor ?>; font-size: 1rem;">&#9733;</span>
+                            <span style="color: <?= $starColor ?>; font-size: 1rem;">★</span>
                         <?php endfor; ?>
                         <span style="font-size: 0.85rem; color: #888; margin-left: 0.2rem;">
                             <?= number_format($ratingVal, 1) ?>
