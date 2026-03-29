@@ -86,4 +86,5 @@ class NoticiaController
         $viewName = 'public/noticias/index';
         require ROOT_PATH . '/views/layouts/main.php';
     }
+public function showRedirect(string $slug): void    {        header('Location: ' . SITE_URL . '/noticias/' . $slug, true, 301);        exit;    }
 }

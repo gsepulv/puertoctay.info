@@ -147,5 +147,7 @@ $router->add('POST', '/admin/usuarios/{id}/eliminar', 'AdminUsuarioController@el
 // ── Admin: Mantenimiento ──────────────────────────────
 $router->add('GET', '/admin/mantenimiento', 'AdminMantenimientoController@index');
 
+// Aliases: singular -> plural redirects
+$router->add('GET', '/noticia/{slug}', 'NoticiaController@showRedirect');
 // Despachar
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
