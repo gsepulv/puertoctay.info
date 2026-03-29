@@ -1,37 +1,59 @@
-<section class="section">
-    <h2 class="section-title">🏛️ Patrimonio y Cultura</h2>
-    <p class="mb-2">Arquitectura alemana, museos, sitios históricos, bibliotecas y centros culturales de Puerto Octay, a orillas del Lago Llanquihue.</p>
+<?php /** @var array $negocios @var array $categorias */ ?>
 
-    <?php if (empty($negocios)): ?>
-        <div class="empty-state">
-            <p>Próximamente se publicarán los atractivos patrimoniales y culturales de Puerto Octay.</p>
-            <a href="<?= SITE_URL ?>/directorio" class="btn btn-primary mt-2">Ver directorio completo</a>
-        </div>
-    <?php else: ?>
-        <div class="card-grid">
-            <?php foreach ($negocios as $neg): ?>
-            <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card" style="color:inherit;">
-                <?php if (!empty($neg['foto_principal'])): ?>
-                    <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" class="card-img" loading="lazy">
-                <?php else: ?>
-                    <div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:#ccc;">🏛️</div>
-                <?php endif; ?>
-                <div class="card-body">
-                    <h3><?= htmlspecialchars($neg['nombre']) ?></h3>
-                    <?php if (!empty($neg['descripcion_corta'])): ?>
-                        <p><?= htmlspecialchars(mb_substr($neg['descripcion_corta'], 0, 120)) ?></p>
-                    <?php endif; ?>
-                    <div class="card-meta">
-                        <?php if (!empty($neg['categoria_emoji'])): ?>
-                            <span><?= $neg['categoria_emoji'] ?> <?= htmlspecialchars($neg['categoria_nombre']) ?></span>
+<div class="hero" style="background:linear-gradient(135deg,var(--primary),var(--secondary));padding:3rem 0;text-align:center;color:#fff;">
+    <div class="container">
+        <h1 style="font-size:2.5rem;margin-bottom:.75rem;">Patrimonio y Cultura</h1>
+        <p style="font-size:1.15rem;opacity:.9;max-width:600px;margin:0 auto;">
+            Descubre la rica herencia colonial alemana y el patrimonio cultural de Puerto Octay, a orillas del Lago Llanquihue.
+        </p>
+    </div>
+</div>
+
+<nav class="breadcrumb">
+    <a href="/">Inicio</a>
+    <span>/</span>
+    <span>Patrimonio y Cultura</span>
+</nav>
+
+<div class="container">
+    <div class="section">
+        <?php if (!empty($negocios)): ?>
+            <div class="card-grid">
+                <?php foreach ($negocios as $neg): ?>
+                    <a href="/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card" style="text-decoration:none;color:inherit;">
+                        <?php if (!empty($neg['foto_principal'])): ?>
+                            <img src="<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" style="width:100%;height:200px;object-fit:cover;">
+                        <?php else: ?>
+                            <div style="width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
+                                <span style="font-size:3rem;opacity:.5;">&#127963;</span>
+                            </div>
                         <?php endif; ?>
-                        <?php if (!empty($neg['direccion'])): ?>
-                            <span>📍 <?= htmlspecialchars(mb_substr($neg['direccion'], 0, 40)) ?></span>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </a>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-</section>
+                        <div style="padding:1.25rem;">
+                            <h3 style="margin-bottom:.5rem;"><?= htmlspecialchars($neg['nombre']) ?></h3>
+                            <?php if (!empty($neg['categoria_nombre'])): ?>
+                                <span class="badge" style="margin-bottom:.5rem;"><?= htmlspecialchars($neg['categoria_nombre']) ?></span>
+                            <?php endif; ?>
+                            <?php if (!empty($neg['verificado'])): ?>
+                                <span class="badge badge-success">&#10003;</span>
+                            <?php endif; ?>
+                            <?php if (!empty($neg['direccion'])): ?>
+                                <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">&#128205; <?= htmlspecialchars($neg['direccion']) ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($neg['descripcion'])): ?>
+                                <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.5rem;line-height:1.5;">
+                                    <?= htmlspecialchars(mb_strimwidth($neg['descripcion'], 0, 120, '...')) ?>
+                                </p>
+                            <?php endif; ?>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="empty-state">
+                <span style="font-size:3rem;display:block;margin-bottom:1rem;">&#127963;</span>
+                <p>No hay lugares de patrimonio registrados aún.</p>
+                <a href="/directorio" class="btn" style="margin-top:1rem;">Ver directorio completo</a>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

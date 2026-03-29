@@ -1,98 +1,148 @@
-<!-- Hero -->
-<section style="text-align:center; padding:2rem 0 3rem;">
-    <h1 style="font-size:2.5rem; margin-bottom:0.5rem;">⛵ <?= htmlspecialchars(SITE_NAME) ?></h1>
-    <p style="font-size:1.2rem; color:#555; max-width:600px; margin:0 auto 1.5rem;"><?= htmlspecialchars(SITE_TAGLINE) ?></p>
-
-    <form action="<?= SITE_URL ?>/buscar" method="GET" class="search-bar" style="max-width:500px; margin:0 auto;">
-        <input type="text" name="q" placeholder="Buscar negocios, servicios, atractivos...">
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </form>
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <h1>Descubre Puerto Octay</h1>
+        <p>Explora los mejores negocios, atractivos turísticos, gastronomía y patrimonio a orillas del Lago Llanquihue.</p>
+        <form class="hero-search" action="<?= SITE_URL ?>/buscar" method="GET">
+            <input type="text" name="q" placeholder="Buscar negocios, restaurantes, turismo..." aria-label="Buscar">
+            <button type="submit">Buscar</button>
+        </form>
+        <?php
+        $totalNegocios = count($destacados ?? []);
+        $totalCategorias = count($categorias ?? []);
+        ?>
+        <div class="hero-stats">
+            <div>
+                <span class="hero-stat-value"><?= $totalCategorias ?></span>
+                <span class="hero-stat-label">Categorías</span>
+            </div>
+            <div>
+                <span class="hero-stat-value"><?= $totalNegocios ?>+</span>
+                <span class="hero-stat-label">Negocios</span>
+            </div>
+            <div>
+                <span class="hero-stat-value">365</span>
+                <span class="hero-stat-label">Días de turismo</span>
+            </div>
+        </div>
+    </div>
 </section>
 
-<!-- Categorías -->
+<!-- CATEGORÍAS -->
 <?php if (!empty($categorias)): ?>
-<section class="section">
-    <h2 class="section-title">Categorías</h2>
-    <div class="cat-grid">
-        <?php foreach ($categorias as $cat): ?>
-        <a href="<?= SITE_URL ?>/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
-            <span class="emoji"><?= $cat['emoji'] ?></span>
-            <span class="name"><?= htmlspecialchars($cat['nombre']) ?></span>
-            <span class="count"><?= (int)$cat['total_negocios'] ?> negocio<?= (int)$cat['total_negocios'] !== 1 ? 's' : '' ?></span>
-        </a>
-        <?php endforeach; ?>
+<section class="section section-white">
+    <div class="container">
+        <div class="section-header">
+            <h2>Explora por Categoría</h2>
+            <p>Encuentra exactamente lo que buscas en Puerto Octay</p>
+        </div>
+        <div class="cat-grid">
+            <?php foreach ($categorias as $cat): ?>
+                <a href="<?= SITE_URL ?>/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
+                    <span class="emoji"><?= $cat['icono'] ?? '📌' ?></span>
+                    <span class="name"><?= htmlspecialchars($cat['nombre']) ?></span>
+                    <span class="count"><?= (int)($cat['total'] ?? $cat['negocios_count'] ?? 0) ?> negocios</span>
+                </a>
+            <?php endforeach; ?>
+        </div>
     </div>
-    <p class="text-center mt-2"><a href="<?= SITE_URL ?>/categorias" class="btn btn-sm btn-primary">Ver todas</a></p>
 </section>
 <?php endif; ?>
 
-<!-- Destacados -->
+<!-- DESTACADOS -->
 <?php if (!empty($destacados)): ?>
 <section class="section">
-    <h2 class="section-title">Negocios Destacados</h2>
-    <div class="card-grid">
-        <?php foreach ($destacados as $neg): ?>
-        <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card" style="color:inherit;">
-            <?php if (!empty($neg['foto_principal'])): ?>
-                <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" class="card-img" loading="lazy">
-            <?php else: ?>
-                <div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:#ccc;">⛵</div>
-            <?php endif; ?>
-            <div class="card-body">
-                <h3>
-                    <?= htmlspecialchars($neg['nombre']) ?>
-                    <?php if (!empty($neg['plan_badge'])): ?>
-                        <span class="badge badge-gold"><?= htmlspecialchars($neg['plan_nombre'] ?? 'Destacado') ?></span>
+    <div class="container">
+        <div class="section-header">
+            <h2>Negocios Destacados</h2>
+            <p>Los mejores lugares para visitar, comer y disfrutar</p>
+        </div>
+        <div class="card-grid">
+            <?php foreach ($destacados as $neg): ?>
+                <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card" style="text-decoration:none; color:inherit;">
+                    <?php if (!empty($neg['foto_principal'])): ?>
+                        <img class="card-img" src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" loading="lazy">
+                    <?php else: ?>
+                        <div class="card-img-placeholder">🏪</div>
                     <?php endif; ?>
-                </h3>
-                <?php if (!empty($neg['descripcion_corta'])): ?>
-                    <p><?= htmlspecialchars(mb_substr($neg['descripcion_corta'], 0, 120)) ?></p>
-                <?php endif; ?>
-                <div class="card-meta">
-                    <?php if (!empty($neg['categoria_emoji'])): ?>
-                        <span><?= $neg['categoria_emoji'] ?> <?= htmlspecialchars($neg['categoria_nombre'] ?? '') ?></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </a>
-        <?php endforeach; ?>
+                    <div class="card-body">
+                        <div class="card-meta" style="margin-top:0; margin-bottom:0.5rem;">
+                            <span class="badge badge-primary"><?= htmlspecialchars($neg['categoria_nombre'] ?? 'General') ?></span>
+                            <?php if (!empty($neg['verificado'])): ?>
+                                <span class="badge badge-green">Verificado</span>
+                            <?php endif; ?>
+                        </div>
+                        <h3><?= htmlspecialchars($neg['nombre']) ?></h3>
+                        <?php if (!empty($neg['direccion'])): ?>
+                            <p style="margin-bottom:0.3rem;">📍 <?= htmlspecialchars($neg['direccion']) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($neg['rating_promedio']) && $neg['rating_promedio'] > 0): ?>
+                            <div class="card-meta">
+                                <span class="stars"><?= str_repeat('★', round($neg['rating_promedio'])) ?><?= str_repeat('☆', 5 - round($neg['rating_promedio'])) ?></span>
+                                <span><?= number_format($neg['rating_promedio'], 1) ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+        <div class="text-center mt-3">
+            <a href="<?= SITE_URL ?>/directorio" class="btn btn-outline">Ver todo el directorio</a>
+        </div>
     </div>
-    <p class="text-center mt-2"><a href="<?= SITE_URL ?>/directorio" class="btn btn-sm btn-secondary">Ver directorio completo</a></p>
 </section>
 <?php endif; ?>
 
-<!-- Últimas Noticias -->
+<!-- NOTICIAS -->
 <?php if (!empty($ultimasNoticias)): ?>
-<section class="section">
-    <h2 class="section-title">Últimas Noticias</h2>
-    <div class="card-grid">
-        <?php foreach ($ultimasNoticias as $not): ?>
-        <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($not['slug']) ?>" class="card" style="color:inherit;">
-            <?php if (!empty($not['foto_destacada'])): ?>
-                <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($not['foto_destacada']) ?>" alt="<?= htmlspecialchars($not['titulo']) ?>" class="card-img" loading="lazy">
-            <?php else: ?>
-                <div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:#ccc;">📰</div>
-            <?php endif; ?>
-            <div class="card-body">
-                <h3><?= htmlspecialchars(mb_substr($not['titulo'], 0, 60)) ?></h3>
-                <?php if (!empty($not['bajada'])): ?>
-                    <p><?= htmlspecialchars(mb_substr($not['bajada'], 0, 120)) ?></p>
-                <?php endif; ?>
-                <div class="card-meta">
-                    <span>📅 <?= date('d/m/Y', strtotime($not['publicado_en'] ?? $not['created_at'])) ?></span>
-                </div>
-            </div>
-        </a>
-        <?php endforeach; ?>
+<section class="section section-warm">
+    <div class="container">
+        <div class="section-header">
+            <h2>Últimas Noticias</h2>
+            <p>Novedades y eventos de Puerto Octay</p>
+        </div>
+        <div class="card-grid">
+            <?php foreach ($ultimasNoticias as $not): ?>
+                <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($not['slug']) ?>" class="card" style="text-decoration:none; color:inherit;">
+                    <?php if (!empty($not['imagen_portada'])): ?>
+                        <img class="card-img" src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($not['imagen_portada']) ?>" alt="<?= htmlspecialchars($not['titulo']) ?>" loading="lazy">
+                    <?php else: ?>
+                        <div class="card-img-placeholder">📰</div>
+                    <?php endif; ?>
+                    <div class="card-body">
+                        <?php if (!empty($not['categoria_editorial'])): ?>
+                            <span class="badge badge-secondary mb-1"><?= htmlspecialchars($not['categoria_editorial']) ?></span>
+                        <?php endif; ?>
+                        <h3><?= htmlspecialchars($not['titulo']) ?></h3>
+                        <p><?= htmlspecialchars(mb_substr(strip_tags($not['bajada'] ?? $not['contenido'] ?? ''), 0, 100)) ?>...</p>
+                        <div class="card-meta">
+                            <span><?= date('d M Y', strtotime($not['fecha_publicacion'] ?? $not['created_at'])) ?></span>
+                        </div>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+        <div class="text-center mt-3">
+            <a href="<?= SITE_URL ?>/noticias" class="btn btn-outline">Todas las noticias</a>
+        </div>
     </div>
-    <p class="text-center mt-2"><a href="<?= SITE_URL ?>/noticias" class="btn btn-sm btn-secondary">Ver todas las noticias</a></p>
 </section>
 <?php endif; ?>
 
-<!-- CTA -->
-<section style="text-align:center; padding:2rem; background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-top:1rem;">
-    <h2 style="font-size:1.5rem;">Descubre Puerto Octay</h2>
-    <p style="color:#666; max-width:500px; margin:0.5rem auto 1rem;">Explora el mapa interactivo con todos los puntos de interés de la ciudad y sus alrededores.</p>
-    <a href="<?= SITE_URL ?>/mapa" class="btn btn-primary">Ver mapa interactivo</a>
-    <a href="<?= SITE_URL ?>/turismo" class="btn btn-secondary" style="margin-left:0.5rem;">Atractivos turísticos</a>
+<!-- CTA: Mapa y Turismo -->
+<section class="section">
+    <div class="container">
+        <div class="grid-2">
+            <div class="card" style="border:none; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color:var(--white); padding:2.5rem;">
+                <h3 style="color:var(--white); font-size:1.4rem; margin-bottom:0.6rem;">🗺 Mapa Interactivo</h3>
+                <p style="opacity:0.85; margin-bottom:1.5rem;">Explora todos los negocios y atractivos de Puerto Octay en nuestro mapa interactivo.</p>
+                <a href="<?= SITE_URL ?>/mapa" class="btn btn-accent">Abrir mapa</a>
+            </div>
+            <div class="card" style="border:none; background:linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%); color:var(--white); padding:2.5rem;">
+                <h3 style="color:var(--white); font-size:1.4rem; margin-bottom:0.6rem;">🏔 Turismo y Patrimonio</h3>
+                <p style="opacity:0.85; margin-bottom:1.5rem;">Descubre los atractivos turísticos y el patrimonio colonial alemán de la zona.</p>
+                <a href="<?= SITE_URL ?>/turismo" class="btn btn-accent">Explorar turismo</a>
+            </div>
+        </div>
+    </div>
 </section>

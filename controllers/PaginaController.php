@@ -27,4 +27,11 @@ class PaginaController
         $viewName = 'public/pagina';
         require ROOT_PATH . '/views/layouts/main.php';
     }
+
+    public function showLegal(): void
+    {
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
+        $slug = ltrim($uri, '/');
+        $this->show($slug);
+    }
 }
