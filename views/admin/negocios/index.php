@@ -1,60 +1,108 @@
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-    <p style="color:#888;"><?= count($negocios) ?> negocio<?= count($negocios) !== 1 ? 's' : '' ?> registrado<?= count($negocios) !== 1 ? 's' : '' ?></p>
+<?php
+/**
+ * Admin — Listado de Negocios — visitapuertoctay.cl
+ * Variables: $negocios (from findAllAdmin: n.* + categoria_nombre, plan_nombre)
+ */
+$total = count($negocios);
+?>
+
+<div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center;">
+    <div>
+        <h1>Negocios</h1>
+        <p style="color:#666;"><?= $total ?> negocio<?= $total !== 1 ? 's' : '' ?> registrado<?= $total !== 1 ? 's' : '' ?></p>
+    </div>
     <a href="<?= SITE_URL ?>/admin/negocios/crear" class="btn btn-primary">+ Nuevo Negocio</a>
 </div>
 
-<?php if (empty($negocios)): ?>
-    <div style="text-align:center; padding:3rem; color:#888;">
-        <p>No hay negocios registrados.</p>
-    </div>
+<?php if (!empty($_GET['success'])): ?>
+<div class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></div>
+<?php endif; ?>
+
+<?php if (!empty($_GET['error'])): ?>
+<div class="alert alert-danger"><?= htmlspecialchars($_GET['error']) ?></div>
+<?php endif; ?>
+
+<?php if (!empty($negocios)): ?>
+<div style="overflow-x:auto;">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th style="width:50px;">Logo</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Plan</th>
+                <th>Estado</th>
+                <th>Verificado</th>
+                <th>Destacado</th>
+                <th>Visitas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($negocios as $n): ?>
+            <tr>
+                <td>
+                    <?php if (!empty($n['logo'])): ?>
+                        <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($n['logo']) ?>"
+                             alt="" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                    <?php else: ?>
+                        <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#ddd; color:#888; font-weight:600; font-size:14px;">
+                            <?= mb_strtoupper(mb_substr($n['nombre'], 0, 1)) ?>
+                        </span>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($n['slug'] ?? $n['id']) ?>" target="_blank" style="font-weight:600;">
+                        <?= htmlspecialchars($n['nombre']) ?>
+                    </a>
+                </td>
+                <td><?= htmlspecialchars($n['categoria_nombre'] ?? '—') ?></td>
+                <td><?= htmlspecialchars($n['plan_nombre'] ?? '—') ?></td>
+                <td>
+                    <?php if (!empty($n['activo'])): ?>
+                        <span class="badge badge-green">Activo</span>
+                    <?php else: ?>
+                        <span class="badge badge-red">Inactivo</span>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <form method="POST" action="<?= SITE_URL ?>/admin/negocios/<?= $n['id'] ?>/verificar" style="display:inline;">
+                        <?= csrf_field() ?>
+                        <button type="submit" class="btn btn-sm" style="padding:2px 8px; font-size:12px;"
+                                title="<?= !empty($n['verificado']) ? 'Quitar verificación' : 'Verificar' ?>">
+                            <?= !empty($n['verificado']) ? '&#10003;' : '&#10007;' ?>
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <?php if (!empty($n['destacado'])): ?>
+                        <span class="badge badge-green">Si</span>
+                    <?php else: ?>
+                        —
+                    <?php endif; ?>
+                </td>
+                <td><?= (int)($n['visitas'] ?? 0) ?></td>
+                <td>
+                    <div style="display:flex; gap:0.3rem;">
+                        <a href="<?= SITE_URL ?>/admin/negocios/<?= $n['id'] ?>/editar"
+                           class="btn btn-sm btn-primary">Editar</a>
+
+                        <form method="POST" action="<?= SITE_URL ?>/admin/negocios/<?= $n['id'] ?>/eliminar"
+                              style="display:inline;"
+                              onsubmit="return confirm('¿Eliminar «<?= htmlspecialchars(addslashes($n['nombre'])) ?>»? Esta acción no se puede deshacer.');">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
 <?php else: ?>
-<table class="admin-table">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Plan</th>
-            <th>Estado</th>
-            <th>Verificado</th>
-            <th>Visitas</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($negocios as $neg): ?>
-        <tr>
-            <td>
-                <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" target="_blank">
-                    <?= htmlspecialchars($neg['nombre']) ?>
-                </a>
-            </td>
-            <td><?= htmlspecialchars($neg['categoria_nombre'] ?? '—') ?></td>
-            <td><?= htmlspecialchars($neg['plan_nombre'] ?? 'Básico') ?></td>
-            <td>
-                <?php if ($neg['activo']): ?>
-                    <span class="badge badge-green">Activo</span>
-                <?php else: ?>
-                    <span class="badge badge-red">Inactivo</span>
-                <?php endif; ?>
-            </td>
-            <td>
-                <form action="<?= SITE_URL ?>/admin/negocios/<?= $neg['id'] ?>/verificar" method="POST" style="display:inline;">
-                    <?= csrf_field() ?>
-                    <button type="submit" class="btn btn-sm" style="background:<?= $neg['verificado'] ? '#d4edda' : '#f8f9fa' ?>; color:<?= $neg['verificado'] ? '#155724' : '#888' ?>; border:1px solid #dee2e6;">
-                        <?= $neg['verificado'] ? '✓ Sí' : '✗ No' ?>
-                    </button>
-                </form>
-            </td>
-            <td><?= number_format((int)$neg['visitas']) ?></td>
-            <td>
-                <a href="<?= SITE_URL ?>/admin/negocios/<?= $neg['id'] ?>/editar" class="btn btn-sm btn-primary">Editar</a>
-                <form action="<?= SITE_URL ?>/admin/negocios/<?= $neg['id'] ?>/eliminar" method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar este negocio?')">
-                    <?= csrf_field() ?>
-                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<p style="text-align:center; padding:3rem; color:#888;">
+    Aún no hay negocios registrados. <a href="<?= SITE_URL ?>/admin/negocios/crear">Crear el primero</a>
+</p>
 <?php endif; ?>

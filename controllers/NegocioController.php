@@ -34,7 +34,12 @@ class NegocioController
             return;
         }
 
-        $negocioModel->incrementarVisitas((int) $negocio['id']);
+        // Increment views (once per session per business)
+        $viewedKey = 'viewed_negocio_' . $negocio['id'];
+        if (empty($_SESSION[$viewedKey])) {
+            $negocioModel->incrementarVisitas((int) $negocio['id']);
+            $_SESSION[$viewedKey] = true;
+        }
 
         // Reseñas aprobadas
         $stmt = $this->db->prepare(

@@ -17,12 +17,27 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
 
 <!-- Hero Image -->
 <div class="container">
-    <?php if (!empty($negocio['foto_principal'])): ?>
-        <div style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-md);">
-            <img src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($negocio['foto_principal']) ?>"
+    <?php
+    $heroImg = !empty($negocio['portada']) ? $negocio['portada'] : (!empty($negocio['foto_principal']) ? 'negocios/' . $negocio['foto_principal'] : null);
+    // portada already has subdir prefix, foto_principal needs negocios/ prefix
+    if (!empty($negocio['portada'])) $heroImg = $negocio['portada'];
+    elseif (!empty($negocio['foto_principal'])) $heroImg = $negocio['foto_principal'];
+    else $heroImg = null;
+    ?>
+    <?php if ($heroImg): ?>
+        <div style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); position: relative;">
+            <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($heroImg) ?>"
                  alt="<?= htmlspecialchars($negocio['nombre']) ?>"
                  style="width: 100%; height: 400px; object-fit: cover; display: block;">
+            <?php if (!empty($negocio['logo'])): ?>
+                <div style="position: absolute; bottom: -30px; left: 2rem; width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--white); overflow: hidden; box-shadow: var(--shadow-md); background: var(--white);">
+                    <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($negocio['logo']) ?>" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            <?php endif; ?>
         </div>
+        <?php if (!empty($negocio['logo'])): ?>
+            <div style="height: 35px;"></div>
+        <?php endif; ?>
     <?php else: ?>
         <div style="width: 100%; height: 320px; border-radius: var(--radius-lg); background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-md);">
             <?= $svgPlaceholder ?>
@@ -284,20 +299,34 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
             </div>
 
             <!-- Redes sociales del negocio -->
-            <?php if (!empty($negocio['red_social_1']) || !empty($negocio['red_social_2'])): ?>
+            <?php
+            $redes = [];
+            $redesMap = [
+                'facebook' => ['📘', 'Facebook'],
+                'instagram' => ['📷', 'Instagram'],
+                'tiktok' => ['🎵', 'TikTok'],
+                'youtube' => ['🎬', 'YouTube'],
+                'twitter' => ['🐦', 'X/Twitter'],
+                'linkedin' => ['💼', 'LinkedIn'],
+                'telegram' => ['✈', 'Telegram'],
+                'pinterest' => ['📌', 'Pinterest'],
+            ];
+            foreach ($redesMap as $key => [$icon, $label]) {
+                if (!empty($negocio[$key])) $redes[$key] = ['icon' => $icon, 'label' => $label, 'url' => $negocio[$key]];
+            }
+            // Fallback to old fields
+            if (empty($redes) && !empty($negocio['red_social_1'])) $redes['rs1'] = ['icon' => '🔗', 'label' => parse_url($negocio['red_social_1'], PHP_URL_HOST) ?: 'Red social', 'url' => $negocio['red_social_1']];
+            if (empty($redes) && !empty($negocio['red_social_2'])) $redes['rs2'] = ['icon' => '🔗', 'label' => parse_url($negocio['red_social_2'], PHP_URL_HOST) ?: 'Red social', 'url' => $negocio['red_social_2']];
+            ?>
+            <?php if (!empty($redes)): ?>
                 <div style="background: var(--white); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
                     <h3 style="margin-bottom: 1rem; font-size: 1rem;">Redes sociales</h3>
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <?php if (!empty($negocio['red_social_1'])): ?>
-                            <a href="<?= htmlspecialchars($negocio['red_social_1']) ?>" target="_blank" rel="noopener" class="text-sm" style="color: var(--primary);">
-                                🔗 <?= htmlspecialchars(parse_url($negocio['red_social_1'], PHP_URL_HOST) ?: $negocio['red_social_1']) ?>
+                        <?php foreach ($redes as $red): ?>
+                            <a href="<?= htmlspecialchars($red['url']) ?>" target="_blank" rel="noopener" class="text-sm" style="color: var(--primary); display: flex; align-items: center; gap: 0.4rem;">
+                                <?= $red['icon'] ?> <?= htmlspecialchars($red['label']) ?>
                             </a>
-                        <?php endif; ?>
-                        <?php if (!empty($negocio['red_social_2'])): ?>
-                            <a href="<?= htmlspecialchars($negocio['red_social_2']) ?>" target="_blank" rel="noopener" class="text-sm" style="color: var(--primary);">
-                                🔗 <?= htmlspecialchars(parse_url($negocio['red_social_2'], PHP_URL_HOST) ?: $negocio['red_social_2']) ?>
-                            </a>
-                        <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             <?php endif; ?>
