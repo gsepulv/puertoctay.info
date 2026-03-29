@@ -1,17 +1,20 @@
 <?php
 /**
  * Sanitización de input del usuario.
+ *
+ * Solo limpia input (strip_tags + trim). NO aplica htmlspecialchars aquí
+ * porque el output escaping se hace en las vistas con htmlspecialchars().
+ * Aplicarlo aquí causaría doble-escape y rompería emojis/caracteres especiales.
  */
 
 class Sanitizer
 {
     /**
-     * Limpiar string: strip tags + htmlspecialchars.
+     * Limpiar string: strip tags y trim.
      */
     public static function clean(string $value): string
     {
-        $value = strip_tags($value);
-        return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+        return trim(strip_tags($value));
     }
 
     /**

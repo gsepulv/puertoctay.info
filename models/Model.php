@@ -14,9 +14,6 @@ class Model
         $this->db = $db;
     }
 
-    /**
-     * Buscar por ID.
-     */
     public function find(int $id): ?array
     {
         $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id LIMIT 1";
@@ -26,9 +23,6 @@ class Model
         return $row ?: null;
     }
 
-    /**
-     * Buscar por columna.
-     */
     public function findBy(string $column, mixed $value): ?array
     {
         $sql = "SELECT * FROM {$this->table} WHERE {$column} = :val LIMIT 1";
@@ -38,9 +32,6 @@ class Model
         return $row ?: null;
     }
 
-    /**
-     * Obtener todos los registros con condiciones opcionales.
-     */
     public function findAll(array $conditions = [], string $orderBy = '', int $limit = 0): array
     {
         $sql = "SELECT * FROM {$this->table}";
@@ -68,12 +59,8 @@ class Model
         return $stmt->fetchAll();
     }
 
-    /**
-     * Crear registro. Sanitiza valores string.
-     */
     public function create(array $data): int
     {
-        $data = $this->sanitize($data);
         $columns = implode(', ', array_keys($data));
         $placeholders = ':' . implode(', :', array_keys($data));
 
@@ -83,12 +70,8 @@ class Model
         return (int) $this->db->lastInsertId();
     }
 
-    /**
-     * Actualizar registro por ID. Sanitiza valores string.
-     */
     public function update(int $id, array $data): bool
     {
-        $data = $this->sanitize($data);
         $set = [];
         foreach ($data as $col => $val) {
             $set[] = "{$col} = :{$col}";
@@ -100,9 +83,6 @@ class Model
         return $stmt->execute($data);
     }
 
-    /**
-     * Eliminar registro por ID.
-     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id";
@@ -110,9 +90,6 @@ class Model
         return $stmt->execute(['id' => $id]);
     }
 
-    /**
-     * Contar registros con condiciones opcionales.
-     */
     public function count(array $conditions = []): int
     {
         $sql = "SELECT COUNT(*) FROM {$this->table}";
@@ -130,18 +107,5 @@ class Model
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return (int) $stmt->fetchColumn();
-    }
-
-    /**
-     * Sanitizar valores string con htmlspecialchars.
-     */
-    protected function sanitize(array $data): array
-    {
-        foreach ($data as $key => $value) {
-            if (is_string($value)) {
-                $data[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-            }
-        }
-        return $data;
     }
 }
