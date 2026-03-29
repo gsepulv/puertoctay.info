@@ -439,7 +439,6 @@ p { margin-bottom: 1rem; }
             </button>
             <nav class="site-nav" id="siteNav">
                 <a href="<?= SITE_URL ?>/directorio">Directorio</a>
-                <a href="<?= SITE_URL ?>/categorias">Categorías</a>
                 <a href="<?= SITE_URL ?>/turismo">Turismo</a>
                 <a href="<?= SITE_URL ?>/noticias">Noticias</a>
                 <a href="<?= SITE_URL ?>/mapa">Mapa</a>
@@ -495,7 +494,6 @@ p { margin-bottom: 1rem; }
             <div class="footer-col">
                 <h4>Explora</h4>
                 <a href="<?= SITE_URL ?>/directorio">Directorio</a>
-                <a href="<?= SITE_URL ?>/categorias">Categorías</a>
                 <a href="<?= SITE_URL ?>/turismo">Turismo</a>
                 <a href="<?= SITE_URL ?>/patrimonio">Patrimonio</a>
                 <a href="<?= SITE_URL ?>/mapa">Mapa</a>

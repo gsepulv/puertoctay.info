@@ -58,7 +58,7 @@
 
             <div>
                 <div class="card" style="padding: 2rem;">
-                    <h3 class="mb-2">Informacion</h3>
+                    <h3 class="mb-2">Información</h3>
 
                     <div class="mb-1">
                         <p class="text-sm text-light">📍 Direccion</p>

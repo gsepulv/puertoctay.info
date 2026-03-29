@@ -13,7 +13,7 @@
         <form action="<?= SITE_URL ?>/buscar" method="GET" class="card mb-3" style="padding: 1.5rem;">
             <div class="form-row">
                 <div class="form-group" style="flex: 2;">
-                    <label for="q">Busqueda</label>
+                    <label for="q">Búsqueda</label>
                     <input type="text" id="q" name="q" value="<?= htmlspecialchars($q ?? '') ?>" placeholder="Nombre, descripcion...">
                 </div>
                 <div class="form-group" style="flex: 1;">
@@ -27,7 +27,7 @@
                     </select>
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label for="categoria">Categoria</label>
+                    <label for="categoria">Categoría</label>
                     <select id="categoria" name="categoria_id">
                         <option value="">Todas</option>
                         <?php foreach ($categorias as $cat): ?>
