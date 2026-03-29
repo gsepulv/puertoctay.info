@@ -24,7 +24,7 @@ class AdminPlaceholderController
     public function menu(): void { $this->render('Menú', 'Configura los enlaces del menú de navegación.'); }
 
     public function mantenimiento(): void { $this->render('Mantenimiento', 'Limpieza de cache, backups, logs.'); }
-    public function blog(): void { $this->render('Blog', 'Artículos y publicaciones del blog.'); }
+    public function blog(): void { header('Location: ' . SITE_URL . '/admin/noticias'); exit; }
 
     private function render(string $titulo, string $descripcion): void
     {

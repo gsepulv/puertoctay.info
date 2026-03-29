@@ -40,6 +40,10 @@ $router->add("GET", "/sitemap.xml", "SitemapController@index");
 // API
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
 
+// Contacto
+$router->add('GET', '/contacto', 'ContactoController@index');
+$router->add('POST', '/contacto', 'ContactoController@enviar');
+
 // Admin — Auth
 $router->add('GET', '/admin/login', 'AdminAuthController@loginForm');
 $router->add('POST', '/admin/login', 'AdminAuthController@login');
@@ -116,17 +120,20 @@ $router->add('POST', '/admin/paginas/{id}/eliminar', 'AdminPaginaController@elim
 // Admin — Placeholders (módulos pendientes)
 $router->add('GET', '/admin/blog', 'AdminPlaceholderController@blog');
 $router->add('GET', '/admin/banners', 'AdminPlaceholderController@banners');
-$router->add('GET', '/admin/estadisticas', 'AdminPlaceholderController@estadisticas');
-$router->add('GET', '/admin/mensajes', 'AdminPlaceholderController@mensajes');
+$router->add('GET', '/admin/estadisticas', 'AdminEstadisticasController@index');
+$router->add('GET', '/admin/mensajes', 'AdminMensajeController@index');
+$router->add('GET', '/admin/mensajes/{id}', 'AdminMensajeController@leer');
+$router->add('POST', '/admin/mensajes/{id}/eliminar', 'AdminMensajeController@eliminar');
 $router->add('GET', '/admin/nurturing', 'AdminPlaceholderController@nurturing');
 $router->add('GET', '/admin/correo', 'AdminPlaceholderController@correo');
 $router->add('GET', '/admin/reportes', 'AdminPlaceholderController@reportes');
 $router->add('GET', '/admin/planes', 'AdminPlaceholderController@planes');
 $router->add('GET', '/admin/redes-sociales', 'AdminPlaceholderController@redesSociales');
-$router->add('GET', '/admin/apariencia', 'AdminPlaceholderController@apariencia');
+$router->add('GET', '/admin/apariencia', 'AdminAparienciaController@index');
+$router->add('POST', '/admin/apariencia/guardar', 'AdminAparienciaController@guardar');
 $router->add('GET', '/admin/textos-legales', 'AdminPlaceholderController@textosLegales');
 $router->add('GET', '/admin/menu', 'AdminPlaceholderController@menu');
-$router->add('GET', '/admin/mantenimiento', 'AdminPlaceholderController@mantenimiento');
+$router->add('GET', '/admin/mantenimiento', 'AdminMantenimientoController@index');
 
 // Despachar
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
