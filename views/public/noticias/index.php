@@ -29,7 +29,8 @@
         <?php endif; ?>
 
         <?php if (!empty($destacada)): ?>
-        <div class="card mb-3" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;">
+        <div class="card card-ejemplo-wrapper mb-3" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;">
+            <span class="card-ejemplo">EJEMPLO</span>
             <?php if (!empty($destacada['foto_destacada'])): ?>
             <div class="card-img" style="height: 100%; min-height: 280px;">
                 <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($destacada['foto_destacada']) ?>" alt="<?= htmlspecialchars($destacada['titulo']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
@@ -60,7 +61,8 @@
         <?php if (!empty($noticias)): ?>
         <div class="card-grid">
             <?php foreach ($noticias as $noticia): ?>
-            <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($noticia['slug']) ?>" class="card">
+            <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($noticia['slug']) ?>" class="card card-ejemplo-wrapper">
+                <span class="card-ejemplo">EJEMPLO</span>
                 <?php if (!empty($noticia['foto_destacada'])): ?>
                 <div class="card-img">
                     <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy">

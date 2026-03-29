@@ -13,6 +13,11 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
         <a href="<?= SITE_URL ?>/directorio">Directorio</a> <span class="sep">/</span>
         <span><?= htmlspecialchars($negocio['nombre']) ?></span>
     </nav>
+    <?php if (empty($negocio['verificado'])): ?>
+    <div class="banner-ejemplo">
+        ⚠️ Este comercio es un ejemplo demostrativo. La información mostrada no es real. Si deseas publicar tu negocio, <a href="<?= SITE_URL ?>/contacto">contáctanos</a>.
+    </div>
+    <?php endif; ?>
 </div>
 
 <!-- Hero Image -->

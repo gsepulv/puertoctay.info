@@ -10,7 +10,8 @@
     <div class="container">
         <h1>📍 Mapa de Puerto Octay</h1>
         <p class="text-light mb-2">Explora todos los negocios y atractivos turisticos en el mapa interactivo</p>
-        <div id="mapFull" style="height: calc(100vh - 220px); min-height: 400px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);"></div>
+        <div class="banner-ejemplo" style="margin-bottom:1rem;">📍 Los puntos en el mapa son ejemplos demostrativos. Las ubicaciones son aproximadas.</div>
+    <div id="mapFull" style="height: calc(100vh - 220px); min-height: 400px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);"></div>
     </div>
 </section>
 

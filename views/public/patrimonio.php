@@ -10,7 +10,8 @@
         <?php if (!empty($negocios)): ?>
         <div class="card-grid">
             <?php foreach ($negocios as $neg): ?>
-            <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card">
+            <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card card-ejemplo-wrapper">
+                    <?php if (empty($neg['verificado'])): ?><span class="card-ejemplo">EJEMPLO</span><?php endif; ?>
                 <?php if (!empty($neg['foto_principal'])): ?>
                 <div class="card-img">
                     <img src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" loading="lazy">

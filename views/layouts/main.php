@@ -416,6 +416,21 @@ p { margin-bottom: 1rem; }
 /* ── LEAFLET OVERRIDES ────────────────────────────────── */
 .leaflet-popup-content-wrapper { border-radius: var(--radius-md) !important; }
 .leaflet-popup-content { font-family: 'Plus Jakarta Sans', sans-serif !important; font-size: 0.9rem !important; }
+
+/* ── EXAMPLE BADGES ──────────────────────────────────── */
+.card-ejemplo {
+    position: absolute; top: 12px; right: 12px; z-index: 2;
+    background: #EA580C; color: #fff; font-size: 0.65rem; font-weight: 800;
+    padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.06em;
+    text-transform: uppercase; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.card-ejemplo-wrapper { position: relative; }
+.banner-ejemplo {
+    background: #FEF3C7; border: 1px solid #F59E0B; border-radius: var(--radius-md);
+    padding: 0.8rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.88rem; color: #92400E;
+    line-height: 1.5;
+}
+.banner-ejemplo a { color: #B45309; font-weight: 700; text-decoration: underline; }
     </style>
     <?php if (isset($extraHead)) echo $extraHead; ?>
 </head>
@@ -501,7 +516,6 @@ p { margin-bottom: 1rem; }
             <div class="footer-col">
                 <h4>Información</h4>
                 <a href="<?= SITE_URL ?>/noticias">Noticias</a>
-                <a href="<?= SITE_URL ?>/planes">Planes</a>
                 <a href="<?= SITE_URL ?>/contacto">Contacto</a>
                 <a href="<?= SITE_URL ?>/pagina/acerca-de">Acerca de</a>
             </div>
