@@ -137,6 +137,18 @@ class RegistroController
         AuditLog::log('registro', 'negocios', null,
             "Nuevo registro: {$data['nombre_comercio']} por {$data['nombre_propietario']}");
 
+        // Send notification emails (non-blocking: failure won't break registration)
+        $catNombre = '';
+        if (!empty($data['categoria_id'])) {
+            $cat = (new Categoria($this->db))->find((int) $data['categoria_id']);
+            $catNombre = $cat['nombre'] ?? '';
+        }
+        EmailHelper::notificarNuevoRegistro(
+            $data,
+            ['nombre' => $data['nombre_propietario'], 'email' => $data['email_propietario'], 'telefono' => $data['telefono_propietario']],
+            $catNombre
+        );
+
         $_SESSION['registro_exito'] = true;
         header('Location: ' . SITE_URL . '/registrar-comercio');
         exit;
