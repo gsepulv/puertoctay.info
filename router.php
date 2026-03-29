@@ -21,6 +21,9 @@ class Router
     {
         $method = strtoupper($method);
 
+        // HEAD requests se tratan como GET
+        $matchMethod = ($method === 'HEAD') ? 'GET' : $method;
+
         // Limpiar URI: quitar query string y trailing slash
         $uri = parse_url($uri, PHP_URL_PATH);
 
@@ -33,7 +36,7 @@ class Router
         $uri = rtrim($uri, '/') ?: '/';
 
         foreach ($this->routes as $route) {
-            if ($route['method'] !== $method) {
+            if ($route['method'] !== $matchMethod) {
                 continue;
             }
 
