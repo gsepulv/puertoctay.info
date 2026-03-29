@@ -1,6 +1,11 @@
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-    <p style="color:#888; font-size:0.9rem;"><?= count($paginas) ?> página(s) registrada(s)</p>
-    <a href="<?= SITE_URL ?>/admin/paginas/crear" class="btn btn-primary btn-sm">+ Nueva Página</a>
+    <div>
+        <p style="color:#888; font-size:0.9rem; margin:0;"><?= count($paginas) ?> página(s) registrada(s)</p>
+    </div>
+    <div style="display:flex; gap:0.5rem;">
+        <a href="<?= SITE_URL ?>/admin/textos-legales" class="btn btn-secondary btn-sm">📄 Textos Legales</a>
+        <a href="<?= SITE_URL ?>/admin/paginas/crear" class="btn btn-primary btn-sm">+ Nueva Página</a>
+    </div>
 </div>
 
 <?php if (empty($paginas)): ?>

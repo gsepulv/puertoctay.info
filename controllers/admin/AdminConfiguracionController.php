@@ -4,6 +4,14 @@ class AdminConfiguracionController
 {
     private PDO $db;
 
+    // Solo estos grupos se muestran aquí; SEO y Social tienen sus propias páginas
+    private array $gruposPermitidos = ['general', 'mantenimiento'];
+
+    private array $grupoLabels = [
+        'general'       => 'General',
+        'mantenimiento' => 'Modo Construcción',
+    ];
+
     public function __construct(PDO $db)
     {
         $this->db = $db;
@@ -15,18 +23,17 @@ class AdminConfiguracionController
         $model = new Configuracion($this->db);
         $grupo = $_GET['grupo'] ?? 'general';
 
-        $grupos = $model->getGrupos();
+        // Restringir a grupos permitidos
+        if (!in_array($grupo, $this->gruposPermitidos)) {
+            $grupo = 'general';
+        }
+
         $campos = $model->findByGrupo($grupo);
 
-        $grupoLabels = [
-            'general' => 'General',
-            'mantenimiento' => 'Modo Construccion',
-            'seo'     => 'SEO',
-            'social'  => 'Redes Sociales',
-        ];
-
-        $pageTitle = 'Configuración — Admin';
+        $pageTitle = 'Configuración General — Admin';
         $viewName = 'admin/configuracion/index';
+        $grupos = $this->gruposPermitidos;
+        $grupoLabels = $this->grupoLabels;
         require ROOT_PATH . '/views/layouts/admin.php';
     }
 
@@ -35,6 +42,11 @@ class AdminConfiguracionController
         CsrfMiddleware::validate();
         $model = new Configuracion($this->db);
         $grupo = $_POST['grupo'] ?? 'general';
+
+        if (!in_array($grupo, $this->gruposPermitidos)) {
+            header('Location: ' . SITE_URL . '/admin/configuracion');
+            exit;
+        }
 
         $campos = $model->findByGrupo($grupo);
 

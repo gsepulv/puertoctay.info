@@ -147,9 +147,9 @@
         </div>
 
         <nav>
-            <!-- PRINCIPAL -->
+            <!-- CONTENIDO -->
             <div class="nav-section">
-                <div class="nav-label">Principal</div>
+                <div class="nav-label">Contenido</div>
                 <a href="<?= SITE_URL ?>/admin">📊 Dashboard</a>
                 <a href="<?= SITE_URL ?>/admin/negocios">
                     🏪 Negocios
@@ -161,39 +161,32 @@
                 </a>
                 <a href="<?= SITE_URL ?>/admin/eventos">📅 Eventos</a>
                 <a href="<?= SITE_URL ?>/admin/noticias">📰 Noticias</a>
-                <a href="<?= SITE_URL ?>/admin/blog">📝 Blog</a>
                 <a href="<?= SITE_URL ?>/admin/resenas">
                     ⭐ Reseñas
                     <?php if ($badges['resenas']): ?><span class="nav-badge warn"><?= $badges['resenas'] ?></span><?php endif; ?>
                 </a>
             </div>
 
-            <!-- MARKETING -->
+            <!-- GESTIÓN -->
             <div class="nav-section">
-                <div class="nav-label">Marketing</div>
-                <a href="<?= SITE_URL ?>/admin/banners">🖼 Banners</a>
-                <a href="<?= SITE_URL ?>/admin/estadisticas">📈 Estadísticas</a>
+                <div class="nav-label">Gestión</div>
                 <a href="<?= SITE_URL ?>/admin/mensajes">
                     📧 Mensajes
                     <?php if ($badges['mensajes']): ?><span class="nav-badge warn"><?= $badges['mensajes'] ?></span><?php endif; ?>
                 </a>
-                <a href="<?= SITE_URL ?>/admin/nurturing">🔔 Nurturing</a>
-                <a href="<?= SITE_URL ?>/admin/correo">✉ Enviar Correo</a>
-                <a href="<?= SITE_URL ?>/admin/reportes">📊 Reportes</a>
+                <a href="<?= SITE_URL ?>/admin/estadisticas">📈 Estadísticas</a>
+                <a href="<?= SITE_URL ?>/admin/planes">💰 Planes</a>
             </div>
 
             <!-- CONFIGURACIÓN -->
             <div class="nav-section">
                 <div class="nav-label">Configuración</div>
-                <a href="<?= SITE_URL ?>/admin/planes">💰 Planes</a>
+                <a href="<?= SITE_URL ?>/admin/configuracion">⚙ General</a>
                 <a href="<?= SITE_URL ?>/admin/seo">🔍 SEO</a>
                 <a href="<?= SITE_URL ?>/admin/redes-sociales">📱 Redes Sociales</a>
                 <a href="<?= SITE_URL ?>/admin/apariencia">🎨 Apariencia</a>
-                <a href="<?= SITE_URL ?>/admin/textos-legales">📄 Textos Legales</a>
                 <a href="<?= SITE_URL ?>/admin/paginas">📃 Páginas</a>
-                <a href="<?= SITE_URL ?>/admin/menu">☰ Menú</a>
                 <a href="<?= SITE_URL ?>/admin/usuarios">👥 Usuarios</a>
-                <a href="<?= SITE_URL ?>/admin/configuracion">⚙ Configuración</a>
                 <a href="<?= SITE_URL ?>/admin/mantenimiento">🔧 Mantenimiento</a>
             </div>
         </nav>
