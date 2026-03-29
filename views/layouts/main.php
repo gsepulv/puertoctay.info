@@ -6,8 +6,21 @@
     <?php if (isset($seoTags)): ?>
         <?= $seoTags ?>
     <?php else: ?>
-        <title><?= htmlspecialchars($pageTitle ?? SITE_NAME) ?></title>
-        <meta name="description" content="<?= htmlspecialchars($pageDescription ?? SITE_TAGLINE) ?>">
+        <?php
+        $_title = htmlspecialchars($pageTitle ?? SITE_NAME, ENT_QUOTES, 'UTF-8');
+        $_desc = htmlspecialchars($pageDescription ?? SITE_TAGLINE, ENT_QUOTES, 'UTF-8');
+        $_url = htmlspecialchars(SITE_URL . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), ENT_QUOTES, 'UTF-8');
+        $_img = isset($pageImage) ? htmlspecialchars($pageImage, ENT_QUOTES, 'UTF-8') : '';
+        ?>
+        <title><?= $_title ?></title>
+        <meta name="description" content="<?= $_desc ?>">
+        <link rel="canonical" href="<?= $_url ?>">
+        <meta property="og:title" content="<?= $_title ?>">
+        <meta property="og:description" content="<?= $_desc ?>">
+        <meta property="og:url" content="<?= $_url ?>">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="<?= htmlspecialchars(SITE_NAME, ENT_QUOTES, 'UTF-8') ?>">
+        <?php if ($_img): ?><meta property="og:image" content="<?= $_img ?>"><?php endif; ?>
     <?php endif; ?>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛵</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">

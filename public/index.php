@@ -35,6 +35,8 @@ $router->add('GET', '/noticias', 'NoticiaController@index');
 $router->add('GET', '/noticias/categoria/{slug}', 'NoticiaController@porCategoria');
 $router->add('GET', '/noticias/{slug}', 'NoticiaController@show');
 
+// SEO
+$router->add("GET", "/sitemap.xml", "SitemapController@index");
 // API
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
 
