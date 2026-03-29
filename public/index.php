@@ -38,8 +38,17 @@ $router->add('GET', '/noticias', 'NoticiaController@index');
 $router->add('GET', '/noticias/categoria/{slug}', 'NoticiaController@porCategoria');
 $router->add('GET', '/noticias/{slug}', 'NoticiaController@show');
 
+// Textos Legales (rutas directas)
+$router->add('GET', '/politica-de-privacidad', 'PaginaController@showLegal');
+$router->add('GET', '/terminos-y-condiciones', 'PaginaController@showLegal');
+$router->add('GET', '/politica-de-cookies', 'PaginaController@showLegal');
+
+// Planes
+$router->add('GET', '/planes', 'PlanController@index');
+
 // SEO
-$router->add("GET", "/sitemap.xml", "SitemapController@index");
+$router->add('GET', '/sitemap.xml', 'SitemapController@index');
+
 // API
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
 $router->add('POST', '/api/subscribe', 'SubscribeApiController@store');
@@ -121,6 +130,28 @@ $router->add('GET', '/admin/paginas/{id}/editar', 'AdminPaginaController@editar'
 $router->add('POST', '/admin/paginas/{id}/actualizar', 'AdminPaginaController@actualizar');
 $router->add('POST', '/admin/paginas/{id}/eliminar', 'AdminPaginaController@eliminar');
 
+// Admin — Textos Legales
+$router->add('GET', '/admin/textos-legales', 'AdminTextosLegalesController@index');
+$router->add('GET', '/admin/textos-legales/{id}/editar', 'AdminTextosLegalesController@editar');
+$router->add('POST', '/admin/textos-legales/{id}/actualizar', 'AdminTextosLegalesController@actualizar');
+
+// Admin — Planes
+$router->add('GET', '/admin/planes', 'AdminPlanController@index');
+$router->add('GET', '/admin/planes/crear', 'AdminPlanController@crear');
+$router->add('POST', '/admin/planes/guardar', 'AdminPlanController@guardar');
+$router->add('GET', '/admin/planes/{id}/editar', 'AdminPlanController@editar');
+$router->add('POST', '/admin/planes/{id}/actualizar', 'AdminPlanController@actualizar');
+$router->add('POST', '/admin/planes/{id}/eliminar', 'AdminPlanController@eliminar');
+$router->add('POST', '/admin/planes/{id}/toggle', 'AdminPlanController@toggleActivo');
+
+// Admin — Redes Sociales
+$router->add('GET', '/admin/redes-sociales', 'AdminRedesSocialesController@index');
+$router->add('POST', '/admin/redes-sociales/guardar', 'AdminRedesSocialesController@guardar');
+
+// Admin — Apariencia
+$router->add('GET', '/admin/apariencia', 'AdminAparienciaController@index');
+$router->add('POST', '/admin/apariencia/guardar', 'AdminAparienciaController@guardar');
+
 // Admin — Placeholders (módulos pendientes)
 $router->add('GET', '/admin/blog', 'AdminPlaceholderController@blog');
 $router->add('GET', '/admin/banners', 'AdminPlaceholderController@banners');
@@ -131,11 +162,6 @@ $router->add('POST', '/admin/mensajes/{id}/eliminar', 'AdminMensajeController@el
 $router->add('GET', '/admin/nurturing', 'AdminPlaceholderController@nurturing');
 $router->add('GET', '/admin/correo', 'AdminPlaceholderController@correo');
 $router->add('GET', '/admin/reportes', 'AdminPlaceholderController@reportes');
-$router->add('GET', '/admin/planes', 'AdminPlaceholderController@planes');
-$router->add('GET', '/admin/redes-sociales', 'AdminPlaceholderController@redesSociales');
-$router->add('GET', '/admin/apariencia', 'AdminAparienciaController@index');
-$router->add('POST', '/admin/apariencia/guardar', 'AdminAparienciaController@guardar');
-$router->add('GET', '/admin/textos-legales', 'AdminPlaceholderController@textosLegales');
 $router->add('GET', '/admin/menu', 'AdminPlaceholderController@menu');
 $router->add('GET', '/admin/mantenimiento', 'AdminMantenimientoController@index');
 
