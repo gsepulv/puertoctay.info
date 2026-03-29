@@ -110,6 +110,7 @@ $router->add('POST', '/admin/planes/{id}/toggle', 'AdminPlanController@toggleAct
 // ── Admin: Configuración ──────────────────────────────
 $router->add('GET', '/admin/configuracion', 'AdminConfiguracionController@index');
 $router->add('POST', '/admin/configuracion/guardar', 'AdminConfiguracionController@guardar');
+$router->add('POST', '/admin/toggle-construccion', 'AdminConfiguracionController@toggleMantenimiento');
 
 // ── Admin: SEO ────────────────────────────────────────
 $router->add('GET', '/admin/seo', 'AdminSeoController@index');

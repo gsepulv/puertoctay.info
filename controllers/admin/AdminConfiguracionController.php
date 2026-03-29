@@ -61,4 +61,19 @@ class AdminConfiguracionController
         header('Location: ' . SITE_URL . '/admin/configuracion?grupo=' . urlencode($grupo));
         exit;
     }
+
+
+    public function toggleMantenimiento(): void
+    {
+        CsrfMiddleware::validate();
+        $model = new Configuracion($this->db);
+        $current = $model->getValue('mantenimiento', 'modo_construccion');
+        $newVal = ($current === '1') ? '0' : '1';
+        $model->setValue('mantenimiento', 'modo_construccion', $newVal);
+        AuditLog::log('editar', 'configuracion', null, 'Modo construcción: ' . ($newVal === '1' ? 'activado' : 'desactivado'));
+
+        $referer = $_SERVER['HTTP_REFERER'] ?? SITE_URL . '/admin';
+        header('Location: ' . $referer);
+        exit;
+    }
 }

@@ -1,4 +1,12 @@
-<?php $badges = AdminHelper::sidebarBadges(getDB()); ?>
+<?php
+$badges = AdminHelper::sidebarBadges(getDB());
+$__modoConstruccion = false;
+try {
+    $__stmtModo = getDB()->prepare("SELECT valor FROM configuracion WHERE grupo = 'mantenimiento' AND clave = 'modo_construccion' LIMIT 1");
+    $__stmtModo->execute();
+    $__modoConstruccion = ($__stmtModo->fetchColumn() === '1');
+} catch (Exception $e) {}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -144,6 +152,20 @@
         <div class="brand">
             <h2>⛵ <?= htmlspecialchars(SITE_NAME) ?></h2>
             <small>Panel de Administración</small>
+        </div>
+
+        <!-- Site Status Toggle -->
+        <div style="padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <form method="POST" action="<?= SITE_URL ?>/admin/toggle-construccion" style="margin: 0;">
+                <?= csrf_field() ?>
+                <button type="submit" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: <?= $__modoConstruccion ? 'rgba(245,158,11,0.15)' : 'rgba(34,197,94,0.15)' ?>; border: none; border-radius: 6px; padding: 0.5rem 0.75rem; cursor: pointer; font-family: inherit; font-size: 0.78rem; color: #fff;">
+                    <span style="display: flex; align-items: center; gap: 0.4rem;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: <?= $__modoConstruccion ? '#f59e0b' : '#22c55e' ?>; display: inline-block;"></span>
+                        <?= $__modoConstruccion ? 'En construcción' : 'Sitio en línea' ?>
+                    </span>
+                    <span style="font-size: 0.7rem; opacity: 0.6;"><?= $__modoConstruccion ? 'Poner en línea' : 'Modo construcción' ?></span>
+                </button>
+            </form>
         </div>
 
         <nav>
