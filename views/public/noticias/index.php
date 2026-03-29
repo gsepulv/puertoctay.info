@@ -25,23 +25,23 @@
         <!-- Featured article -->
         <?php if ($destacada): ?>
             <a href="/noticia/<?= htmlspecialchars($destacada['slug'] ?? $destacada['id']) ?>" class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:0;text-decoration:none;color:inherit;margin-bottom:2.5rem;overflow:hidden;">
-                <?php if (!empty($destacada['imagen_portada'])): ?>
-                    <img src="<?= htmlspecialchars($destacada['imagen_portada']) ?>" alt="<?= htmlspecialchars($destacada['titulo']) ?>" style="width:100%;height:320px;object-fit:cover;">
+                <?php if (!empty($destacada['foto_destacada'])): ?>
+                    <img src="<?= htmlspecialchars($destacada['foto_destacada']) ?>" alt="<?= htmlspecialchars($destacada['titulo']) ?>" style="width:100%;height:320px;object-fit:cover;">
                 <?php else: ?>
                     <div style="width:100%;height:320px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;">
                         <span style="font-size:4rem;opacity:.4;">&#128240;</span>
                     </div>
                 <?php endif; ?>
                 <div style="padding:2rem;display:flex;flex-direction:column;justify-content:center;">
-                    <?php if (!empty($destacada['categoria_editorial'])): ?>
-                        <span class="badge" style="margin-bottom:.75rem;width:fit-content;"><?= htmlspecialchars($destacada['categoria_editorial']) ?></span>
+                    <?php if (!empty($destacada['categoria_nombre'])): ?>
+                        <span class="badge" style="margin-bottom:.75rem;width:fit-content;"><?= htmlspecialchars($destacada['categoria_nombre']) ?></span>
                     <?php endif; ?>
                     <h2 style="margin-bottom:.75rem;"><?= htmlspecialchars($destacada['titulo']) ?></h2>
                     <p style="color:var(--text-secondary);line-height:1.6;margin-bottom:1rem;">
                         <?= htmlspecialchars(mb_strimwidth($destacada['bajada'] ?? $destacada['contenido'] ?? '', 0, 180, '...')) ?>
                     </p>
                     <small style="color:var(--text-muted);">
-                        <?= !empty($destacada['fecha_publicacion']) ? date('d/m/Y', strtotime($destacada['fecha_publicacion'])) : '' ?>
+                        <?= !empty($destacada['publicado_en']) ? date('d/m/Y', strtotime($destacada['publicado_en'])) : '' ?>
                     </small>
                 </div>
             </a>
@@ -52,23 +52,23 @@
             <div class="card-grid">
                 <?php foreach ($noticias as $noticia): ?>
                     <a href="/noticia/<?= htmlspecialchars($noticia['slug'] ?? $noticia['id']) ?>" class="card" style="text-decoration:none;color:inherit;">
-                        <?php if (!empty($noticia['imagen_portada'])): ?>
-                            <img src="<?= htmlspecialchars($noticia['imagen_portada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width:100%;height:200px;object-fit:cover;">
+                        <?php if (!empty($noticia['foto_destacada'])): ?>
+                            <img src="<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width:100%;height:200px;object-fit:cover;">
                         <?php else: ?>
                             <div style="width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
                                 <span style="font-size:2.5rem;opacity:.4;">&#128240;</span>
                             </div>
                         <?php endif; ?>
                         <div style="padding:1.25rem;">
-                            <?php if (!empty($noticia['categoria_editorial'])): ?>
-                                <span class="badge" style="margin-bottom:.5rem;"><?= htmlspecialchars($noticia['categoria_editorial']) ?></span>
+                            <?php if (!empty($noticia['categoria_nombre'])): ?>
+                                <span class="badge" style="margin-bottom:.5rem;"><?= htmlspecialchars($noticia['categoria_nombre']) ?></span>
                             <?php endif; ?>
                             <h3 style="margin-bottom:.5rem;"><?= htmlspecialchars($noticia['titulo']) ?></h3>
                             <p style="color:var(--text-secondary);font-size:.9rem;line-height:1.5;margin-bottom:.75rem;">
                                 <?= htmlspecialchars(mb_strimwidth(strip_tags($noticia['bajada'] ?? $noticia['contenido'] ?? ''), 0, 100, '...')) ?>
                             </p>
                             <small style="color:var(--text-muted);">
-                                <?= !empty($noticia['fecha_publicacion']) ? date('d/m/Y', strtotime($noticia['fecha_publicacion'])) : '' ?>
+                                <?= !empty($noticia['publicado_en']) ? date('d/m/Y', strtotime($noticia['publicado_en'])) : '' ?>
                             </small>
                         </div>
                     </a>

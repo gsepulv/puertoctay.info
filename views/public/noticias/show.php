@@ -1,5 +1,5 @@
 <?php /** @var array $noticia @var array $relacionadas */ ?>
-<?= SeoHelper::metaTags($noticia['titulo'], $noticia['bajada'] ?? '', $noticia['imagen_portada'] ?? '') ?? '' ?>
+<?= SeoHelper::metaTags($noticia['titulo'], $noticia['bajada'] ?? '', $noticia['foto_destacada'] ?? '') ?? '' ?>
 <?= SeoHelper::schemaNewsArticle($noticia) ?? '' ?>
 
 <nav class="breadcrumb">
@@ -12,8 +12,8 @@
 
 <div class="container-narrow">
     <article>
-        <?php if (!empty($noticia['categoria_editorial'])): ?>
-            <span class="badge" style="margin-bottom:1rem;display:inline-block;"><?= htmlspecialchars($noticia['categoria_editorial']) ?></span>
+        <?php if (!empty($noticia['categoria_nombre'])): ?>
+            <span class="badge" style="margin-bottom:1rem;display:inline-block;"><?= htmlspecialchars($noticia['categoria_nombre']) ?></span>
         <?php endif; ?>
 
         <h1 style="margin-bottom:1rem;font-size:2.25rem;line-height:1.3;"><?= htmlspecialchars($noticia['titulo']) ?></h1>
@@ -26,11 +26,11 @@
 
         <!-- Meta line -->
         <div style="display:flex;flex-wrap:wrap;gap:1.5rem;color:var(--text-muted);font-size:.9rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
-            <?php if (!empty($noticia['autor_nombre'])): ?>
-                <span>&#128100; <?= htmlspecialchars($noticia['autor_nombre']) ?></span>
+            <?php if (!empty($noticia['autor'])): ?>
+                <span>&#128100; <?= htmlspecialchars($noticia['autor']) ?></span>
             <?php endif; ?>
-            <?php if (!empty($noticia['fecha_publicacion'])): ?>
-                <span>&#128197; <?= date('d \d\e F, Y', strtotime($noticia['fecha_publicacion'])) ?></span>
+            <?php if (!empty($noticia['publicado_en'])): ?>
+                <span>&#128197; <?= date('d \d\e F, Y', strtotime($noticia['publicado_en'])) ?></span>
             <?php endif; ?>
             <?php
             $wordCount = str_word_count(strip_tags($noticia['contenido'] ?? ''));
@@ -43,9 +43,9 @@
         </div>
 
         <!-- Featured image -->
-        <?php if (!empty($noticia['imagen_portada'])): ?>
+        <?php if (!empty($noticia['foto_destacada'])): ?>
             <div style="margin-bottom:2rem;border-radius:var(--radius-lg);overflow:hidden;">
-                <img src="<?= htmlspecialchars($noticia['imagen_portada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width:100%;height:auto;display:block;">
+                <img src="<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width:100%;height:auto;display:block;">
             </div>
         <?php else: ?>
             <div style="width:100%;height:300px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">

@@ -29,7 +29,7 @@
                             <img src="<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" style="width:100%;height:200px;object-fit:cover;">
                         <?php else: ?>
                             <div style="width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
-                                <span style="font-size:3rem;opacity:.5;">&#128444;</span>
+                                
                             </div>
                         <?php endif; ?>
                         <div style="padding:1.25rem;">
@@ -43,8 +43,8 @@
                             <?php if (!empty($neg['direccion'])): ?>
                                 <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">&#128205; <?= htmlspecialchars($neg['direccion']) ?></p>
                             <?php endif; ?>
-                            <?php if (!empty($neg['descripcion'])): ?>
-                                <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.5rem;line-height:1.5;"><?= htmlspecialchars(mb_strimwidth($neg['descripcion'], 0, 120, '...')) ?></p>
+                            <?php if (!empty($neg['descripcion_corta'])): ?>
+                                <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.5rem;line-height:1.5;"><?= htmlspecialchars(mb_strimwidth($neg['descripcion_corta'], 0, 120, '...')) ?></p>
                             <?php endif; ?>
                         </div>
                     </a>

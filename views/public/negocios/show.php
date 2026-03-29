@@ -14,11 +14,11 @@
         <div class="detail-main">
             <?php if (!empty($negocio['foto_principal'])): ?>
                 <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1.5rem;">
-                    <img src="<?= htmlspecialchars($negocio['foto_principal']) ?>" alt="<?= htmlspecialchars($negocio['nombre']) ?>" style="width:100%;height:360px;object-fit:cover;display:block;">
+                    <img src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($negocio['foto_principal']) ?>" alt="<?= htmlspecialchars($negocio['nombre']) ?>" style="width:100%;height:360px;object-fit:cover;display:block;">
                 </div>
             <?php else: ?>
                 <div style="width:100%;height:360px;border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-                    <span style="font-size:4rem;opacity:.5;">&#128444;</span>
+                    
                 </div>
             <?php endif; ?>
 
@@ -27,9 +27,6 @@
             <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
                 <?php if (!empty($negocio['categoria_nombre'])): ?>
                     <span class="badge"><?= htmlspecialchars($negocio['categoria_nombre']) ?></span>
-                <?php endif; ?>
-                <?php if (!empty($negocio['tipo'])): ?>
-                    <span class="badge badge-outline"><?= htmlspecialchars(ucfirst($negocio['tipo'])) ?></span>
                 <?php endif; ?>
                 <?php if (!empty($negocio['verificado'])): ?>
                     <span class="badge badge-success">&#10003; Verificado</span>
@@ -48,9 +45,9 @@
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($negocio['descripcion'])): ?>
+            <?php if (!empty($negocio['descripcion_corta'])): ?>
                 <div style="margin-bottom:2rem;line-height:1.8;">
-                    <?= nl2br(htmlspecialchars($negocio['descripcion'])) ?>
+                    <?= nl2br(htmlspecialchars($negocio['descripcion_corta'])) ?>
                 </div>
             <?php endif; ?>
 

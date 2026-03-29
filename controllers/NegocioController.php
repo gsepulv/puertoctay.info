@@ -48,7 +48,8 @@ class NegocioController
             "SELECT AVG(puntuacion) AS promedio, COUNT(*) AS total FROM resenas WHERE negocio_id = :nid AND estado = 'aprobada'"
         );
         $stmtAvg->execute(['nid' => $negocio['id']]);
-        $rating = $stmtAvg->fetch();
+        $ratingData = $stmtAvg->fetch();
+        $rating = (float) ($ratingData['promedio'] ?? 0);
 
         $pageTitle = htmlspecialchars($negocio['nombre']) . ' — ' . SITE_NAME;
         $pageDescription = $negocio['descripcion_corta'] ?? "Información de {$negocio['nombre']} en Puerto Octay.";

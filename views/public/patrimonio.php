@@ -39,9 +39,9 @@
                             <?php if (!empty($neg['direccion'])): ?>
                                 <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">&#128205; <?= htmlspecialchars($neg['direccion']) ?></p>
                             <?php endif; ?>
-                            <?php if (!empty($neg['descripcion'])): ?>
+                            <?php if (!empty($neg['descripcion_corta'])): ?>
                                 <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.5rem;line-height:1.5;">
-                                    <?= htmlspecialchars(mb_strimwidth($neg['descripcion'], 0, 120, '...')) ?>
+                                    <?= htmlspecialchars(mb_strimwidth($neg['descripcion_corta'], 0, 120, '...')) ?>
                                 </p>
                             <?php endif; ?>
                         </div>

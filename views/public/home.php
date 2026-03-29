@@ -41,7 +41,7 @@
                 <a href="<?= SITE_URL ?>/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
                     <span class="emoji"><?= $cat['emoji'] ?? '📌' ?></span>
                     <span class="name"><?= htmlspecialchars($cat['nombre']) ?></span>
-                    <span class="count"><?= (int)($cat['total'] ?? $cat['negocios_count'] ?? 0) ?> negocios</span>
+                    <span class="count"><?= (int)($cat['total_negocios'] ?? 0) ?> negocios</span>
                 </a>
             <?php endforeach; ?>
         </div>
@@ -63,7 +63,7 @@
                     <?php if (!empty($neg['foto_principal'])): ?>
                         <img class="card-img" src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" loading="lazy">
                     <?php else: ?>
-                        <div class="card-img-placeholder">🏪</div>
+                        <div class="card-img-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
                     <?php endif; ?>
                     <div class="card-body">
                         <div class="card-meta" style="margin-top:0; margin-bottom:0.5rem;">
@@ -104,19 +104,19 @@
         <div class="card-grid">
             <?php foreach ($ultimasNoticias as $not): ?>
                 <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($not['slug']) ?>" class="card" style="text-decoration:none; color:inherit;">
-                    <?php if (!empty($not['imagen_portada'])): ?>
-                        <img class="card-img" src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($not['imagen_portada']) ?>" alt="<?= htmlspecialchars($not['titulo']) ?>" loading="lazy">
+                    <?php if (!empty($not['foto_destacada'])): ?>
+                        <img class="card-img" src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($not['foto_destacada']) ?>" alt="<?= htmlspecialchars($not['titulo']) ?>" loading="lazy">
                     <?php else: ?>
-                        <div class="card-img-placeholder">📰</div>
+                        <div class="card-img-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
                     <?php endif; ?>
                     <div class="card-body">
-                        <?php if (!empty($not['categoria_editorial'])): ?>
-                            <span class="badge badge-secondary mb-1"><?= htmlspecialchars($not['categoria_editorial']) ?></span>
+                        <?php if (!empty($not['categoria_nombre'])): ?>
+                            <span class="badge badge-secondary mb-1"><?= htmlspecialchars($not['categoria_nombre']) ?></span>
                         <?php endif; ?>
                         <h3><?= htmlspecialchars($not['titulo']) ?></h3>
                         <p><?= htmlspecialchars(mb_substr(strip_tags($not['bajada'] ?? $not['contenido'] ?? ''), 0, 100)) ?>...</p>
                         <div class="card-meta">
-                            <span><?= date('d M Y', strtotime($not['fecha_publicacion'] ?? $not['created_at'])) ?></span>
+                            <span><?= date('d M Y', strtotime($not['publicado_en'] ?? $not['created_at'])) ?></span>
                         </div>
                     </div>
                 </a>
