@@ -5,6 +5,7 @@
  */
 $total = count($negocios);
 ?>
+<div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:0.8rem 1.2rem;margin-bottom:1.2rem;font-size:0.88rem;color:#92400E;">Los datos actuales son de ejemplo. Reemplazalos con informacion real de comercios que hayan autorizado su publicacion.</div>
 
 <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center;">
     <div>
