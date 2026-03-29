@@ -61,6 +61,34 @@
 </section>
 <?php endif; ?>
 
+<!-- Últimas Noticias -->
+<?php if (!empty($ultimasNoticias)): ?>
+<section class="section">
+    <h2 class="section-title">Últimas Noticias</h2>
+    <div class="card-grid">
+        <?php foreach ($ultimasNoticias as $not): ?>
+        <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($not['slug']) ?>" class="card" style="color:inherit;">
+            <?php if (!empty($not['foto_destacada'])): ?>
+                <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($not['foto_destacada']) ?>" alt="<?= htmlspecialchars($not['titulo']) ?>" class="card-img" loading="lazy">
+            <?php else: ?>
+                <div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:#ccc;">📰</div>
+            <?php endif; ?>
+            <div class="card-body">
+                <h3><?= htmlspecialchars(mb_substr($not['titulo'], 0, 60)) ?></h3>
+                <?php if (!empty($not['bajada'])): ?>
+                    <p><?= htmlspecialchars(mb_substr($not['bajada'], 0, 120)) ?></p>
+                <?php endif; ?>
+                <div class="card-meta">
+                    <span>📅 <?= date('d/m/Y', strtotime($not['publicado_en'] ?? $not['created_at'])) ?></span>
+                </div>
+            </div>
+        </a>
+        <?php endforeach; ?>
+    </div>
+    <p class="text-center mt-2"><a href="<?= SITE_URL ?>/noticias" class="btn btn-sm btn-secondary">Ver todas las noticias</a></p>
+</section>
+<?php endif; ?>
+
 <!-- CTA -->
 <section style="text-align:center; padding:2rem; background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-top:1rem;">
     <h2 style="font-size:1.5rem;">Descubre Puerto Octay</h2>
