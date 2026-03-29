@@ -16,6 +16,7 @@ class AdminPlaceholderController
     public function nurturing(): void { $this->render('Nurturing', 'Campañas de seguimiento y fidelización.'); }
     public function correo(): void { $this->render('Enviar Correo', 'Envía correos masivos o individuales.'); }
     public function reportes(): void { $this->render('Reportes', 'Reportes de actividad y rendimiento.'); }
+    public function planes(): void { $this->render('Planes', 'Gestiona los planes y suscripciones.'); }
 
     public function redesSociales(): void { $this->render('Redes Sociales', 'Vincula y gestiona las redes sociales del sitio.'); }
     public function apariencia(): void { $this->render('Apariencia', 'Colores, fuentes, logo y personalización visual.'); }
