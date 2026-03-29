@@ -25,7 +25,7 @@ class Router
         $matchMethod = ($method === 'HEAD') ? 'GET' : $method;
 
         // Limpiar URI: quitar query string y trailing slash
-        $uri = parse_url($uri, PHP_URL_PATH);
+        $uri = parse_url($uri, PHP_URL_PATH) ?? "/";
 
         // Quitar prefijo /puertoctay si existe (desarrollo local)
         $basePath = '/puertoctay';

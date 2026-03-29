@@ -38,29 +38,10 @@ class AdminMantenimientoController
         $stmt->execute(['db' => DB_NAME]);
         $tableSizes = $stmt->fetchAll();
 
-        // Disk usage of repo
-        $repoSize = 'N/A';
-        $out = @shell_exec('du -sh /home/visitapuertoctay/puertoctay_repo/ 2>/dev/null');
-        if ($out) {
-            $parts = preg_split('/\s+/', trim($out));
-            $repoSize = $parts[0] ?? 'N/A';
-        }
-
-        // Disk usage of public_html
-        $publicSize = 'N/A';
-        $out = @shell_exec('du -sh /home/visitapuertoctay/public_html/ 2>/dev/null');
-        if ($out) {
-            $parts = preg_split('/\s+/', trim($out));
-            $publicSize = $parts[0] ?? 'N/A';
-        }
-
-        // Total disk usage
-        $totalDisk = 'N/A';
-        $out = @shell_exec('du -sh /home/visitapuertoctay/ 2>/dev/null');
-        if ($out) {
-            $parts = preg_split('/\s+/', trim($out));
-            $totalDisk = $parts[0] ?? 'N/A';
-        }
+        // Disk usage (sin shell_exec, usa PHP nativo)
+        $repoSize = $this->dirSize('/home/visitapuertoctay/puertoctay_repo/');
+        $publicSize = $this->dirSize('/home/visitapuertoctay/public_html/');
+        $totalDisk = $this->formatBytes(disk_total_space('/home/visitapuertoctay/') - disk_free_space('/home/visitapuertoctay/'));
 
         // Last backup
         $lastBackup = 'No encontrado';
@@ -97,5 +78,29 @@ class AdminMantenimientoController
         $pageTitle = 'Mantenimiento';
         $viewName = 'admin/mantenimiento/index';
         require ROOT_PATH . '/views/layouts/admin.php';
+    }
+
+    private function dirSize(string $path): string
+    {
+        if (!is_dir($path)) return 'N/A';
+        $size = 0;
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::LEAVES_ONLY
+        );
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                $size += $file->getSize();
+            }
+        }
+        return $this->formatBytes($size);
+    }
+
+    private function formatBytes(float $bytes): string
+    {
+        if ($bytes >= 1073741824) return round($bytes / 1073741824, 2) . ' GB';
+        if ($bytes >= 1048576) return round($bytes / 1048576, 2) . ' MB';
+        if ($bytes >= 1024) return round($bytes / 1024, 2) . ' KB';
+        return $bytes . ' B';
     }
 }
