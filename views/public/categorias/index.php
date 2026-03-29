@@ -14,7 +14,7 @@
             <div class="cat-grid">
                 <?php foreach ($categorias as $cat): ?>
                     <a href="/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
-                        <span style="font-size:2.5rem;display:block;margin-bottom:.75rem;"><?= htmlspecialchars($cat['icono'] ?? '&#128193;') ?></span>
+                        <span style="font-size:2.5rem;display:block;margin-bottom:.75rem;"><?= $cat['emoji'] ?? "" ?></span>
                         <h3><?= htmlspecialchars($cat['nombre']) ?></h3>
                         <span style="color:var(--text-muted);font-size:.9rem;">
                             <?= intval($cat['total'] ?? $cat['negocios_count'] ?? 0) ?> <?= (intval($cat['total'] ?? $cat['negocios_count'] ?? 0)) === 1 ? 'negocio' : 'negocios' ?>

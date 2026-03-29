@@ -11,7 +11,7 @@
 <div class="container">
     <div class="section">
         <h1 style="margin-bottom:.5rem;">
-            <?= htmlspecialchars($categoria['icono'] ?? '') ?> <?= htmlspecialchars($categoria['nombre']) ?>
+            <?= $categoria['emoji'] ?? "" ?> <?= htmlspecialchars($categoria['nombre']) ?>
         </h1>
         <p style="color:var(--text-muted);margin-bottom:2rem;">
             <?= intval($totalNegocios) ?> <?= $totalNegocios === 1 ? 'negocio encontrado' : 'negocios encontrados' ?>

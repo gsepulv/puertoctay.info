@@ -39,7 +39,7 @@
         <div class="cat-grid">
             <?php foreach ($categorias as $cat): ?>
                 <a href="<?= SITE_URL ?>/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
-                    <span class="emoji"><?= $cat['icono'] ?? '📌' ?></span>
+                    <span class="emoji"><?= $cat['emoji'] ?? '📌' ?></span>
                     <span class="name"><?= htmlspecialchars($cat['nombre']) ?></span>
                     <span class="count"><?= (int)($cat['total'] ?? $cat['negocios_count'] ?? 0) ?> negocios</span>
                 </a>
