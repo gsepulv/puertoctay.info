@@ -122,6 +122,44 @@
 </section>
 <?php endif; ?>
 
+<!-- CTA: Registrar comercio -->
+<section style="background: var(--primary-dark); color: #fff; padding: 4rem 0;">
+    <div class="container" style="max-width: 800px; text-align: center;">
+        <h2 style="color: #fff; font-size: 2rem; margin-bottom: 0.5rem;">¿Tienes un comercio en Puerto Octay?</h2>
+        <p style="font-size: 1.1rem; opacity: 0.8; margin-bottom: 2rem;">Regístrate gratis por 30 días y obtén:</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.6rem; text-align: left; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
+                <span style="color: #22C55E; font-weight: 700;">✓</span> Página exclusiva de tu negocio
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
+                <span style="color: #22C55E; font-weight: 700;">✓</span> Logo y foto de portada
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
+                <span style="color: #22C55E; font-weight: 700;">✓</span> Botón directo a tu WhatsApp
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
+                <span style="color: #22C55E; font-weight: 700;">✓</span> Enlace a Google Maps
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
+                <span style="color: #22C55E; font-weight: 700;">✓</span> 1 red social vinculada
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
+                <span style="color: #22C55E; font-weight: 700;">✓</span> Visibilidad en el directorio
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="<?= SITE_URL ?>/registrar-comercio" class="btn btn-lg" style="background: var(--accent); color: var(--primary-dark); font-size: 1.05rem; padding: 0.9rem 2.5rem;">
+                Registrar mi comercio
+            </a>
+            <a href="<?= SITE_URL ?>/contacto" class="btn btn-lg btn-outline" style="border-color: rgba(255,255,255,0.3); color: #fff;">
+                Contáctanos
+            </a>
+        </div>
+    </div>
+</section>
+
 <section class="section section-white">
     <div class="container">
         <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
@@ -132,7 +170,7 @@
             </div>
             <div class="card" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--white); padding: 2rem; text-align: center;">
                 <h3 style="color: var(--white);">🏛 Turismo y Patrimonio</h3>
-                <p>Descubre los atractivos turisticos de Puerto Octay</p>
+                <p>Descubre los atractivos turísticos de Puerto Octay</p>
                 <a href="<?= SITE_URL ?>/turismo" class="btn btn-accent">Ver Turismo</a>
             </div>
         </div>

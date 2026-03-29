@@ -226,4 +226,19 @@ class AdminNegocioController
             }
         }
     }
+
+
+    public function aprobar(string $id): void
+    {
+        CsrfMiddleware::validate();
+        $negocioModel = new Negocio($this->db);
+        $negocio = $negocioModel->find((int)$id);
+        if ($negocio) {
+            $negocioModel->update((int)$id, ['activo' => 1, 'verificado' => 1]);
+            AuditLog::log('aprobar', 'negocios', (int)$id, "Aprobado: {$negocio['nombre']}");
+            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" aprobado y publicado.";
+        }
+        header('Location: ' . SITE_URL . '/admin/negocios');
+        exit;
+    }
 }

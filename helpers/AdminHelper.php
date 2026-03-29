@@ -52,7 +52,8 @@ class AdminHelper
             'negocios' => self::queryCount($db, "SELECT COUNT(*) FROM negocios WHERE activo = 1"),
             'categorias' => self::queryCount($db, "SELECT COUNT(*) FROM categorias WHERE activo = 1"),
             'resenas' => self::queryCount($db, "SELECT COUNT(*) FROM resenas WHERE estado = 'pendiente'"),
-            'mensajes' => self::queryCount($db, "SELECT COUNT(*) FROM mensajes WHERE leido = 0")
+            'mensajes' => self::queryCount($db, "SELECT COUNT(*) FROM mensajes WHERE leido = 0"),
+            'pendientes_registro' => self::queryCount($db, "SELECT COUNT(*) FROM negocios WHERE activo = 0 AND propietario_id IS NOT NULL")
         ];
     }
 

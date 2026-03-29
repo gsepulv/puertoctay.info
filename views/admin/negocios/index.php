@@ -7,6 +7,13 @@ $total = count($negocios);
 ?>
 <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:0.8rem 1.2rem;margin-bottom:1.2rem;font-size:0.88rem;color:#92400E;">Los datos actuales son de ejemplo. Reemplazalos con informacion real de comercios que hayan autorizado su publicacion.</div>
 
+<?php $pendientes = 0; foreach ($negocios as $n) { if (!$n["activo"] && !empty($n["propietario_id"])) $pendientes++; } ?>
+<?php if ($pendientes > 0): ?>
+<div class="alert" style="background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;margin-bottom:1rem;">
+    📋 Hay <strong><?= $pendientes ?></strong> comercio<?= $pendientes !== 1 ? "s" : "" ?> pendiente<?= $pendientes !== 1 ? "s" : "" ?> de aprobación.
+</div>
+<?php endif; ?>
+
 <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center;">
     <div>
         <h1>Negocios</h1>

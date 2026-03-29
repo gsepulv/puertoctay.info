@@ -175,7 +175,7 @@ try {
                 <a href="<?= SITE_URL ?>/admin">📊 Dashboard</a>
                 <a href="<?= SITE_URL ?>/admin/negocios">
                     🏪 Negocios
-                    <?php if ($badges['negocios']): ?><span class="nav-badge"><?= $badges['negocios'] ?></span><?php endif; ?>
+                    <?php if ($badges['pendientes_registro']): ?><span class="nav-badge warn"><?= $badges['pendientes_registro'] ?></span><?php elseif ($badges['negocios']): ?><span class="nav-badge"><?= $badges['negocios'] ?></span><?php endif; ?>
                 </a>
                 <a href="<?= SITE_URL ?>/admin/categorias">
                     📂 Categorías

@@ -37,6 +37,8 @@ $router->add('GET', '/politica-de-privacidad', 'PaginaController@showLegal');
 $router->add('GET', '/terminos-y-condiciones', 'PaginaController@showLegal');
 $router->add('GET', '/politica-de-cookies', 'PaginaController@showLegal');
 $router->add('GET', '/planes', 'PlanController@index');
+$router->add('GET', '/registrar-comercio', 'RegistroController@index');
+$router->add('POST', '/registrar-comercio', 'RegistroController@store');
 $router->add('GET', '/contacto', 'ContactoController@index');
 $router->add('POST', '/contacto', 'ContactoController@enviar');
 $router->add('GET', '/sitemap.xml', 'SitemapController@index');
@@ -57,6 +59,7 @@ $router->add('GET', '/admin/negocios/{id}/editar', 'AdminNegocioController@edita
 $router->add('POST', '/admin/negocios/{id}/actualizar', 'AdminNegocioController@actualizar');
 $router->add('POST', '/admin/negocios/{id}/eliminar', 'AdminNegocioController@eliminar');
 $router->add('POST', '/admin/negocios/{id}/verificar', 'AdminNegocioController@verificar');
+$router->add('POST', '/admin/negocios/{id}/aprobar', 'AdminNegocioController@aprobar');
 
 // ── Admin: Categorías ─────────────────────────────────
 $router->add('GET', '/admin/categorias', 'AdminCategoriaController@index');
