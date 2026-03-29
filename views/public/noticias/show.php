@@ -1,105 +1,90 @@
-<?php /** @var array $noticia @var array $relacionadas */ ?>
-<?= SeoHelper::metaTags($noticia['titulo'], $noticia['bajada'] ?? '', $noticia['foto_destacada'] ?? '') ?? '' ?>
+<?= SeoHelper::metaTags($noticia['titulo'], $noticia['bajada'] ?? '', $noticia['foto_destacada'] ? SITE_URL.'/uploads/noticias/'.$noticia['foto_destacada'] : '') ?? '' ?>
 <?= SeoHelper::schemaNewsArticle($noticia) ?? '' ?>
 
-<nav class="breadcrumb">
-    <a href="/">Inicio</a>
-    <span>/</span>
-    <a href="/noticias">Noticias</a>
-    <span>/</span>
-    <span><?= htmlspecialchars($noticia['titulo']) ?></span>
-</nav>
+<div class="container">
+    <nav class="breadcrumb">
+        <a href="<?= SITE_URL ?>">Inicio</a>
+        <span class="sep">/</span>
+        <a href="<?= SITE_URL ?>/noticias">Noticias</a>
+        <span class="sep">/</span>
+        <span><?= htmlspecialchars($noticia['titulo']) ?></span>
+    </nav>
+</div>
 
-<div class="container-narrow">
-    <article>
+<section class="section">
+    <div class="container-narrow">
         <?php if (!empty($noticia['categoria_nombre'])): ?>
-            <span class="badge" style="margin-bottom:1rem;display:inline-block;"><?= htmlspecialchars($noticia['categoria_nombre']) ?></span>
+        <a href="<?= SITE_URL ?>/noticias/categoria/<?= htmlspecialchars($noticia['categoria_slug']) ?>" class="badge badge-secondary mb-1" style="display: inline-block;"><?= $noticia['categoria_emoji'] ?? '' ?> <?= htmlspecialchars($noticia['categoria_nombre']) ?></a>
         <?php endif; ?>
 
-        <h1 style="margin-bottom:1rem;font-size:2.25rem;line-height:1.3;"><?= htmlspecialchars($noticia['titulo']) ?></h1>
+        <h1><?= htmlspecialchars($noticia['titulo']) ?></h1>
 
         <?php if (!empty($noticia['bajada'])): ?>
-            <p style="font-size:1.2rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;">
-                <?= htmlspecialchars($noticia['bajada']) ?>
-            </p>
+        <p class="text-light" style="font-size: 1.15rem; margin-bottom: 1rem;"><?= htmlspecialchars($noticia['bajada']) ?></p>
         <?php endif; ?>
 
-        <!-- Meta line -->
-        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;color:var(--text-muted);font-size:.9rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
+        <div class="flex flex-wrap items-center text-sm text-light mb-2" style="gap: 1rem;">
             <?php if (!empty($noticia['autor'])): ?>
-                <span>👤 <?= htmlspecialchars($noticia['autor']) ?></span>
+            <span>👤 <?= htmlspecialchars($noticia['autor']) ?></span>
             <?php endif; ?>
-            <?php if (!empty($noticia['publicado_en'])): ?>
-                <span>📅 <?= date('d \d\e F, Y', strtotime($noticia['publicado_en'])) ?></span>
+            <span>📅 <?= date('d/m/Y', strtotime($noticia['publicado_en'])) ?></span>
+            <?php if (!empty($tiempo_lectura)): ?>
+            <span>🕑 <?= (int)$tiempo_lectura ?> min de lectura</span>
             <?php endif; ?>
-            <?php
-            $wordCount = str_word_count(strip_tags($noticia['contenido'] ?? ''));
-            $readingTime = max(1, ceil($wordCount / 200));
-            ?>
-            <span>🕑 <?= $readingTime ?> min de lectura</span>
             <?php if (isset($noticia['visitas'])): ?>
-                <span>👁 <?= number_format($noticia['visitas']) ?> visitas</span>
+            <span>👁 <?= number_format((int)$noticia['visitas']) ?> visitas</span>
             <?php endif; ?>
         </div>
 
-        <!-- Featured image -->
         <?php if (!empty($noticia['foto_destacada'])): ?>
-            <div style="margin-bottom:2rem;border-radius:var(--radius-lg);overflow:hidden;">
-                <img src="<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width:100%;height:auto;display:block;">
-            </div>
+        <div style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem;">
+            <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width: 100%; max-height: 480px; object-fit: cover; display: block;">
+        </div>
         <?php else: ?>
-            <div style="width:100%;height:300px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-                <span style="font-size:4rem;opacity:.4;">📰</span>
-            </div>
+        <div style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius-lg); height: 300px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
         <?php endif; ?>
 
-        <!-- Article content -->
-        <div class="article-content" style="line-height:1.9;font-size:1.05rem;">
+        <div class="mb-3">
             <?= $noticia['contenido'] ?>
         </div>
 
-        <!-- Share buttons -->
-        <div style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
-            <p style="font-weight:600;margin-bottom:1rem;">Compartir</p>
-            <div style="display:flex;gap:.75rem;">
-                <?php $shareUrl = urlencode(SITE_URL . '/noticia/' . ($noticia['slug'] ?? $noticia['id'])); ?>
-                <?php $shareTitle = urlencode($noticia['titulo']); ?>
-                <a href="javascript:void(0)" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=<?= $shareUrl ?>','fb','width=600,height=400')" class="btn btn-outline" style="font-size:.9rem;">
-                    Facebook
-                </a>
-                <a href="javascript:void(0)" onclick="window.open('https://twitter.com/intent/tweet?url=<?= $shareUrl ?>&text=<?= $shareTitle ?>','tw','width=600,height=400')" class="btn btn-outline" style="font-size:.9rem;">
-                    X
-                </a>
-                <a href="javascript:void(0)" onclick="window.open('https://wa.me/?text=<?= $shareTitle ?>%20<?= $shareUrl ?>','wa','width=600,height=400')" class="btn btn-outline" style="font-size:.9rem;">
-                    WhatsApp
-                </a>
-            </div>
+        <div class="flex flex-wrap mb-3" style="gap: 0.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+            <span class="text-sm text-light" style="margin-right: 0.5rem;">Compartir:</span>
+            <button class="btn btn-sm btn-outline" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href),'_blank','width=600,height=400')">Facebook</button>
+            <button class="btn btn-sm btn-outline" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('<?= addslashes(htmlspecialchars($noticia['titulo'])) ?>'),'_blank','width=600,height=400')">X</button>
+            <button class="btn btn-sm btn-outline" onclick="window.open('https://wa.me/?text='+encodeURIComponent('<?= addslashes(htmlspecialchars($noticia['titulo'])) ?> '+window.location.href),'_blank')">WhatsApp</button>
         </div>
-    </article>
 
-    <!-- Related articles -->
-    <?php if (!empty($relacionadas)): ?>
-        <div class="section" style="margin-top:3rem;">
-            <h2 style="margin-bottom:1.5rem;">Noticias relacionadas</h2>
+        <?php if (!empty($relacionadas)): ?>
+        <div class="mt-3">
+            <h3 class="mb-2">Noticias relacionadas</h3>
             <div class="card-grid-sm">
                 <?php foreach ($relacionadas as $rel): ?>
-                    <a href="/noticia/<?= htmlspecialchars($rel['slug'] ?? $rel['id']) ?>" class="card" style="text-decoration:none;color:inherit;">
-                        <?php if (!empty($rel['imagen_portada'])): ?>
-                            <img src="<?= htmlspecialchars($rel['imagen_portada']) ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" style="width:100%;height:150px;object-fit:cover;">
-                        <?php else: ?>
-                            <div style="width:100%;height:150px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
-                                <span style="font-size:2rem;opacity:.4;">📰</span>
-                            </div>
+                <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($rel['slug']) ?>" class="card">
+                    <?php if (!empty($rel['foto_destacada'])): ?>
+                    <div class="card-img">
+                        <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($rel['foto_destacada']) ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" loading="lazy">
+                    </div>
+                    <?php else: ?>
+                    <div class="card-img card-img-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                    <?php endif; ?>
+                    <div class="card-body">
+                        <?php if (!empty($rel['categoria_nombre'])): ?>
+                        <span class="badge badge-secondary"><?= htmlspecialchars($rel['categoria_nombre']) ?></span>
                         <?php endif; ?>
-                        <div style="padding:1rem;">
-                            <h4 style="margin-bottom:.25rem;"><?= htmlspecialchars($rel['titulo']) ?></h4>
-                            <small style="color:var(--text-muted);">
-                                <?= !empty($rel['fecha_publicacion']) ? date('d/m/Y', strtotime($rel['fecha_publicacion'])) : '' ?>
-                            </small>
+                        <h4><?= htmlspecialchars($rel['titulo']) ?></h4>
+                        <div class="card-meta">
+                            <span>📅 <?= date('d/m/Y', strtotime($rel['publicado_en'] ?? $rel['created_at'])) ?></span>
                         </div>
-                    </a>
+                    </div>
+                </a>
                 <?php endforeach; ?>
             </div>
         </div>
-    <?php endif; ?>
-</div>
+        <?php endif; ?>
+    </div>
+</section>

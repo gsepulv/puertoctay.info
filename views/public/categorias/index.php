@@ -1,31 +1,32 @@
-<?php /** @var array $categorias */ ?>
-
-<nav class="breadcrumb">
-    <a href="/">Inicio</a>
-    <span>/</span>
-    <span>Categorías</span>
-</nav>
-
 <div class="container">
-    <div class="section">
-        <h1 style="margin-bottom:2rem;">Categorías</h1>
+    <nav class="breadcrumb">
+        <a href="<?= SITE_URL ?>">Inicio</a>
+        <span class="sep">/</span>
+        <span>Categorias</span>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h1>Categorias</h1>
+            <p>Explora todos los tipos de negocios y servicios disponibles en Puerto Octay</p>
+        </div>
 
         <?php if (!empty($categorias)): ?>
-            <div class="cat-grid">
-                <?php foreach ($categorias as $cat): ?>
-                    <a href="/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
-                        <span style="font-size:2.5rem;display:block;margin-bottom:.75rem;"><?= $cat['emoji'] ?? "" ?></span>
-                        <h3><?= htmlspecialchars($cat['nombre']) ?></h3>
-                        <span style="color:var(--text-muted);font-size:.9rem;">
-                            <?= intval($cat['total'] ?? $cat['negocios_count'] ?? 0) ?> <?= (intval($cat['total'] ?? $cat['negocios_count'] ?? 0)) === 1 ? 'negocio' : 'negocios' ?>
-                        </span>
-                    </a>
-                <?php endforeach; ?>
-            </div>
+        <div class="cat-grid">
+            <?php foreach ($categorias as $cat): ?>
+            <a href="<?= SITE_URL ?>/categoria/<?= htmlspecialchars($cat['slug']) ?>" class="cat-card">
+                <span class="emoji"><?= $cat['emoji'] ?? '' ?></span>
+                <span class="name"><?= htmlspecialchars($cat['nombre']) ?></span>
+                <span class="count"><?= (int)$cat['total_negocios'] ?> <?= (int)$cat['total_negocios'] === 1 ? 'negocio' : 'negocios' ?></span>
+            </a>
+            <?php endforeach; ?>
+        </div>
         <?php else: ?>
-            <div class="empty-state">
-                <p>No hay categorías disponibles.</p>
-            </div>
+        <div class="empty-state">
+            <p>No hay categorias disponibles por el momento.</p>
+        </div>
         <?php endif; ?>
     </div>
-</div>
+</section>

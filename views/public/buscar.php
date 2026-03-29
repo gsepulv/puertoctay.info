@@ -1,88 +1,86 @@
-<?php /** @var string $q @var string $tipo @var int|null $categoriaId @var array $negocios @var array $categorias */ ?>
-
-<nav class="breadcrumb">
-    <a href="/">Inicio</a>
-    <span>/</span>
-    <span>Buscar</span>
-</nav>
-
 <div class="container">
-    <div class="section">
-        <h1 style="margin-bottom:1.5rem;">Buscar</h1>
+    <nav class="breadcrumb">
+        <a href="<?= SITE_URL ?>">Inicio</a>
+        <span class="sep">/</span>
+        <span>Buscar</span>
+    </nav>
+</div>
 
-        <form action="/buscar" method="GET" style="display:grid;grid-template-columns:1fr auto auto auto;gap:.75rem;align-items:end;margin-bottom:2.5rem;">
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="q">Buscar</label>
-                <input type="text" id="q" name="q" value="<?= htmlspecialchars($q ?? '') ?>" placeholder="Nombre, dirección, descripción..." class="form-control">
+<section class="section">
+    <div class="container">
+        <h1>🔎 Buscar</h1>
+
+        <form action="<?= SITE_URL ?>/buscar" method="GET" class="card mb-3" style="padding: 1.5rem;">
+            <div class="form-row">
+                <div class="form-group" style="flex: 2;">
+                    <label for="q">Busqueda</label>
+                    <input type="text" id="q" name="q" value="<?= htmlspecialchars($q ?? '') ?>" placeholder="Nombre, descripcion...">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="tipo">Tipo</label>
+                    <select id="tipo" name="tipo">
+                        <option value="">Todos</option>
+                        <option value="comercio" <?= ($tipo ?? '') === 'comercio' ? 'selected' : '' ?>>Comercio</option>
+                        <option value="atractivo" <?= ($tipo ?? '') === 'atractivo' ? 'selected' : '' ?>>Atractivo</option>
+                        <option value="servicio" <?= ($tipo ?? '') === 'servicio' ? 'selected' : '' ?>>Servicio</option>
+                        <option value="gastronomia" <?= ($tipo ?? '') === 'gastronomia' ? 'selected' : '' ?>>Gastronomia</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria" name="categoria_id">
+                        <option value="">Todas</option>
+                        <?php foreach ($categorias as $cat): ?>
+                        <option value="<?= (int)$cat['id'] ?>" <?= ((int)($categoriaId ?? 0)) === (int)$cat['id'] ? 'selected' : '' ?>><?= htmlspecialchars($cat['nombre']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group" style="align-self: flex-end;">
+                    <button type="submit" class="btn btn-primary">🔎 Buscar</button>
+                </div>
             </div>
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="tipo">Tipo</label>
-                <select id="tipo" name="tipo" class="form-control">
-                    <option value="">Todos los tipos</option>
-                    <option value="comercio" <?= ($tipo ?? '') === 'comercio' ? 'selected' : '' ?>>Comercio</option>
-                    <option value="atractivo" <?= ($tipo ?? '') === 'atractivo' ? 'selected' : '' ?>>Atractivo</option>
-                    <option value="servicio" <?= ($tipo ?? '') === 'servicio' ? 'selected' : '' ?>>Servicio</option>
-                    <option value="gastronomia" <?= ($tipo ?? '') === 'gastronomia' ? 'selected' : '' ?>>Gastronomía</option>
-                </select>
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="categoria">Categoría</label>
-                <select id="categoria" name="categoria" class="form-control">
-                    <option value="">Todas las categorías</option>
-                    <?php foreach ($categorias as $cat): ?>
-                        <option value="<?= intval($cat['id']) ?>" <?= ($categoriaId ?? '') == $cat['id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($cat['nombre']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <button type="submit" class="btn">Buscar</button>
         </form>
 
-        <?php if (!empty($q) || !empty($tipo) || !empty($categoriaId)): ?>
-            <p style="color:var(--text-muted);margin-bottom:1.5rem;">
-                <?= count($negocios) ?> <?= count($negocios) === 1 ? 'resultado' : 'resultados' ?>
-                <?php if (!empty($q)): ?> para "<strong><?= htmlspecialchars($q) ?></strong>"<?php endif; ?>
-            </p>
-        <?php endif; ?>
+        <?php if (isset($negocios)): ?>
+            <?php if (!empty($q) || !empty($tipo) || !empty($categoriaId)): ?>
+            <p class="text-light mb-2"><?= count($negocios) ?> <?= count($negocios) === 1 ? 'resultado' : 'resultados' ?> encontrados<?= !empty($q) ? ' para "' . htmlspecialchars($q) . '"' : '' ?></p>
+            <?php endif; ?>
 
-        <?php if (!empty($negocios)): ?>
+            <?php if (!empty($negocios)): ?>
             <div class="card-grid">
                 <?php foreach ($negocios as $neg): ?>
-                    <a href="/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card" style="text-decoration:none;color:inherit;">
-                        <?php if (!empty($neg['foto_principal'])): ?>
-                            <img src="<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" style="width:100%;height:200px;object-fit:cover;">
-                        <?php else: ?>
-                            <div style="width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
-                                
-                            </div>
+                <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card">
+                    <?php if (!empty($neg['foto_principal'])): ?>
+                    <div class="card-img">
+                        <img src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" loading="lazy">
+                    </div>
+                    <?php else: ?>
+                    <div class="card-img card-img-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                    <?php endif; ?>
+                    <div class="card-body">
+                        <?php if (!empty($neg['categoria_nombre'])): ?>
+                        <span class="badge badge-primary"><?= $neg['categoria_emoji'] ?? '' ?> <?= htmlspecialchars($neg['categoria_nombre']) ?></span>
                         <?php endif; ?>
-                        <div style="padding:1.25rem;">
-                            <h3 style="margin-bottom:.5rem;"><?= htmlspecialchars($neg['nombre']) ?></h3>
-                            <?php if (!empty($neg['categoria_nombre'])): ?>
-                                <span class="badge" style="margin-bottom:.5rem;"><?= htmlspecialchars($neg['categoria_nombre']) ?></span>
-                            <?php endif; ?>
-                            <?php if (!empty($neg['verificado'])): ?>
-                                <span class="badge badge-success">✓</span>
-                            <?php endif; ?>
-                            <?php if (!empty($neg['direccion'])): ?>
-                                <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">📍 <?= htmlspecialchars($neg['direccion']) ?></p>
-                            <?php endif; ?>
-                            <?php if (!empty($neg['descripcion_corta'])): ?>
-                                <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.5rem;line-height:1.5;">
-                                    <?= htmlspecialchars(mb_strimwidth($neg['descripcion_corta'], 0, 120, '...')) ?>
-                                </p>
-                            <?php endif; ?>
-                        </div>
-                    </a>
+                        <h3><?= htmlspecialchars($neg['nombre']) ?></h3>
+                        <?php if (!empty($neg['direccion'])): ?>
+                        <p class="text-sm text-light">📍 <?= htmlspecialchars($neg['direccion']) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($neg['descripcion_corta'])): ?>
+                        <p class="text-sm"><?= htmlspecialchars(mb_strimwidth($neg['descripcion_corta'], 0, 100, '...')) ?></p>
+                        <?php endif; ?>
+                    </div>
+                </a>
                 <?php endforeach; ?>
             </div>
-        <?php elseif (!empty($q) || !empty($tipo) || !empty($categoriaId)): ?>
+            <?php else: ?>
             <div class="empty-state">
-                <span style="font-size:3rem;display:block;margin-bottom:1rem;">🔎</span>
-                <p>No se encontraron resultados.</p>
-                <p style="color:var(--text-muted);margin-top:.5rem;">Intenta con otros términos de búsqueda.</p>
+                <p>🔎 No se encontraron resultados.</p>
+                <p class="text-sm text-light">Intenta con otros terminos de busqueda o explora el directorio completo.</p>
+                <a href="<?= SITE_URL ?>/directorio" class="btn btn-primary mt-1">Ver directorio</a>
             </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
-</div>
+</section>

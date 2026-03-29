@@ -1,17 +1,16 @@
-<?php /** @var array $pagina */ ?>
+<div class="container">
+    <nav class="breadcrumb">
+        <a href="<?= SITE_URL ?>">Inicio</a>
+        <span class="sep">/</span>
+        <span><?= htmlspecialchars($pagina['titulo']) ?></span>
+    </nav>
+</div>
 
-<nav class="breadcrumb">
-    <a href="/">Inicio</a>
-    <span>/</span>
-    <span><?= htmlspecialchars($pagina['titulo']) ?></span>
-</nav>
-
-<div class="container-narrow">
-    <div class="section">
-        <h1 style="margin-bottom:2rem;"><?= htmlspecialchars($pagina['titulo']) ?></h1>
-
-        <div class="page-content" style="line-height:1.9;font-size:1.05rem;letter-spacing:.01em;">
+<section class="section">
+    <div class="container-narrow">
+        <h1><?= htmlspecialchars($pagina['titulo']) ?></h1>
+        <div>
             <?= $pagina['contenido'] ?>
         </div>
     </div>
-</div>
+</section>

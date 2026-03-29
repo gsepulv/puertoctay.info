@@ -1,59 +1,45 @@
-<?php /** @var array $negocios @var array $categorias */ ?>
-
-<div class="hero" style="background:linear-gradient(135deg,var(--primary),var(--secondary));padding:3rem 0;text-align:center;color:#fff;">
-    <div class="container">
-        <h1 style="font-size:2.5rem;margin-bottom:.75rem;">Patrimonio y Cultura</h1>
-        <p style="font-size:1.15rem;opacity:.9;max-width:600px;margin:0 auto;">
-            Descubre la rica herencia colonial alemana y el patrimonio cultural de Puerto Octay, a orillas del Lago Llanquihue.
-        </p>
+<section class="section-sm" style="background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: var(--white); padding: 3rem 0;">
+    <div class="container text-center">
+        <h1 style="color: var(--white);">🏛 Patrimonio de Puerto Octay</h1>
+        <p>Descubre la riqueza patrimonial y cultural de nuestra ciudad</p>
     </div>
-</div>
+</section>
 
-<nav class="breadcrumb">
-    <a href="/">Inicio</a>
-    <span>/</span>
-    <span>Patrimonio y Cultura</span>
-</nav>
-
-<div class="container">
-    <div class="section">
+<section class="section">
+    <div class="container">
         <?php if (!empty($negocios)): ?>
-            <div class="card-grid">
-                <?php foreach ($negocios as $neg): ?>
-                    <a href="/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card" style="text-decoration:none;color:inherit;">
-                        <?php if (!empty($neg['foto_principal'])): ?>
-                            <img src="<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" style="width:100%;height:200px;object-fit:cover;">
-                        <?php else: ?>
-                            <div style="width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
-                                <span style="font-size:3rem;opacity:.5;">🏛</span>
-                            </div>
-                        <?php endif; ?>
-                        <div style="padding:1.25rem;">
-                            <h3 style="margin-bottom:.5rem;"><?= htmlspecialchars($neg['nombre']) ?></h3>
-                            <?php if (!empty($neg['categoria_nombre'])): ?>
-                                <span class="badge" style="margin-bottom:.5rem;"><?= htmlspecialchars($neg['categoria_nombre']) ?></span>
-                            <?php endif; ?>
-                            <?php if (!empty($neg['verificado'])): ?>
-                                <span class="badge badge-success">✓</span>
-                            <?php endif; ?>
-                            <?php if (!empty($neg['direccion'])): ?>
-                                <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">📍 <?= htmlspecialchars($neg['direccion']) ?></p>
-                            <?php endif; ?>
-                            <?php if (!empty($neg['descripcion_corta'])): ?>
-                                <p style="color:var(--text-secondary);font-size:.9rem;margin-top:.5rem;line-height:1.5;">
-                                    <?= htmlspecialchars(mb_strimwidth($neg['descripcion_corta'], 0, 120, '...')) ?>
-                                </p>
-                            <?php endif; ?>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            </div>
+        <div class="card-grid">
+            <?php foreach ($negocios as $neg): ?>
+            <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($neg['slug']) ?>" class="card">
+                <?php if (!empty($neg['foto_principal'])): ?>
+                <div class="card-img">
+                    <img src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" loading="lazy">
+                </div>
+                <?php else: ?>
+                <div class="card-img card-img-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </div>
+                <?php endif; ?>
+                <div class="card-body">
+                    <?php if (!empty($neg['categoria_nombre'])): ?>
+                    <span class="badge badge-primary"><?= $neg['categoria_emoji'] ?? '' ?> <?= htmlspecialchars($neg['categoria_nombre']) ?></span>
+                    <?php endif; ?>
+                    <h3><?= htmlspecialchars($neg['nombre']) ?></h3>
+                    <?php if (!empty($neg['direccion'])): ?>
+                    <p class="text-sm text-light">📍 <?= htmlspecialchars($neg['direccion']) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($neg['descripcion_corta'])): ?>
+                    <p class="text-sm"><?= htmlspecialchars(mb_strimwidth($neg['descripcion_corta'], 0, 120, '...')) ?></p>
+                    <?php endif; ?>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        </div>
         <?php else: ?>
-            <div class="empty-state">
-                <span style="font-size:3rem;display:block;margin-bottom:1rem;">🏛</span>
-                <p>No hay lugares de patrimonio registrados aún.</p>
-                <a href="/directorio" class="btn" style="margin-top:1rem;">Ver directorio completo</a>
-            </div>
+        <div class="empty-state">
+            <p>🏛 No hay sitios patrimoniales registrados por el momento.</p>
+            <a href="<?= SITE_URL ?>/directorio" class="btn btn-primary">Ver directorio</a>
+        </div>
         <?php endif; ?>
     </div>
-</div>
+</section>

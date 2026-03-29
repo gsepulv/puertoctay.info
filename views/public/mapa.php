@@ -1,51 +1,45 @@
-<?php /** @var bool $usarLeaflet */ ?>
-
-<nav class="breadcrumb">
-    <a href="/">Inicio</a>
-    <span>/</span>
-    <span>Mapa</span>
-</nav>
-
 <div class="container">
-    <div class="section" style="padding-top:1rem;">
-        <h1 style="margin-bottom:1.5rem;">Mapa de Puerto Octay</h1>
-
-        <div id="mapFull" style="height:calc(100vh - 200px);min-height:400px;border-radius:var(--radius-lg);"></div>
-    </div>
+    <nav class="breadcrumb">
+        <a href="<?= SITE_URL ?>">Inicio</a>
+        <span class="sep">/</span>
+        <span>Mapa</span>
+    </nav>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var map = L.map('mapFull').setView([-40.9724, -72.8876], 14);
+<section class="section-sm">
+    <div class="container">
+        <h1>📍 Mapa de Puerto Octay</h1>
+        <p class="text-light mb-2">Explora todos los negocios y atractivos turisticos en el mapa interactivo</p>
+        <div id="mapFull" style="height: calc(100vh - 220px); min-height: 400px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);"></div>
+    </div>
+</section>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+<?php $extraScripts = '<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var map = L.map("mapFull").setView([-40.9724, -72.8876], 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors"
     }).addTo(map);
 
-    fetch(SITE_URL + '/api/negocios.json')
+    fetch("' . SITE_URL . '/api/negocios.json")
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (!data || !data.length) return;
             var bounds = L.latLngBounds();
             data.forEach(function(n) {
-                if (!n.latitud || !n.longitud) return;
-                var lat = parseFloat(n.latitud);
-                var lng = parseFloat(n.longitud);
-                if (isNaN(lat) || isNaN(lng)) return;
-                var marker = L.marker([lat, lng]).addTo(map);
+                if (!n.lat || !n.lng) return;
+                var marker = L.marker([parseFloat(n.lat), parseFloat(n.lng)]).addTo(map);
                 marker.bindPopup(
-                    '<strong>' + (n.nombre || '') + '</strong>' +
-                    (n.direccion ? '<br>' + n.direccion : '') +
-                    '<br><a href="/negocio/' + (n.slug || '') + '">Ver detalle</a>'
+                    "<strong>" + (n.nombre || "") + "</strong>" +
+                    (n.categoria_nombre ? "<br><small>" + n.categoria_nombre + "</small>" : "") +
+                    (n.direccion ? "<br><small>" + n.direccion + "</small>" : "") +
+                    "<br><a href=\"' . SITE_URL . '/negocio/" + n.slug + "\">Ver detalle</a>"
                 );
-                bounds.extend([lat, lng]);
+                bounds.extend([parseFloat(n.lat), parseFloat(n.lng)]);
             });
             if (bounds.isValid()) {
-                map.fitBounds(bounds, { padding: [40, 40] });
+                map.fitBounds(bounds, { padding: [30, 30] });
             }
-        })
-        .catch(function(err) {
-            console.error('Error cargando negocios:', err);
         });
 });
-</script>
+</script>'; ?>

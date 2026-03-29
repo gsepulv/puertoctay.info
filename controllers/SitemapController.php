@@ -48,7 +48,7 @@ class SitemapController
         }
 
         // Noticias
-        $stmt = $this->db->query("SELECT slug, updated_at FROM noticias WHERE estado = 'publicada' ORDER BY publicado_en DESC");
+        $stmt = $this->db->query("SELECT slug, updated_at FROM noticias WHERE estado = 'publicado' ORDER BY publicado_en DESC");
         while ($row = $stmt->fetch()) {
             $urls[] = [
                 'loc' => SITE_URL . '/noticias/' . $row['slug'],
