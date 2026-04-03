@@ -90,7 +90,7 @@ class AdminNegocioController
         $data['descripcion_larga'] = $_POST['descripcion_larga'] ?? '';
         $data['como_llegar'] = $_POST['como_llegar'] ?? '';
 
-        unset($data['csrf_token']);
+        unset($data["csrf_token"], $data["temporadas"], $data["temporada_promocion"]);
 
         $negocioModel = new Negocio($this->db);
         $negocioId = $negocioModel->create($data);
@@ -198,7 +198,7 @@ class AdminNegocioController
         $data['descripcion_larga'] = $_POST['descripcion_larga'] ?? '';
         $data['como_llegar'] = $_POST['como_llegar'] ?? '';
 
-        unset($data['csrf_token']);
+        unset($data["csrf_token"], $data["temporadas"], $data["temporada_promocion"]);
 
         $negocioModel->update((int)$id, $data);
         AuditLog::log('editar', 'negocios', (int)$id, "Negocio: {$data['nombre']}");
