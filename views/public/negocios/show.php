@@ -118,6 +118,26 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
                 </div>
             <?php endif; ?>
 
+            <!-- Temporadas -->
+            <?php if (!empty($negocioTemporadas)): ?>
+            <div style="background: var(--white); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 2rem; border: 1px solid var(--border);">
+                <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">🌤️ Temporadas</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    <?php foreach ($negocioTemporadas as $nt): ?>
+                    <div style="padding: 0.4rem 0.8rem; background: var(--bg); border: 1px solid var(--border); border-radius: 50px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem;">
+                        <span><?= $nt['emoji'] ?></span>
+                        <span><?= htmlspecialchars($nt['nombre']) ?></span>
+                    </div>
+                    <?php if (!empty($nt['promocion'])): ?>
+                    <div style="padding: 0.4rem 0.8rem; background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: #92400E;">
+                        🏷️ <?= htmlspecialchars($nt['promocion']) ?>
+                    </div>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+
             <!-- Ubicación + Mapa -->
             <?php if (!empty($negocio['direccion']) || $hasCoords): ?>
                 <div style="background: var(--white); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 2rem; border: 1px solid var(--border);">

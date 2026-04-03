@@ -122,6 +122,55 @@
 </section>
 <?php endif; ?>
 
+<!-- Temporada activa -->
+<?php if (!empty($temporadaActual)): ?>
+<section style="padding: 3rem 0; background: var(--bg-warm);">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <span style="font-size: 2.5rem;"><?= $temporadaActual['emoji'] ?></span>
+            <h2 style="margin: 0.5rem 0;"><?= htmlspecialchars($temporadaActual['nombre']) ?></h2>
+            <p class="text-light" style="max-width: 600px; margin: 0 auto;"><?= htmlspecialchars($temporadaActual['descripcion'] ?? '') ?></p>
+        </div>
+
+        <?php if (!empty($negociosTemporada)): ?>
+        <div class="card-grid">
+            <?php foreach ($negociosTemporada as $nt): ?>
+            <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($nt['slug']) ?>" class="card" style="text-decoration: none; color: inherit;">
+                <div style="height: 140px; background: var(--bg); border-radius: var(--radius-md) var(--radius-md) 0 0; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    <?php if (!empty($nt['foto_principal'])): ?>
+                        <img src="<?= SITE_URL ?>/uploads/<?= $nt['foto_principal'] ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    <?php else: ?>
+                        <span style="font-size: 2rem; color: var(--text-lighter);"><?= $nt['categoria_emoji'] ?? '📍' ?></span>
+                    <?php endif; ?>
+                </div>
+                <div style="padding: 1rem;">
+                    <h3 style="font-size: 1rem; margin-bottom: 0.25rem;"><?= htmlspecialchars($nt['nombre']) ?></h3>
+                    <span style="font-size: 0.8rem; color: var(--text-light);"><?= $nt['categoria_emoji'] ?? '' ?> <?= htmlspecialchars($nt['categoria_nombre'] ?? '') ?></span>
+                    <?php if (!empty($nt['promocion'])): ?>
+                        <div style="margin-top: 0.5rem; padding: 0.3rem 0.6rem; background: #FEF3C7; border-radius: 50px; display: inline-block; font-size: 0.75rem; font-weight: 600; color: #92400E;">
+                            🏷️ <?= htmlspecialchars($nt['promocion']) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        </div>
+        <?php else: ?>
+        <p style="text-align: center; color: var(--text-light);">Próximamente: negocios destacados para esta temporada.</p>
+        <?php endif; ?>
+    </div>
+</section>
+<?php else: ?>
+<section style="padding: 3rem 0; background: var(--bg-warm);">
+    <div class="container" style="text-align: center;">
+        <span style="font-size: 2.5rem;">⛵</span>
+        <h2 style="margin: 0.5rem 0;">Descubre Puerto Octay todo el año</h2>
+        <p class="text-light" style="max-width: 600px; margin: 0 auto;">Gastronomía alemana-chilena, patrimonio colonial, lago Llanquihue y volcanes. Siempre hay algo por descubrir.</p>
+        <a href="<?= SITE_URL ?>/directorio" class="btn btn-primary" style="margin-top: 1rem;">Ver directorio completo</a>
+    </div>
+</section>
+<?php endif; ?>
+
 <!-- CTA: Registrar comercio -->
 <section style="background: var(--primary-dark); color: #fff; padding: 4rem 0;">
     <div class="container" style="max-width: 800px; text-align: center;">

@@ -35,6 +35,11 @@ class AdminNegocioController
         $negocio = [];
         $errores = [];
 
+        $tempModel = new Temporada($this->db);
+        $temporadas = $tempModel->findActivas();
+        $negocioTempIds = [];
+        $negocioPromociones = [];
+
         $pageTitle = 'Nuevo Negocio — Admin';
         $viewName = 'admin/negocios/form';
         require ROOT_PATH . '/views/layouts/admin.php';
@@ -53,6 +58,10 @@ class AdminNegocioController
             $categorias = (new Categoria($this->db))->findDirectorio();
             $planes = (new Plan($this->db))->findActivos();
             $negocio = $data;
+            $tempModel = new Temporada($this->db);
+            $temporadas = $tempModel->findActivas();
+            $negocioTempIds = [];
+            $negocioPromociones = [];
             $pageTitle = 'Nuevo Negocio — Admin';
             $viewName = 'admin/negocios/form';
             require ROOT_PATH . '/views/layouts/admin.php';
@@ -84,8 +93,16 @@ class AdminNegocioController
         unset($data['csrf_token']);
 
         $negocioModel = new Negocio($this->db);
-        $id = $negocioModel->create($data);
-        AuditLog::log('crear', 'negocios', $id, "Negocio: {$data['nombre']}");
+        $negocioId = $negocioModel->create($data);
+        AuditLog::log('crear', 'negocios', $negocioId, "Negocio: {$data['nombre']}");
+
+        // Sync temporadas
+        $temporadaIds = $_POST['temporadas'] ?? [];
+        $promociones = $_POST['temporada_promocion'] ?? [];
+        if (is_array($temporadaIds)) {
+            $tempModel = new Temporada($this->db);
+            $tempModel->syncNegocioTemporadas($negocioId, $temporadaIds, $promociones);
+        }
 
         $_SESSION['flash_success'] = 'Negocio creado correctamente.';
         header('Location: ' . SITE_URL . '/admin/negocios');
@@ -106,6 +123,15 @@ class AdminNegocioController
         $categorias = (new Categoria($this->db))->findDirectorio();
         $planes = (new Plan($this->db))->findActivos();
         $errores = [];
+
+        $tempModel = new Temporada($this->db);
+        $temporadas = $tempModel->findActivas();
+        $negocioTemporadas = $tempModel->findForNegocio((int) $id);
+        $negocioTempIds = array_column($negocioTemporadas, 'id');
+        $negocioPromociones = [];
+        foreach ($negocioTemporadas as $nt) {
+            $negocioPromociones[$nt['id']] = $nt['promocion'] ?? '';
+        }
 
         $pageTitle = 'Editar: ' . htmlspecialchars($negocio['nombre']) . ' — Admin';
         $viewName = 'admin/negocios/form';
@@ -133,6 +159,14 @@ class AdminNegocioController
             $categorias = (new Categoria($this->db))->findDirectorio();
             $planes = (new Plan($this->db))->findActivos();
             $negocio = array_merge($negocio, $data);
+            $tempModel = new Temporada($this->db);
+            $temporadas = $tempModel->findActivas();
+            $negocioTemporadas = $tempModel->findForNegocio((int) $id);
+            $negocioTempIds = array_column($negocioTemporadas, 'id');
+            $negocioPromociones = [];
+            foreach ($negocioTemporadas as $nt) {
+                $negocioPromociones[$nt['id']] = $nt['promocion'] ?? '';
+            }
             $pageTitle = 'Editar: ' . htmlspecialchars($negocio['nombre']) . ' — Admin';
             $viewName = 'admin/negocios/form';
             require ROOT_PATH . '/views/layouts/admin.php';
@@ -168,6 +202,14 @@ class AdminNegocioController
 
         $negocioModel->update((int)$id, $data);
         AuditLog::log('editar', 'negocios', (int)$id, "Negocio: {$data['nombre']}");
+
+        // Sync temporadas
+        $temporadaIds = $_POST['temporadas'] ?? [];
+        $promociones = $_POST['temporada_promocion'] ?? [];
+        if (is_array($temporadaIds)) {
+            $tempModel = new Temporada($this->db);
+            $tempModel->syncNegocioTemporadas((int) $id, $temporadaIds, $promociones);
+        }
 
         $_SESSION['flash_success'] = 'Negocio actualizado correctamente.';
         header('Location: ' . SITE_URL . '/admin/negocios');
@@ -228,6 +270,13 @@ class AdminNegocioController
                 $stmt->execute([$negocio['propietario_id']]);
             }
             AuditLog::log('aprobar', 'negocios', (int)$id, "Aprobado: {$negocio['nombre']}");
+
+            // Send approval email
+            $usuario = (new Usuario($this->db))->find((int) $negocio['propietario_id']);
+            if ($usuario) {
+                EmailHelper::notificarAprobacion($usuario, $negocio);
+            }
+
             $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" aprobado y publicado.";
         }
         header('Location: ' . SITE_URL . '/admin/negocios');
@@ -245,6 +294,15 @@ class AdminNegocioController
                 'status' => 'rechazado',
             ]);
             AuditLog::log('rechazar', 'negocios', (int)$id, "Rechazado: {$negocio['nombre']}");
+
+            // Send rejection email
+            if (!empty($negocio['propietario_id'])) {
+                $usuario = (new Usuario($this->db))->find((int) $negocio['propietario_id']);
+                if ($usuario) {
+                    EmailHelper::notificarRechazo($usuario, $negocio);
+                }
+            }
+
             $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" rechazado.";
         }
         header('Location: ' . SITE_URL . '/admin/negocios');

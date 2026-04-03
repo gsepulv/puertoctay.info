@@ -26,6 +26,14 @@ class HomeController
         $noticiaModel = new Noticia($this->db);
         $ultimasNoticias = $noticiaModel->findPublicadas(3);
 
+        // Temporada activa
+        $tempModel = new Temporada($this->db);
+        $temporadaActual = $tempModel->findActual();
+        $negociosTemporada = [];
+        if ($temporadaActual) {
+            $negociosTemporada = $tempModel->findNegociosByTemporada((int) $temporadaActual['id'], 6);
+        }
+
         $pageTitle = SITE_NAME . ' — ' . SITE_TAGLINE;
         $pageDescription = 'Guía de turismo y comercio de Puerto Octay, a orillas del Lago Llanquihue. Encuentra negocios, atractivos, eventos y noticias.';
         require ROOT_PATH . '/views/layouts/main.php';

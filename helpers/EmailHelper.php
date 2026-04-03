@@ -116,4 +116,49 @@ class EmailHelper
 
         self::send($email, '¡Bienvenido a Visita Puerto Octay!', $comercianteBody);
     }
+
+    /**
+     * Notify business owner that their comercio was approved.
+     */
+    public static function notificarAprobacion(array $usuario, array $negocio): void
+    {
+        $body = self::wrap(
+            "<h2 style='color:#166534;'>¡Tu comercio fue aprobado!</h2>" .
+            "<p>¡Felicitaciones <strong>" . htmlspecialchars($usuario['nombre']) . "</strong>!</p>" .
+            "<p>Tu comercio <strong>" . htmlspecialchars($negocio['nombre']) . "</strong> ha sido aprobado y ya está visible en el directorio de Visita Puerto Octay.</p>" .
+            "<div style='background:#F0FDF4;border:1px solid #22C55E;border-radius:8px;padding:1.25rem;margin:1.5rem 0;'>" .
+            "<p style='margin:0 0 0.75rem;font-weight:600;color:#166534;'>Puedes acceder a tu panel:</p>" .
+            "<p style='margin:0.25rem 0;'><a href='" . SITE_URL . "/login' style='color:#1B4965;font-weight:600;'>" . SITE_URL . "/login</a></p>" .
+            "<p style='margin:0.25rem 0;'>Con tu email: <strong>" . htmlspecialchars($usuario['email']) . "</strong></p>" .
+            "<p style='margin:0.25rem 0;'>Y la contraseña que registraste.</p>" .
+            "</div>" .
+            "<p>Desde tu panel puedes:</p>" .
+            "<ul style='margin:0.5rem 0 1rem;padding-left:1.5rem;'>" .
+            "<li>Editar la información de tu negocio</li>" .
+            "<li>Actualizar redes sociales</li>" .
+            "<li>Ver estadísticas de visitas</li>" .
+            "</ul>" .
+            "<p><a href='" . SITE_URL . "/mi-comercio' style='background:#1B4965;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;'>Ir a mi panel</a></p>"
+        );
+        self::send($usuario['email'], '¡Tu comercio fue aprobado! — ' . SITE_NAME, $body);
+    }
+
+    /**
+     * Notify business owner that their comercio registration was rejected.
+     */
+    public static function notificarRechazo(array $usuario, array $negocio): void
+    {
+        $body = self::wrap(
+            "<h2>Sobre tu solicitud de registro</h2>" .
+            "<p>Hola <strong>" . htmlspecialchars($usuario['nombre']) . "</strong>,</p>" .
+            "<p>Lamentamos informarte que tu solicitud de registro del comercio <strong>" . htmlspecialchars($negocio['nombre']) . "</strong> no fue aprobada en esta oportunidad.</p>" .
+            "<p>Si crees que hay un error o deseas más información, no dudes en contactarnos:</p>" .
+            "<div style='background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:1rem;margin:1rem 0;'>" .
+            "<p style='margin:0.25rem 0;'>Email: <a href='mailto:contacto@purranque.info' style='color:#1B4965;'>contacto@purranque.info</a></p>" .
+            "<p style='margin:0.25rem 0;'>WhatsApp: <a href='https://wa.me/56976547757' style='color:#1B4965;'>+56 9 7654 7757</a></p>" .
+            "</div>" .
+            "<p style='color:#64748B;'>Gracias por tu interés en Visita Puerto Octay.</p>"
+        );
+        self::send($usuario['email'], 'Sobre tu solicitud de registro — ' . SITE_NAME, $body);
+    }
 }

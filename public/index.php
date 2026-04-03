@@ -99,6 +99,14 @@ $router->add('GET', '/admin/categorias/{id}/editar', 'AdminCategoriaController@e
 $router->add('POST', '/admin/categorias/{id}/actualizar', 'AdminCategoriaController@actualizar');
 $router->add('POST', '/admin/categorias/{id}/eliminar', 'AdminCategoriaController@eliminar');
 
+// ── Admin: Temporadas ────────────────────────────────
+$router->add('GET', '/admin/temporadas', 'AdminTemporadaController@index');
+$router->add('GET', '/admin/temporadas/crear', 'AdminTemporadaController@crear');
+$router->add('POST', '/admin/temporadas/guardar', 'AdminTemporadaController@guardar');
+$router->add('GET', '/admin/temporadas/{id}/editar', 'AdminTemporadaController@editar');
+$router->add('POST', '/admin/temporadas/{id}/actualizar', 'AdminTemporadaController@actualizar');
+$router->add('POST', '/admin/temporadas/{id}/eliminar', 'AdminTemporadaController@eliminar');
+
 // ── Admin: Eventos ────────────────────────────────────
 $router->add('GET', '/admin/eventos', 'AdminEventoController@index');
 $router->add('GET', '/admin/eventos/crear', 'AdminEventoController@crear');

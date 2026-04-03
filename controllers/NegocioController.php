@@ -56,6 +56,10 @@ class NegocioController
         $ratingData = $stmtAvg->fetch();
         $rating = (float) ($ratingData['promedio'] ?? 0);
 
+        // Temporadas del negocio
+        $tempModel = new Temporada($this->db);
+        $negocioTemporadas = $tempModel->findForNegocio((int) $negocio['id']);
+
         $pageTitle = htmlspecialchars($negocio['nombre']) . ' — ' . SITE_NAME;
         $pageDescription = $negocio['descripcion_corta'] ?? "Información de {$negocio['nombre']} en Puerto Octay.";
         $usarLeaflet = !empty($negocio['lat']) && !empty($negocio['lng']);

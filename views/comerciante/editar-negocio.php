@@ -87,5 +87,32 @@
         </div>
     </div>
 
+    <?php if (!empty($temporadas)): ?>
+    <h3 style="margin: 1.5rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">🌤️ Temporadas turísticas</h3>
+    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Selecciona las temporadas en las que tu negocio tiene actividad destacada.</p>
+    <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-bottom: 1.5rem;">
+        <?php foreach ($temporadas as $temp):
+            $isChecked = in_array($temp['id'], $negocioTempIds ?? []);
+            $promo = $negocioPromociones[$temp['id']] ?? '';
+        ?>
+        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;">
+                <input type="checkbox" name="temporadas[]" value="<?= $temp['id'] ?>"
+                    <?= $isChecked ? 'checked' : '' ?>
+                    onchange="this.closest('div').querySelector('.promo-field').style.display=this.checked?'block':'none'">
+                <span style="font-size: 1.1rem;"><?= $temp['emoji'] ?></span>
+                <strong><?= htmlspecialchars($temp['nombre']) ?></strong>
+                <?php if ($temp['fecha_inicio'] && $temp['fecha_fin']): ?>
+                    <small style="color: var(--text-light);">(<?= date('d/m', strtotime($temp['fecha_inicio'])) ?> — <?= date('d/m', strtotime($temp['fecha_fin'])) ?>)</small>
+                <?php endif; ?>
+            </label>
+            <div class="promo-field" style="display: <?= $isChecked ? 'block' : 'none' ?>; margin-top: 0.5rem; padding-left: 1.8rem;">
+                <input type="text" name="temporada_promocion[<?= $temp['id'] ?>]" value="<?= htmlspecialchars($promo) ?>" placeholder="Promoción especial (ej: 20% descuento en temporada)" style="width: 100%; padding: 0.4rem 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem;">
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
     <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Guardar cambios</button>
 </form>

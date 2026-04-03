@@ -280,6 +280,36 @@ $checked = fn(string $key, bool $defaultOn = false) =>
         </div>
     </div>
 
+    <!-- ══ Temporadas turísticas ══ -->
+    <?php if (!empty($temporadas)): ?>
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <h3 style="margin-bottom: 0.5rem;">🌤️ Temporadas turísticas</h3>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Selecciona las temporadas en las que este negocio tiene actividad.</p>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+            <?php foreach ($temporadas as $temp):
+                $isChecked = in_array($temp['id'], $negocioTempIds ?? []);
+                $promo = $negocioPromociones[$temp['id']] ?? '';
+            ?>
+            <div style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.75rem 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;">
+                    <input type="checkbox" name="temporadas[]" value="<?= $temp['id'] ?>"
+                        <?= $isChecked ? 'checked' : '' ?>
+                        onchange="this.closest('div').querySelector('.promo-field').style.display=this.checked?'block':'none'">
+                    <span style="font-size: 1.1rem;"><?= $temp['emoji'] ?></span>
+                    <strong><?= htmlspecialchars($temp['nombre']) ?></strong>
+                    <?php if ($temp['fecha_inicio'] && $temp['fecha_fin']): ?>
+                        <small style="color: var(--text-light);">(<?= date('d/m', strtotime($temp['fecha_inicio'])) ?> — <?= date('d/m', strtotime($temp['fecha_fin'])) ?>)</small>
+                    <?php endif; ?>
+                </label>
+                <div class="promo-field" style="display: <?= $isChecked ? 'block' : 'none' ?>; margin-top: 0.5rem; padding-left: 1.8rem;">
+                    <input type="text" name="temporada_promocion[<?= $temp['id'] ?>]" value="<?= htmlspecialchars($promo) ?>" placeholder="Promoción especial (ej: 20% descuento)" style="width: 100%; padding: 0.4rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <!-- ══ Sección 7: SEO (colapsable) ══ -->
     <details class="form-card">
         <summary style="cursor:pointer; font-weight:600; font-size:1.1em;">SEO</summary>

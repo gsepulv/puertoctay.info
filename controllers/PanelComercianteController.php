@@ -62,6 +62,15 @@ class PanelComercianteController
         $catModel = new Categoria($this->db);
         $categorias = $catModel->findDirectorio();
 
+        $tempModel = new Temporada($this->db);
+        $temporadas = $tempModel->findActivas();
+        $negocioTemporadas = $tempModel->findForNegocio((int) $negocio['id']);
+        $negocioTempIds = array_column($negocioTemporadas, 'id');
+        $negocioPromociones = [];
+        foreach ($negocioTemporadas as $nt) {
+            $negocioPromociones[$nt['id']] = $nt['promocion'] ?? '';
+        }
+
         $viewName = 'comerciante/editar-negocio';
         require ROOT_PATH . '/views/layouts/comerciante.php';
     }
@@ -119,6 +128,14 @@ class PanelComercianteController
 
         $negocioModel = new Negocio($this->db);
         $negocioModel->update((int) $negocio['id'], $updateData);
+
+        // Sync temporadas
+        $temporadaIds = $_POST['temporadas'] ?? [];
+        $promociones = $_POST['temporada_promocion'] ?? [];
+        if (is_array($temporadaIds)) {
+            $tempModel = new Temporada($this->db);
+            $tempModel->syncNegocioTemporadas((int) $negocio['id'], $temporadaIds, $promociones);
+        }
 
         AuditLog::log('editar', 'negocios', (int) $negocio['id'],
             "Comerciante editó: {$data['nombre']}");

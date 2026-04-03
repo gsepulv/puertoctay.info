@@ -181,6 +181,9 @@ try {
                     📂 Categorías
                     <?php if ($badges['categorias']): ?><span class="nav-badge"><?= $badges['categorias'] ?></span><?php endif; ?>
                 </a>
+                <a href="<?= SITE_URL ?>/admin/temporadas" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/temporadas') ? 'active' : '' ?>">
+                    🌤️ Temporadas
+                </a>
                 <a href="<?= SITE_URL ?>/admin/eventos">📅 Eventos</a>
                 <a href="<?= SITE_URL ?>/admin/noticias">📰 Noticias</a>
                 <a href="<?= SITE_URL ?>/admin/resenas">
