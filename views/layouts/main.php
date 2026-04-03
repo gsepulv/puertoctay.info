@@ -185,9 +185,11 @@ p { margin-bottom: 1rem; }
 }
 .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
 .card-img {
-    width: 100%; height: 200px; object-fit: cover;
+    position: relative;
+    width: 100%; height: 200px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
+.card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card-img-placeholder {
     width: 100%; height: 200px; display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #E0F2FE 0%, #DCFCE7 100%);
