@@ -30,18 +30,25 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
     else $heroImg = null;
     ?>
     <?php if ($heroImg): ?>
-        <div style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); position: relative;">
+        <div style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow-md);">
             <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($heroImg) ?>"
                  alt="<?= htmlspecialchars($negocio['nombre']) ?>"
                  style="width: 100%; height: 400px; object-fit: cover; display: block;">
-            <?php if (!empty($negocio['logo'])): ?>
-                <div style="position: absolute; bottom: -30px; left: 2rem; width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--white); overflow: hidden; box-shadow: var(--shadow-md); background: var(--white);">
-                    <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($negocio['logo']) ?>" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-            <?php endif; ?>
         </div>
         <?php if (!empty($negocio['logo'])): ?>
-            <div style="height: 35px;"></div>
+        <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--white); border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg); margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
+            <div style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--border); overflow: hidden; flex-shrink: 0; background: var(--white);">
+                <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($negocio['logo']) ?>" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+                <h2 style="font-size: 1.3rem; margin: 0; line-height: 1.3;"><?= htmlspecialchars($negocio['nombre']) ?></h2>
+                <?php if (!empty($negocio['categoria_nombre'])): ?>
+                <span style="font-size: 0.85rem; color: var(--text-light);"><?= $negocio['categoria_emoji'] ?? '' ?> <?= htmlspecialchars($negocio['categoria_nombre']) ?></span>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php else: ?>
+        <div style="margin-bottom: 1.5rem;"></div>
         <?php endif; ?>
     <?php else: ?>
         <div style="width: 100%; height: 320px; border-radius: var(--radius-lg); background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-md);">
@@ -263,7 +270,7 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
                         <?php foreach ($similares as $sim): ?>
                             <a href="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($sim['slug']) ?>" class="card" style="text-decoration: none; color: inherit;">
                                 <?php if (!empty($sim['foto_principal'])): ?>
-                                    <img class="card-img" src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($sim['foto_principal']) ?>" alt="<?= htmlspecialchars($sim['nombre']) ?>" loading="lazy">
+                                    <img class="card-img" src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($sim['foto_principal']) ?>" alt="<?= htmlspecialchars($sim['nombre']) ?>" loading="lazy">
                                 <?php else: ?>
                                     <div class="card-img-placeholder">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>

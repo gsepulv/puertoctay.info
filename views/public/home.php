@@ -54,7 +54,7 @@
                     <?php if (empty($neg['verificado'])): ?><span class="card-ejemplo">EJEMPLO</span><?php endif; ?>
                     <?php if (!empty($neg['foto_principal'])): ?>
                 <div class="card-img">
-                    <img src="<?= SITE_URL ?>/uploads/negocios/<?= htmlspecialchars($neg['foto_principal']) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" loading="lazy">
+                    <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($neg["foto_principal"]) ?>" alt="<?= htmlspecialchars($neg['nombre']) ?>" loading="lazy">
                 </div>
                 <?php else: ?>
                 <div class="card-img card-img-placeholder">
