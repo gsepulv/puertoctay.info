@@ -59,6 +59,21 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
             <!-- Name + Badges -->
             <h1 style="margin-bottom: 0.75rem;"><?= htmlspecialchars($negocio['nombre']) ?></h1>
 
+            <?php if (!empty($_SESSION['usuario_id'])): ?>
+                <?php
+                $__favStmt = getDB()->prepare("SELECT id FROM favoritos WHERE usuario_id = :uid AND negocio_id = :nid");
+                $__favStmt->execute(['uid' => $_SESSION['usuario_id'], 'nid' => $negocio['id']]);
+                $__isFav = (bool) $__favStmt->fetch();
+                ?>
+                <button onclick="toggleFavorito(<?= (int)$negocio['id'] ?>, this)"
+                        style="background: none; border: 1px solid var(--border); border-radius: 50px; padding: 0.4rem 1rem; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem; color: <?= $__isFav ? '#EF4444' : 'var(--text-light)' ?>; transition: all 0.2s;"
+                        title="<?= $__isFav ? 'Quitar de favoritos' : 'Agregar a favoritos' ?>">
+                    <span class="fav-icon"><?= $__isFav ? '&#9829;' : '&#9825;' ?></span> <span class="fav-text"><?= $__isFav ? 'En favoritos' : 'Favorito' ?></span>
+                </button>
+            <?php else: ?>
+                <a href="<?= SITE_URL ?>/login" style="border: 1px solid var(--border); border-radius: 50px; padding: 0.4rem 1rem; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem; color: var(--text-light); text-decoration: none;">&#9825; Favorito</a>
+            <?php endif; ?>
+
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
                 <?php if (!empty($negocio['categoria_nombre'])): ?>
                     <a href="<?= SITE_URL ?>/categoria/<?= htmlspecialchars($negocio['categoria_slug'] ?? '') ?>" class="badge badge-primary" style="text-decoration: none;">
@@ -156,45 +171,67 @@ $gmapsUrl = $hasCoords ? "https://www.google.com/maps?q={$negocio['lat']},{$nego
 
                 <!-- Formulario de reseña -->
                 <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                    <h3 style="margin-bottom: 1rem;">Deja tu reseña</h3>
-                    <form method="POST" action="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($negocio['slug']) ?>/resena" id="reviewForm">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="negocio_id" value="<?= (int)$negocio['id'] ?>">
 
-                        <!-- Star Rating -->
-                        <div class="form-group">
-                            <label>Calificación</label>
-                            <div id="starPicker" style="font-size: 1.8rem; cursor: pointer; letter-spacing: 4px;">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <span data-star="<?= $i ?>" style="color: var(--border); transition: color 0.15s;">★</span>
-                                <?php endfor; ?>
-                            </div>
-                            <input type="hidden" name="puntuacion" id="starValue" value="5" required>
-                        </div>
+                <?php if (!empty($_SESSION['flash_success'])): ?>
+                    <div style="background: #F0FDF4; border: 1px solid #22C55E; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; color: #166534;">
+                        <?= htmlspecialchars($_SESSION['flash_success']) ?>
+                    </div>
+                    <?php unset($_SESSION['flash_success']); ?>
+                <?php endif; ?>
+                <?php if (!empty($_SESSION['flash_error'])): ?>
+                    <div style="background: #FEF2F2; border: 1px solid #EF4444; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; color: #991B1B;">
+                        <?= htmlspecialchars($_SESSION['flash_error']) ?>
+                    </div>
+                    <?php unset($_SESSION['flash_error']); ?>
+                <?php endif; ?>
 
-                        <div class="form-row">
+                <?php if (!empty($_SESSION['usuario_id'])): ?>
+                    <?php
+                    // Check if user already reviewed this business
+                    $__checkReview = $this->db ?? getDB();
+                    $__rvStmt = $__checkReview->prepare("SELECT id FROM resenas WHERE negocio_id = :nid AND usuario_id = :uid LIMIT 1");
+                    $__rvStmt->execute(['nid' => $negocio['id'], 'uid' => $_SESSION['usuario_id']]);
+                    $__yaReseno = $__rvStmt->fetch();
+                    ?>
+
+                    <?php if ($__yaReseno): ?>
+                        <p style="color: var(--text-light); font-style: italic;">Ya dejaste una reseña en este negocio.</p>
+                    <?php else: ?>
+                        <h3 style="margin-bottom: 1rem;">Deja tu reseña</h3>
+                        <form method="POST" action="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($negocio['slug']) ?>/resena" id="reviewForm">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="negocio_id" value="<?= (int)$negocio['id'] ?>">
+                            <div style="position: absolute; left: -9999px;"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>
+
+                            <!-- Star Rating -->
                             <div class="form-group">
-                                <label for="rev_nombre">Nombre</label>
-                                <input type="text" id="rev_nombre" name="nombre_autor" required placeholder="Tu nombre">
+                                <label>Calificación</label>
+                                <div id="starPicker" style="font-size: 1.8rem; cursor: pointer; letter-spacing: 4px;">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <span data-star="<?= $i ?>" style="color: var(--border); transition: color 0.15s;">&#9733;</span>
+                                    <?php endfor; ?>
+                                </div>
+                                <input type="hidden" name="puntuacion" id="starValue" value="5" required>
                             </div>
+
                             <div class="form-group">
-                                <label for="rev_email">Email</label>
-                                <input type="email" id="rev_email" name="email_autor" required placeholder="tu@email.com">
+                                <label for="rev_comentario">Tu opinión</label>
+                                <textarea id="rev_comentario" name="comentario" rows="3" required placeholder="Cuéntanos tu experiencia (mínimo 10 caracteres)" minlength="10"></textarea>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="rev_comentario">Comentario</label>
-                            <textarea id="rev_comentario" name="comentario" rows="4" placeholder="Cuéntanos tu experiencia..."></textarea>
-                        </div>
+                            <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.75rem;">Publicando como <strong><?= htmlspecialchars($_SESSION['usuario_nombre'] ?? '') ?></strong></p>
 
-                        <!-- Honeypot -->
-                        <div style="position: absolute; left: -9999px;">
-                            <input type="text" name="website_url" tabindex="-1" autocomplete="off">
-                        </div>
+                            <button type="submit" class="btn btn-accent">Enviar reseña</button>
+                        </form>
+                    <?php endif; ?>
 
-                        <button type="submit" class="btn btn-primary">Enviar reseña</button>
-                    </form>
+                <?php else: ?>
+                    <div style="text-align: center; padding: 1.5rem; background: var(--bg); border-radius: var(--radius-md);">
+                        <p style="margin-bottom: 0.75rem; color: var(--text-light);">Inicia sesión para dejar una reseña</p>
+                        <a href="<?= SITE_URL ?>/login" class="btn btn-primary">Iniciar Sesión</a>
+                    </div>
+                <?php endif; ?>
+
                 </div>
             </div>
 
@@ -375,6 +412,31 @@ document.getElementById("starPicker").addEventListener("mouseleave", function() 
         s.style.color = (i < val) ? "var(--accent)" : "var(--border)";
     });
 });
+</script>';
+$extraScripts .= '<script>
+function toggleFavorito(negocioId, btn) {
+    fetch("<?= SITE_URL ?>/api/favorito", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "negocio_id=" + negocioId
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.ok) {
+            var icon = btn.querySelector(".fav-icon");
+            var text = btn.querySelector(".fav-text");
+            if (data.action === "added") {
+                icon.textContent = "\u2665";
+                text.textContent = "En favoritos";
+                btn.style.color = "#EF4444";
+            } else {
+                icon.textContent = "\u2661";
+                text.textContent = "Favorito";
+                btn.style.color = "";
+            }
+        }
+    });
+}
 </script>';
 ?>
 

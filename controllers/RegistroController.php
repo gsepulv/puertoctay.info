@@ -11,14 +11,20 @@ class RegistroController
 
     public function index(): void
     {
-        $categorias = (new Categoria($this->db))->findDirectorio();
+        if (!empty($_SESSION['usuario_id']) && ($_SESSION['usuario_rol'] ?? '') === 'comerciante') {
+            header('Location: ' . SITE_URL . '/mi-comercio');
+            exit;
+        }
+
+        $catModel = new Categoria($this->db);
+        $categorias = $catModel->findDirectorio();
         $errores = $_SESSION['registro_errores'] ?? [];
         $datos = $_SESSION['registro_datos'] ?? [];
         unset($_SESSION['registro_errores'], $_SESSION['registro_datos']);
 
         $pageTitle = 'Registrar mi comercio — ' . SITE_NAME;
         $pageDescription = 'Registra tu negocio gratis en el directorio digital de Puerto Octay.';
-        $viewName = 'public/registro';
+        $viewName = 'public/registro-comercio';
         require ROOT_PATH . '/views/layouts/main.php';
     }
 
@@ -71,10 +77,9 @@ class RegistroController
             $errores[] = 'Las contraseñas no coinciden.';
         }
 
-        // 3. Check email uniqueness in propietarios
-        $stmt = $this->db->prepare("SELECT id FROM propietarios WHERE email = ?");
-        $stmt->execute([$data['email_propietario']]);
-        if ($stmt->fetch()) {
+        // 3. Check email uniqueness in usuarios
+        $usuarioModel = new Usuario($this->db);
+        if ($usuarioModel->findByEmail($data['email_propietario'])) {
             $errores[] = 'Ya existe una cuenta registrada con ese email.';
         }
 
@@ -92,7 +97,6 @@ class RegistroController
             $errores[] = 'La dirección es obligatoria.';
         }
 
-        // If errors, redirect back with data
         if (!empty($errores)) {
             $_SESSION['registro_errores'] = $errores;
             $_SESSION['registro_datos'] = $data;
@@ -100,54 +104,70 @@ class RegistroController
             exit;
         }
 
-        // 5. Create propietario (propietario_id FK points to propietarios table)
-        $stmtProp = $this->db->prepare(
-            "INSERT INTO propietarios (nombre, email, password_hash, telefono, activo)
-             VALUES (?, ?, ?, ?, 0)"
-        );
-        $stmtProp->execute([
-            $data['nombre_propietario'],
-            $data['email_propietario'],
-            password_hash($password, PASSWORD_DEFAULT),
-            $data['telefono_propietario'],
+        // 5. Create usuario with rol=comerciante, activo=0
+        $userId = $usuarioModel->create([
+            'nombre'        => $data['nombre_propietario'],
+            'email'         => $data['email_propietario'],
+            'telefono'      => $data['telefono_propietario'],
+            'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+            'rol'           => 'comerciante',
+            'activo'        => 0,
         ]);
-        $propietarioId = (int) $this->db->lastInsertId();
 
         // 6. Create negocio
         $slug = SlugHelper::unique($this->db, 'negocios', $data['nombre_comercio']);
         $negocioModel = new Negocio($this->db);
         $negocioModel->create([
-            'nombre'           => $data['nombre_comercio'],
-            'slug'             => $slug,
-            'tipo'             => 'comercio',
-            'categoria_id'     => (int) $data['categoria_id'],
-            'descripcion_corta'=> mb_substr($data['descripcion_comercio'], 0, 300),
-            'descripcion_larga'=> $data['descripcion_comercio'],
-            'direccion'        => $data['direccion_comercio'],
-            'telefono'         => $data['telefono_comercio'] ?? null,
-            'whatsapp'         => $data['telefono_propietario'],
-            'email'            => $data['email_propietario'],
-            'sitio_web'        => !empty($data['sitio_web_comercio']) ? $data['sitio_web_comercio'] : null,
-            'activo'           => 0,
-            'verificado'       => 0,
-            'plan_id'          => 1,
-            'propietario_id'   => $propietarioId,
+            'nombre'            => $data['nombre_comercio'],
+            'slug'              => $slug,
+            'tipo'              => 'comercio',
+            'categoria_id'      => (int) $data['categoria_id'],
+            'descripcion_corta' => mb_substr($data['descripcion_comercio'], 0, 300),
+            'descripcion_larga' => $data['descripcion_comercio'],
+            'direccion'         => $data['direccion_comercio'],
+            'telefono'          => $data['telefono_comercio'] ?? null,
+            'whatsapp'          => $data['telefono_propietario'],
+            'email'             => $data['email_propietario'],
+            'sitio_web'         => !empty($data['sitio_web_comercio']) ? $data['sitio_web_comercio'] : null,
+            'activo'            => 0,
+            'verificado'        => 0,
+            'status'            => 'pendiente',
+            'plan_id'           => 1,
+            'propietario_id'    => $userId,
         ]);
 
         AuditLog::log('registro', 'negocios', null,
-            "Nuevo registro: {$data['nombre_comercio']} por {$data['nombre_propietario']}");
+            "Nuevo registro comercio: {$data['nombre_comercio']} por {$data['nombre_propietario']}");
 
-        // Send notification emails (non-blocking: failure won't break registration)
+        // 7. Send emails (non-blocking)
         $catNombre = '';
         if (!empty($data['categoria_id'])) {
             $cat = (new Categoria($this->db))->find((int) $data['categoria_id']);
             $catNombre = $cat['nombre'] ?? '';
         }
-        EmailHelper::notificarNuevoRegistro(
-            $data,
-            ['nombre' => $data['nombre_propietario'], 'email' => $data['email_propietario'], 'telefono' => $data['telefono_propietario']],
-            $catNombre
-        );
+
+        // Email to admin
+        $adminBody = EmailHelper::wrap("
+            <h2>Nuevo comercio registrado</h2>
+            <p><strong>Comercio:</strong> {$data['nombre_comercio']}</p>
+            <p><strong>Categoría:</strong> {$catNombre}</p>
+            <p><strong>Propietario:</strong> {$data['nombre_propietario']}</p>
+            <p><strong>Email:</strong> {$data['email_propietario']}</p>
+            <p><strong>Teléfono:</strong> {$data['telefono_propietario']}</p>
+            <p style='margin-top:1rem;'><a href='" . SITE_URL . "/admin/negocios' style='background:#1B4965;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;'>Ver en administración</a></p>
+        ");
+        EmailHelper::send('contacto@purranque.info', 'Nuevo comercio registrado: ' . $data['nombre_comercio'], $adminBody);
+
+        // Email to comerciante
+        $welcomeBody = EmailHelper::wrap("
+            <h2>¡Bienvenido a " . SITE_NAME . "!</h2>
+            <p>Hola <strong>{$data['nombre_propietario']}</strong>,</p>
+            <p>Tu comercio <strong>{$data['nombre_comercio']}</strong> ha sido registrado exitosamente.</p>
+            <p>Nuestro equipo revisará tu registro y te notificaremos cuando esté publicado.</p>
+            <p>Una vez aprobado, podrás acceder a tu panel en:</p>
+            <p><a href='" . SITE_URL . "/login'>" . SITE_URL . "/login</a></p>
+        ");
+        EmailHelper::send($data['email_propietario'], 'Bienvenido a ' . SITE_NAME, $welcomeBody);
 
         $_SESSION['registro_exito'] = true;
         header('Location: ' . SITE_URL . '/registrar-comercio');

@@ -13,7 +13,15 @@ class AdminNegocioController
     public function index(): void
     {
         $negocioModel = new Negocio($this->db);
-        $negocios = $negocioModel->findAllAdmin();
+
+        // Support ?status= filter
+        $allowedStatuses = ['pendiente', 'activo', 'rechazado', 'suspendido'];
+        $statusFilter = null;
+        if (!empty($_GET['status']) && in_array($_GET['status'], $allowedStatuses, true)) {
+            $statusFilter = $_GET['status'];
+        }
+
+        $negocios = $negocioModel->findAllAdmin($statusFilter);
 
         $pageTitle = 'Negocios — Admin';
         $viewName = 'admin/negocios/index';
@@ -202,6 +210,47 @@ class AdminNegocioController
         exit;
     }
 
+    public function aprobar(string $id): void
+    {
+        CsrfMiddleware::validate();
+        $negocioModel = new Negocio($this->db);
+        $negocio = $negocioModel->find((int)$id);
+        if ($negocio) {
+            // Activate negocio and set status to activo
+            $negocioModel->update((int)$id, [
+                'activo'    => 1,
+                'verificado'=> 1,
+                'status'    => 'activo',
+            ]);
+            // Also activate the owner user account if linked
+            if (!empty($negocio['propietario_id'])) {
+                $stmt = $this->db->prepare("UPDATE usuarios SET activo = 1 WHERE id = ?");
+                $stmt->execute([$negocio['propietario_id']]);
+            }
+            AuditLog::log('aprobar', 'negocios', (int)$id, "Aprobado: {$negocio['nombre']}");
+            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" aprobado y publicado.";
+        }
+        header('Location: ' . SITE_URL . '/admin/negocios');
+        exit;
+    }
+
+    public function rechazar(string $id): void
+    {
+        CsrfMiddleware::validate();
+        $negocioModel = new Negocio($this->db);
+        $negocio = $negocioModel->find((int)$id);
+        if ($negocio) {
+            $negocioModel->update((int)$id, [
+                'activo' => 0,
+                'status' => 'rechazado',
+            ]);
+            AuditLog::log('rechazar', 'negocios', (int)$id, "Rechazado: {$negocio['nombre']}");
+            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" rechazado.";
+        }
+        header('Location: ' . SITE_URL . '/admin/negocios');
+        exit;
+    }
+
     /**
      * Handle file uploads for foto_principal, portada, logo.
      */
@@ -225,20 +274,5 @@ class AdminNegocioController
                 }
             }
         }
-    }
-
-
-    public function aprobar(string $id): void
-    {
-        CsrfMiddleware::validate();
-        $negocioModel = new Negocio($this->db);
-        $negocio = $negocioModel->find((int)$id);
-        if ($negocio) {
-            $negocioModel->update((int)$id, ['activo' => 1, 'verificado' => 1]);
-            AuditLog::log('aprobar', 'negocios', (int)$id, "Aprobado: {$negocio['nombre']}");
-            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" aprobado y publicado.";
-        }
-        header('Location: ' . SITE_URL . '/admin/negocios');
-        exit;
     }
 }

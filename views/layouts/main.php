@@ -431,7 +431,9 @@ p { margin-bottom: 1rem; }
     line-height: 1.5;
 }
 .banner-ejemplo a { color: #B45309; font-weight: 700; text-decoration: underline; }
-    </style>
+.nav-user-dropdown.open .nav-dropdown-menu { display: block !important; }
+.nav-dropdown-menu a:hover { background: var(--bg); }
+        </style>
     <?php if (isset($extraHead)) echo $extraHead; ?>
 </head>
 <body>
@@ -458,6 +460,29 @@ p { margin-bottom: 1rem; }
                 <a href="<?= SITE_URL ?>/noticias">Noticias</a>
                 <a href="<?= SITE_URL ?>/mapa">Mapa</a>
                 <a href="<?= SITE_URL ?>/contacto" class="nav-cta">Contacto</a>
+                <?php if (!empty($_SESSION['usuario_id'])): ?>
+                    <?php
+                    $__panelUrl = match($_SESSION['usuario_rol'] ?? '') {
+                        'admin', 'editor', 'moderador' => SITE_URL . '/admin',
+                        'comerciante' => SITE_URL . '/mi-comercio',
+                        default => SITE_URL . '/mi-cuenta',
+                    };
+                    ?>
+                    <div class="nav-user-dropdown" style="position: relative; display: inline-block;">
+                        <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" class="nav-user-btn" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.9rem; background: var(--primary); color: #fff; border-radius: 50px; font-size: 0.85rem; font-weight: 600; text-decoration: none;">
+                            <?= htmlspecialchars(mb_substr($_SESSION['usuario_nombre'] ?? '', 0, 15)) ?>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+                        </a>
+                        <div class="nav-dropdown-menu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 0.5rem; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-md); min-width: 180px; z-index: 200; overflow: hidden;">
+                            <a href="<?= $__panelUrl ?>" style="display: block; padding: 0.7rem 1rem; color: var(--text); text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid var(--border);">
+                                <?= ($_SESSION['usuario_rol'] ?? '') === 'comerciante' ? 'Mi Comercio' : (in_array($_SESSION['usuario_rol'] ?? '', ['admin','editor','moderador']) ? 'Panel Admin' : 'Mi Cuenta') ?>
+                            </a>
+                            <a href="<?= SITE_URL ?>/logout" style="display: block; padding: 0.7rem 1rem; color: #DC2626; text-decoration: none; font-size: 0.9rem;">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <a href="<?= SITE_URL ?>/login" class="nav-cta" style="background: var(--primary); color: #fff; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600;">Iniciar Sesión</a>
+                <?php endif; ?>
             </nav>
         </div>
     </div>
@@ -543,6 +568,12 @@ window.addEventListener('scroll', function() {
     header.classList.toggle('scrolled', window.scrollY > 10);
     var st = document.getElementById('scrollTop');
     st.classList.toggle('visible', window.scrollY > 400);
+});
+// Close user dropdown on click outside
+document.addEventListener('click', function(e) {
+    document.querySelectorAll('.nav-user-dropdown.open').forEach(function(d) {
+        if (!d.contains(e.target)) d.classList.remove('open');
+    });
 });
 // Close mobile menu on link click
 document.querySelectorAll('.site-nav a').forEach(function(a) {

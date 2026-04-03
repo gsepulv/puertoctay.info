@@ -129,17 +129,24 @@ class Negocio extends Model
     }
 
     /**
-     * Todos para admin (incluye inactivos).
+     * Todos para admin (incluye inactivos). Opcionalmente filtra por status.
      */
-    public function findAllAdmin(): array
+    public function findAllAdmin(?string $statusFilter = null): array
     {
         $sql = "SELECT n.*, c.nombre AS categoria_nombre, p.nombre AS plan_nombre
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
-                LEFT JOIN planes p ON p.id = n.plan_id
-                ORDER BY n.created_at DESC";
+                LEFT JOIN planes p ON p.id = n.plan_id";
+
+        $params = [];
+        if ($statusFilter !== null) {
+            $sql .= " WHERE n.status = :status";
+            $params['status'] = $statusFilter;
+        }
+
+        $sql .= " ORDER BY n.created_at DESC";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll();
     }
 }

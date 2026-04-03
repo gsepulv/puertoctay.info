@@ -98,4 +98,75 @@ class NegocioController
         $viewName = 'public/patrimonio';
         require ROOT_PATH . '/views/layouts/main.php';
     }
+
+    public function guardarResena(string $slug): void
+    {
+        CsrfMiddleware::validate();
+
+        // Must be logged in
+        if (empty($_SESSION['usuario_id'])) {
+            header('Location: ' . SITE_URL . '/login');
+            exit;
+        }
+
+        $negocioModel = new Negocio($this->db);
+        $negocio = $negocioModel->findBySlug($slug);
+
+        if (!$negocio) {
+            http_response_code(404);
+            require ROOT_PATH . '/views/errors/404.php';
+            return;
+        }
+
+        $userId = (int) $_SESSION['usuario_id'];
+
+        // Check: one review per user per business
+        $stmt = $this->db->prepare(
+            "SELECT id FROM resenas WHERE negocio_id = :nid AND usuario_id = :uid LIMIT 1"
+        );
+        $stmt->execute(['nid' => $negocio['id'], 'uid' => $userId]);
+        if ($stmt->fetch()) {
+            $_SESSION['flash_error'] = 'Ya dejaste una reseña en este negocio.';
+            header('Location: ' . SITE_URL . '/negocio/' . $slug);
+            exit;
+        }
+
+        // Honeypot
+        if (!empty($_POST['website_url'])) {
+            header('Location: ' . SITE_URL . '/negocio/' . $slug);
+            exit;
+        }
+
+        $data = Sanitizer::cleanArray($_POST);
+        $puntuacion = max(1, min(5, (int) ($data['puntuacion'] ?? 5)));
+        $comentario = trim($data['comentario'] ?? '');
+
+        if (empty($comentario) || mb_strlen($comentario) < 10) {
+            $_SESSION['flash_error'] = 'El comentario debe tener al menos 10 caracteres.';
+            header('Location: ' . SITE_URL . '/negocio/' . $slug);
+            exit;
+        }
+
+        $stmtIns = $this->db->prepare(
+            "INSERT INTO resenas (negocio_id, usuario_id, nombre_autor, email_autor, puntuacion, comentario, estado, ip_address)
+             VALUES (:nid, :uid, :nombre, :email, :punt, :com, 'pendiente', :ip)"
+        );
+        $stmtIns->execute([
+            'nid'    => $negocio['id'],
+            'uid'    => $userId,
+            'nombre' => $_SESSION['usuario_nombre'] ?? 'Anónimo',
+            'email'  => '',
+            'punt'   => $puntuacion,
+            'com'    => $comentario,
+            'ip'     => $_SERVER['REMOTE_ADDR'] ?? '',
+        ]);
+
+        AuditLog::log('crear', 'resenas', (int) $this->db->lastInsertId(),
+            "Reseña en {$negocio['nombre']} por " . ($_SESSION['usuario_nombre'] ?? ''));
+
+        $_SESSION['flash_success'] = 'Tu reseña fue enviada y será revisada por nuestro equipo.';
+        header('Location: ' . SITE_URL . '/negocio/' . $slug);
+        exit;
+    }
+
 }

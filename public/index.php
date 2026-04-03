@@ -45,6 +45,35 @@ $router->add('GET', '/sitemap.xml', 'SitemapController@index');
 $router->add('GET', '/api/negocios.json', 'NegociosApiController@json');
 $router->add('POST', '/api/subscribe', 'SubscribeApiController@store');
 
+// ── Auth pública ─────────────────────────────────────
+$router->add('GET', '/login', 'AuthController@loginForm');
+$router->add('POST', '/login', 'AuthController@login');
+$router->add('GET', '/logout', 'AuthController@logout');
+$router->add('GET', '/registro', 'RegistroVisitanteController@index');
+$router->add('POST', '/registro', 'RegistroVisitanteController@store');
+$router->add('GET', '/recuperar-contrasena', 'RecuperarController@form');
+$router->add('POST', '/recuperar-contrasena', 'RecuperarController@enviar');
+$router->add('GET', '/reset-password/{token}', 'RecuperarController@resetForm');
+$router->add('POST', '/reset-password/{token}', 'RecuperarController@reset');
+
+// ── Panel Comerciante ────────────────────────────────
+$router->add('GET', '/mi-comercio', 'PanelComercianteController@dashboard');
+$router->add('GET', '/mi-comercio/editar', 'PanelComercianteController@editarNegocio');
+$router->add('POST', '/mi-comercio/editar', 'PanelComercianteController@actualizarNegocio');
+$router->add('GET', '/mi-comercio/perfil', 'PanelComercianteController@perfil');
+$router->add('POST', '/mi-comercio/perfil', 'PanelComercianteController@actualizarPerfil');
+
+// ── Panel Visitante ──────────────────────────────────
+$router->add('GET', '/mi-cuenta', 'PanelVisitanteController@dashboard');
+$router->add('GET', '/mi-cuenta/favoritos', 'PanelVisitanteController@favoritos');
+$router->add('GET', '/mi-cuenta/resenas', 'PanelVisitanteController@resenas');
+$router->add('GET', '/mi-cuenta/perfil', 'PanelVisitanteController@perfil');
+$router->add('POST', '/mi-cuenta/perfil', 'PanelVisitanteController@actualizarPerfil');
+$router->add('POST', '/api/favorito', 'PanelVisitanteController@toggleFavorito');
+
+// ── Reseñas públicas ─────────────────────────────────
+$router->add('POST', '/negocio/{slug}/resena', 'NegocioController@guardarResena');
+
 // ── Admin: Auth ───────────────────────────────────────
 $router->add('GET', '/admin/login', 'AdminAuthController@loginForm');
 $router->add('POST', '/admin/login', 'AdminAuthController@login');
@@ -60,6 +89,7 @@ $router->add('POST', '/admin/negocios/{id}/actualizar', 'AdminNegocioController@
 $router->add('POST', '/admin/negocios/{id}/eliminar', 'AdminNegocioController@eliminar');
 $router->add('POST', '/admin/negocios/{id}/verificar', 'AdminNegocioController@verificar');
 $router->add('POST', '/admin/negocios/{id}/aprobar', 'AdminNegocioController@aprobar');
+$router->add('POST', '/admin/negocios/{id}/rechazar', 'AdminNegocioController@rechazar');
 
 // ── Admin: Categorías ─────────────────────────────────
 $router->add('GET', '/admin/categorias', 'AdminCategoriaController@index');

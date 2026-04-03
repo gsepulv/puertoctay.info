@@ -1,3 +1,13 @@
+<?php if (($counts['negocios_pendientes'] ?? 0) > 0): ?>
+<div style="background: #FEF3C7; border: 2px solid #F59E0B; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <strong style="color: #92400E; font-size: 1.05rem;">📋 <?= $counts['negocios_pendientes'] ?> registro<?= $counts['negocios_pendientes'] > 1 ? 's' : '' ?> pendiente<?= $counts['negocios_pendientes'] > 1 ? 's' : '' ?> de aprobación</strong>
+        <p style="color: #B45309; font-size: 0.85rem; margin: 0.25rem 0 0;">Comercios nuevos esperando revisión.</p>
+    </div>
+    <a href="<?= SITE_URL ?>/admin/negocios?status=pendiente" style="background: #F59E0B; color: #fff; padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Revisar ahora</a>
+</div>
+<?php endif; ?>
+
 <!-- Fila 1: Principales -->
 <div class="stat-grid">
     <div class="stat-card">

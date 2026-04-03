@@ -11,7 +11,7 @@ class AdminHelper
 
         $queries = [
             'negocios_activos'   => "SELECT COUNT(*) FROM negocios WHERE activo = 1",
-            'negocios_pendientes'=> "SELECT COUNT(*) FROM negocios WHERE activo = 0",
+            'negocios_pendientes'=> "SELECT COUNT(*) FROM negocios WHERE status = 'pendiente'",
             'negocios_verificados'=> "SELECT COUNT(*) FROM negocios WHERE verificado = 1",
             'categorias'         => "SELECT COUNT(*) FROM categorias WHERE activo = 1",
             'noticias_publicadas'=> "SELECT COUNT(*) FROM noticias WHERE estado = 'publicado'",
@@ -53,7 +53,7 @@ class AdminHelper
             'categorias' => self::queryCount($db, "SELECT COUNT(*) FROM categorias WHERE activo = 1"),
             'resenas' => self::queryCount($db, "SELECT COUNT(*) FROM resenas WHERE estado = 'pendiente'"),
             'mensajes' => self::queryCount($db, "SELECT COUNT(*) FROM mensajes WHERE leido = 0"),
-            'pendientes_registro' => self::queryCount($db, "SELECT COUNT(*) FROM negocios WHERE activo = 0 AND propietario_id IS NOT NULL")
+            'pendientes_registro' => self::queryCount($db, "SELECT COUNT(*) FROM negocios WHERE status = 'pendiente'")
         ];
     }
 
