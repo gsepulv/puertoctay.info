@@ -149,6 +149,23 @@
             </div>
         </div>
 
+        <!-- Ubicación -->
+        <h4 style="margin: 1.5rem 0 0.75rem; font-size: 0.95rem; color: var(--text-light);">Ubicación (opcional)</h4>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Latitud</label>
+                <input type="text" name="lat" value="<?= htmlspecialchars($d['lat'] ?? '') ?>" placeholder="-40.9724" pattern="-?[0-9]+(\.[0-9]+)?" title="Número decimal, ej: -40.9724">
+            </div>
+            <div class="form-group">
+                <label>Longitud</label>
+                <input type="text" name="lng" value="<?= htmlspecialchars($d['lng'] ?? '') ?>" placeholder="-72.8876" pattern="-?[0-9]+(\.[0-9]+)?" title="Número decimal, ej: -72.8876">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Cómo llegar</label>
+            <textarea name="como_llegar" rows="2" placeholder="Indicaciones de acceso: desde la plaza, tomar calle..." maxlength="500"><?= htmlspecialchars($d['como_llegar'] ?? '') ?></textarea>
+        </div>
+
         <!-- SECCION 4: Temporadas -->
         <?php if (!empty($temporadas)): ?>
         <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Temporadas turísticas</h3>
