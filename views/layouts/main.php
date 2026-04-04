@@ -10,6 +10,7 @@ try {
         if (!empty($__s['valor'])) $__redes[$__s['clave']] = $__s['valor'];
     }
 } catch (Exception $e) {}
+// Beta mode$__modoBeta = false;try {    $__betaRow = $__cfgModel->findBy("clave", "modo_beta");    $__modoBeta = ($__betaRow["valor"] ?? "0") === "1";} catch (Exception $e) {}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -352,6 +353,7 @@ p { margin-bottom: 1rem; }
 }
 .scroll-top:hover { background: var(--primary-light); transform: translateY(-2px); }
 .scroll-top.visible { display: flex; }
+.badge-beta {    position: fixed; bottom: 80px; left: 20px; z-index: 9998;    background: #E9C46A; color: #0D1B2A;    padding: 8px 16px; border-radius: 8px;    font-size: 12px; font-weight: 700;    font-family: "Plus Jakarta Sans", sans-serif;    text-transform: uppercase; letter-spacing: 1px;    box-shadow: 0 2px 8px rgba(0,0,0,0.2);    cursor: default; transition: all 0.3s ease;    max-width: 200px;}.badge-beta .beta-tooltip {    display: none; font-size: 11px; font-weight: 400;    text-transform: none; letter-spacing: 0;    line-height: 1.4; margin-top: 6px; color: #1a2a3a;}.badge-beta:hover .beta-tooltip { display: block; }.badge-beta:hover { max-width: 300px; padding: 10px 16px; }
 
 /* ── FOOTER ───────────────────────────────────────────── */
 .site-footer {
@@ -585,5 +587,6 @@ document.querySelectorAll('.site-nav a').forEach(function(a) {
 });
 </script>
 <?php if (isset($extraScripts)) echo $extraScripts; ?>
+<?php if ($__modoBeta): ?><div class="badge-beta">    <span style="font-size:10px;display:block;font-weight:400;letter-spacing:0.5px;">Estado del sitio</span>    <span>🚧 BETA</span>    <div class="beta-tooltip">Sitio en fase Beta desde abril 2026. Podría presentar fallos. Estamos trabajando para mejorar.</div></div><?php endif; ?>
 </body>
 </html>
