@@ -9,10 +9,11 @@
         <span class="sep">/</span>
         <span><?= htmlspecialchars($noticia['titulo']) ?></span>
     </nav>
-n<?php /* Example banner */ ?>
+<?php if (empty($noticia["featured"])): ?>
 <div class="banner-ejemplo" style="max-width:800px;margin:0 auto 1rem;padding:0.8rem 1.2rem;">
     Este contenido es un ejemplo demostrativo. La informacion mostrada no es real.
 </div>
+<?php endif; ?>
 </div>
 
 <section class="section">
