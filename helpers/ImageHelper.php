@@ -31,15 +31,11 @@ class ImageHelper
         // Determine max dimensions based on subdirectory
         $maxWidth = match ($subdir) {
             'logos'    => 800,
-            'hero'     => 800,
-            'hero'     => 1920,
             'portadas' => 1200,
             default    => 1200,
         };
         $maxHeight = match ($subdir) {
             'logos'    => 800,
-            'hero'     => 800,
-            'hero'     => 1920,
             'portadas' => 400,
             default    => 0, // 0 = no height limit
         };

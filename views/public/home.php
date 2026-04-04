@@ -1,48 +1,27 @@
-<?php $__hasHeroImg = !empty($heroSlide['imagen']); ?>
-<section class="hero" <?php if ($__hasHeroImg): ?>style="background:none;padding:0;"<?php endif; ?>>
-    <?php if ($__hasHeroImg): ?>
-    <div style="position:relative;min-height:500px;display:flex;align-items:center;overflow:hidden;">
-        <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($heroSlide['imagen']) ?>"
-             alt="<?= htmlspecialchars($heroSlide['titulo'] ?? '') ?>"
-             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;animation:heroZoom 20s ease-in-out infinite alternate;">
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,42,0.75),rgba(27,73,101,0.6),rgba(45,106,79,0.5));"></div>
-        <div class="container" style="position:relative;z-index:1;padding:4rem 0;">
-    <?php else: ?>
+<section class="hero">
     <div class="container">
-    <?php endif; ?>
-            <h1><?= htmlspecialchars($heroSlide['titulo'] ?? 'Descubre Puerto Octay') ?></h1>
-            <p><?= htmlspecialchars($heroSlide['subtitulo'] ?? 'Encuentra comercios, servicios y atractivos turísticos en nuestra ciudad') ?></p>
-            <form class="hero-search" action="<?= SITE_URL ?>/buscar" method="GET">
-                <input type="text" name="q" placeholder="Buscar negocios, servicios, turismo..." class="form-group">
-                <button type="submit" class="btn btn-accent">🔎 Buscar</button>
-            </form>
-            <?php if (!empty($heroSlide['texto_boton']) && !empty($heroSlide['url_boton'])): ?>
-            <a href="<?= htmlspecialchars($heroSlide['url_boton']) ?>" class="btn btn-accent" style="margin-top:1rem;font-size:1.05rem;padding:0.8rem 2rem;">
-                <?= htmlspecialchars($heroSlide['texto_boton']) ?>
-            </a>
-            <?php endif; ?>
-            <div class="hero-stats">
-                <div>
-                    <span class="hero-stat-value"><?= count($categorias) ?></span>
-                    <span class="hero-stat-label">Categorías</span>
-                </div>
-                <div>
-                    <span class="hero-stat-value"><?php $totalNeg = 0; foreach ($categorias as $c) $totalNeg += (int)($c['total_negocios'] ?? 0); echo $totalNeg; ?></span>
-                    <span class="hero-stat-label">Negocios</span>
-                </div>
-                <div>
-                    <span class="hero-stat-value">365</span>
-                    <span class="hero-stat-label">días</span>
-                </div>
+        <h1>Descubre Puerto Octay</h1>
+        <p>Encuentra comercios, servicios y atractivos turisticos en nuestra ciudad</p>
+        <form class="hero-search" action="<?= SITE_URL ?>/buscar" method="GET">
+            <input type="text" name="q" placeholder="Buscar negocios, servicios, turismo..." class="form-group">
+            <button type="submit" class="btn btn-accent">🔎 Buscar</button>
+        </form>
+        <div class="hero-stats">
+            <div>
+                <span class="hero-stat-value"><?= count($categorias) ?></span>
+                <span class="hero-stat-label">Categorias</span>
             </div>
-    <?php if ($__hasHeroImg): ?>
+            <div>
+                <span class="hero-stat-value"><?php $totalNeg = 0; foreach ($categorias as $c) $totalNeg += (int)($c['total_negocios'] ?? 0); echo $totalNeg; ?></span>
+                <span class="hero-stat-label">Negocios</span>
+            </div>
+            <div>
+                <span class="hero-stat-value">365</span>
+                <span class="hero-stat-label">dias</span>
+            </div>
         </div>
     </div>
-    <?php else: ?>
-    </div>
-    <?php endif; ?>
 </section>
-
 
 <section class="section section-warm">
     <div class="container">
@@ -233,22 +212,16 @@
 <section class="section section-white">
     <div class="container">
         <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-            <a href="<?= SITE_URL ?>/mapa" class="cta-card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));">
-                <div class="cta-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                </div>
-                <h3>Mapa Interactivo</h3>
-                <p>Explora todos los negocios y atractivos turísticos en un mapa dinámico</p>
-                <span class="cta-link">Ver Mapa &#8594;</span>
-            </a>
-            <a href="<?= SITE_URL ?>/turismo" class="cta-card" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-light));">
-                <div class="cta-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4M5 21V10.87M19 21V10.87"/></svg>
-                </div>
-                <h3>Turismo y Patrimonio</h3>
-                <p>Descubre la arquitectura alemana, museos y atractivos naturales de Puerto Octay</p>
-                <span class="cta-link">Ver Turismo &#8594;</span>
-            </a>
+            <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--white); padding: 2rem; text-align: center;">
+                <h3 style="color: var(--white);">📍 Mapa Interactivo</h3>
+                <p>Explora todos los negocios y atractivos en el mapa</p>
+                <a href="<?= SITE_URL ?>/mapa" class="btn btn-accent">Ver Mapa</a>
+            </div>
+            <div class="card" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--white); padding: 2rem; text-align: center;">
+                <h3 style="color: var(--white);">🏛 Turismo y Patrimonio</h3>
+                <p>Descubre los atractivos turísticos de Puerto Octay</p>
+                <a href="<?= SITE_URL ?>/turismo" class="btn btn-accent">Ver Turismo</a>
+            </div>
         </div>
     </div>
 </section>

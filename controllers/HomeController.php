@@ -35,7 +35,6 @@ class HomeController
         }
 
         $pageTitle = SITE_NAME . ' — ' . SITE_TAGLINE;
-// Hero slide        $heroModel = new HeroSlide($this->db);        $heroSlide = $heroModel->findActivo();
         $pageDescription = 'Guía de turismo y comercio de Puerto Octay, a orillas del Lago Llanquihue. Encuentra negocios, atractivos, eventos y noticias.';
         require ROOT_PATH . '/views/layouts/main.php';
     }

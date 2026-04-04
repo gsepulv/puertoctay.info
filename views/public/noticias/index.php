@@ -91,5 +91,4 @@
         </div>
         <?php endif; ?>
     </div>
-        <?php require ROOT_PATH . "/views/partials/pagination.php"; ?>
 </section>

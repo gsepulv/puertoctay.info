@@ -123,7 +123,6 @@ class Negocio extends Model
     /**
      * Conteo por categoría para admin.
      */
-public function countActivos(): int    {        return (int) $this->db->query("SELECT COUNT(*) FROM negocios WHERE activo = 1")->fetchColumn();    }
     public function countByCategoria(int $categoriaId): int
     {
         return $this->count(['categoria_id' => $categoriaId, 'activo' => 1]);

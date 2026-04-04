@@ -82,13 +82,6 @@ $router->add('GET', '/admin/logout', 'AdminAuthController@logout');
 $router->add('GET', '/admin', 'AdminDashboardController@index');
 
 // ── Admin: Negocios ───────────────────────────────────
-$router->add("GET", "/admin/hero", "AdminHeroController@index");
-$router->add("GET", "/admin/hero/crear", "AdminHeroController@crear");
-$router->add("POST", "/admin/hero/guardar", "AdminHeroController@guardar");
-$router->add("GET", "/admin/hero/{id}/editar", "AdminHeroController@editar");
-$router->add("POST", "/admin/hero/{id}/actualizar", "AdminHeroController@actualizar");
-$router->add("POST", "/admin/hero/{id}/eliminar", "AdminHeroController@eliminar");
-$router->add("POST", "/admin/hero/{id}/toggle", "AdminHeroController@toggle");
 $router->add('GET', '/admin/negocios', 'AdminNegocioController@index');
 $router->add('GET', '/admin/negocios/crear', 'AdminNegocioController@crear');
 $router->add('POST', '/admin/negocios/guardar', 'AdminNegocioController@guardar');

@@ -13,28 +13,25 @@ class NoticiaController
     {
         $noticiaModel = new Noticia($this->db);
 
-        $perPage = 12;
-        $page = max(1, (int) ($_GET['page'] ?? 1));
-        $total = $noticiaModel->countPublicadas();
-        $totalPages = max(1, (int) ceil($total / $perPage));
-        $page = min($page, $totalPages);
-
         $destacadas = $noticiaModel->findDestacadas(1);
-        $destacada = ($page === 1) ? ($destacadas[0] ?? null) : null;
+        $destacada = $destacadas[0] ?? null;
 
-        $noticias = $noticiaModel->findPublicadas($perPage, ($page - 1) * $perPage);
+        // Noticias principales (excluir destacada si existe)
+        $todas = $noticiaModel->findPublicadas(7);
         if ($destacada) {
-            $noticias = array_filter($noticias, fn($n) => (int)$n['id'] !== (int)$destacada['id']);
-            $noticias = array_values($noticias);
+            $noticias = array_filter($todas, fn($n) => (int)$n['id'] !== (int)$destacada['id']);
+            $noticias = array_slice(array_values($noticias), 0, 6);
+        } else {
+            $noticias = array_slice($todas, 0, 6);
         }
 
+        // Sidebar
         $ultimas = $noticiaModel->findUltimas(5);
         $categoriasEditoriales = $noticiaModel->conteoCategoriasEditoriales();
 
         $pageTitle = 'Noticias — ' . SITE_NAME;
         $pageDescription = 'Noticias de turismo, comercio, cultura y comunidad de Puerto Octay.';
         $viewName = 'public/noticias/index';
-        $pagination = ['page' => $page, 'totalPages' => $totalPages, 'baseUrl' => SITE_URL . '/noticias'];
         require ROOT_PATH . '/views/layouts/main.php';
     }
 
