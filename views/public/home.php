@@ -233,16 +233,22 @@
 <section class="section section-white">
     <div class="container">
         <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-            <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--white); padding: 2rem; text-align: center;">
-                <h3 style="color: var(--white);">📍 Mapa Interactivo</h3>
-                <p>Explora todos los negocios y atractivos en el mapa</p>
-                <a href="<?= SITE_URL ?>/mapa" class="btn btn-accent">Ver Mapa</a>
-            </div>
-            <div class="card" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--white); padding: 2rem; text-align: center;">
-                <h3 style="color: var(--white);">🏛 Turismo y Patrimonio</h3>
-                <p>Descubre los atractivos turísticos de Puerto Octay</p>
-                <a href="<?= SITE_URL ?>/turismo" class="btn btn-accent">Ver Turismo</a>
-            </div>
+            <a href="<?= SITE_URL ?>/mapa" class="cta-card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));">
+                <div class="cta-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <h3>Mapa Interactivo</h3>
+                <p>Explora todos los negocios y atractivos turísticos en un mapa dinámico</p>
+                <span class="cta-link">Ver Mapa &#8594;</span>
+            </a>
+            <a href="<?= SITE_URL ?>/turismo" class="cta-card" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-light));">
+                <div class="cta-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4M5 21V10.87M19 21V10.87"/></svg>
+                </div>
+                <h3>Turismo y Patrimonio</h3>
+                <p>Descubre la arquitectura alemana, museos y atractivos naturales de Puerto Octay</p>
+                <span class="cta-link">Ver Turismo &#8594;</span>
+            </a>
         </div>
     </div>
 </section>

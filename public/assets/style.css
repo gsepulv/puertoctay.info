@@ -424,3 +424,40 @@ p { margin-bottom: 1rem; }
     from { transform: scale(1); }
     to { transform: scale(1.05); }
 }
+
+/* ── CTA CARDS (Home) ─────────────────────────────────── */
+.cta-card {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 2.5rem 2rem; color: #fff;
+    border-radius: var(--radius-lg); text-decoration: none;
+    transition: all var(--transition); border: none;
+    box-shadow: var(--shadow-md); overflow: hidden;
+}
+.cta-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+}
+.cta-icon {
+    width: 64px; height: 64px; margin-bottom: 1.2rem;
+    background: rgba(255,255,255,0.15); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+}
+.cta-card:hover .cta-icon {
+    background: rgba(255,255,255,0.25); transform: scale(1.1);
+}
+.cta-icon svg { width: 32px; height: 32px; color: #fff; }
+.cta-card h3 {
+    color: #fff; font-size: 1.3rem; margin-bottom: 0.5rem;
+}
+.cta-card p {
+    color: rgba(255,255,255,0.85); font-size: 0.95rem;
+    line-height: 1.6; margin-bottom: 1.2rem; max-width: 280px;
+}
+.cta-link {
+    display: inline-block; padding: 0.5rem 1.5rem;
+    background: var(--accent); color: var(--primary-dark);
+    border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+    transition: all var(--transition);
+}
+.cta-card:hover .cta-link { background: #fff; }
