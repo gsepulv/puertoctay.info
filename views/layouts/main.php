@@ -103,6 +103,7 @@ p { margin-bottom: 1rem; }
 /* Container */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
 .container-narrow { max-width: 800px; margin: 0 auto; padding: 0 1.25rem; }
+.container-narrow h3 { margin-top: 1.8rem; margin-bottom: 0.75rem; font-size: 1.3rem; color: var(--primary-dark); }.container-narrow p { margin-bottom: 1rem; line-height: 1.7; }.container-narrow ul { margin-left: 1.25rem; margin-bottom: 1rem; }.container-narrow li { margin-bottom: 0.5rem; line-height: 1.6; list-style: disc; }
 
 /* ── HEADER / NAVBAR ──────────────────────────────────── */
 .site-header {
@@ -358,7 +359,7 @@ p { margin-bottom: 1rem; }
 }
 .scroll-top:hover { background: var(--primary-light); transform: translateY(-2px); }
 .scroll-top.visible { display: flex; }
-.badge-beta {    position: fixed; top: 80px; right: 20px; z-index: 9998;    background: #E9C46A; color: #0D1B2A;    padding: 8px 16px; border-radius: 8px;    font-size: 12px; font-weight: 700;    font-family: "Plus Jakarta Sans", sans-serif;    text-transform: uppercase; letter-spacing: 1px;    box-shadow: 0 2px 8px rgba(0,0,0,0.2);    cursor: default; transition: all 0.3s ease;    max-width: 200px;}.badge-beta .beta-tooltip {    display: none; font-size: 11px; font-weight: 400;    text-transform: none; letter-spacing: 0;    line-height: 1.4; margin-top: 6px; color: #1a2a3a;}.badge-beta:hover .beta-tooltip { display: block; }.badge-beta:hover { max-width: 300px; padding: 10px 16px; }
+.beta-bar { background: #0D1B2A; color: #E9C46A; text-align: center; font-size: 13px; padding: 6px 0; font-family: "Plus Jakarta Sans", sans-serif; width: 100%; }
 
 /* ── FOOTER ───────────────────────────────────────────── */
 .site-footer {
@@ -448,6 +449,7 @@ p { margin-bottom: 1rem; }
 <body>
 
 <!-- HEADER -->
+<?php if ($__modoBeta): ?><div class="beta-bar">🚧 Este sitio se encuentra en fase Beta · Podría presentar fallos · Estamos trabajando para mejorar</div><?php endif; ?>
 <header class="site-header" id="siteHeader">
     <div class="container">
         <div class="header-inner">
@@ -592,6 +594,6 @@ document.querySelectorAll('.site-nav a').forEach(function(a) {
 });
 </script>
 <?php if (isset($extraScripts)) echo $extraScripts; ?>
-<?php if ($__modoBeta): ?><div class="badge-beta">    <span style="font-size:10px;display:block;font-weight:400;letter-spacing:0.5px;">Estado del sitio</span>    <span>🚧 BETA</span>    <div class="beta-tooltip">Sitio en fase Beta desde abril 2026. Podría presentar fallos. Estamos trabajando para mejorar.</div></div><?php endif; ?>
+
 </body>
 </html>
