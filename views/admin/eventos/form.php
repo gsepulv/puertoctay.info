@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <label for="descripcion">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="5"><?= htmlspecialchars($evento['descripcion'] ?? '') ?></textarea>
+            <textarea id="descripcion" name="descripcion" class="editor-wysiwyg" rows="5"><?= htmlspecialchars($evento['descripcion'] ?? '') ?></textarea>
         </div>
 
         <div class="form-row">

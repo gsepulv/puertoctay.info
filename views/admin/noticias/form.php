@@ -29,7 +29,7 @@
 
         <div class="form-group">
             <label for="contenido">Contenido</label>
-            <textarea id="contenido" name="contenido" rows="12"><?= htmlspecialchars($noticia['contenido'] ?? '') ?></textarea>
+            <textarea id="contenido" name="contenido" class="editor-wysiwyg" rows="12"><?= htmlspecialchars($noticia['contenido'] ?? '') ?></textarea>
         </div>
     </div>
 

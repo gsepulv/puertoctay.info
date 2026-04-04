@@ -28,7 +28,7 @@
 
     <div class="form-group">
         <label>Descripción completa</label>
-        <textarea name="descripcion_larga" rows="6"><?= htmlspecialchars($negocio['descripcion_larga'] ?? '') ?></textarea>
+        <textarea name="descripcion_larga" class="editor-wysiwyg" rows="6"><?= htmlspecialchars($negocio['descripcion_larga'] ?? '') ?></textarea>
     </div>
 
     <div class="form-row">

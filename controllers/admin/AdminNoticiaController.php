@@ -55,6 +55,7 @@ class AdminNoticiaController
         }
 
         $data['slug'] = SlugHelper::unique($this->db, 'noticias', $data['titulo']);
+// Raw HTML content (not sanitized - WYSIWYG editor)        $data["contenido"] = $_POST["contenido"] ?? "";
         $data['tiempo_lectura'] = Noticia::calcularTiempoLectura($data['contenido'] ?? '');
         $data['categoria_id'] = !empty($data['categoria_id']) ? (int) $data['categoria_id'] : null;
         $data['featured'] = isset($data['featured']) ? 1 : 0;
@@ -140,6 +141,7 @@ class AdminNoticiaController
             $data['slug'] = SlugHelper::unique($this->db, 'noticias', $data['titulo'], (int) $id);
         }
 
+// Raw HTML content (not sanitized - WYSIWYG editor)        $data["contenido"] = $_POST["contenido"] ?? "";
         $data['tiempo_lectura'] = Noticia::calcularTiempoLectura($data['contenido'] ?? '');
         $data['categoria_id'] = !empty($data['categoria_id']) ? (int) $data['categoria_id'] : null;
         $data['featured'] = isset($data['featured']) ? 1 : 0;

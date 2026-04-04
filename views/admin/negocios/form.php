@@ -89,7 +89,7 @@ $checked = fn(string $key, bool $defaultOn = false) =>
 
         <div class="form-group">
             <label for="descripcion_larga">Descripción larga</label>
-            <textarea id="descripcion_larga" name="descripcion_larga" class="form-input" rows="8"
+            <textarea id="descripcion_larga" name="descripcion_larga" class="form-input editor-wysiwyg" rows="8"
                       placeholder="Descripción detallada del negocio..."><?= $v('descripcion_larga') ?></textarea>
         </div>
     </div>

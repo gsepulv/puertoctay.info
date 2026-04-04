@@ -94,5 +94,6 @@ $__flashError = $_SESSION['flash_error'] ?? ''; unset($_SESSION['flash_error']);
     <?php require ROOT_PATH . '/views/' . $viewName . '.php'; ?>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js"></script><script>if (document.querySelector("textarea.editor-wysiwyg")) {    tinymce.init({        selector: "textarea.editor-wysiwyg",        language: "es",        height: 400,        menubar: false,        plugins: "lists link image table code wordcount fullscreen",        toolbar: "undo redo | blocks | bold italic underline | bullist numlist | link image table | alignleft aligncenter alignright | code fullscreen",        content_style: "body { font-family: Plus Jakarta Sans, sans-serif; font-size: 16px; line-height: 1.7; }",        branding: false,        promotion: false    });}</script>
 </body>
 </html>

@@ -35,7 +35,7 @@ $action = $esEdicion
 
         <div class="form-group">
             <label for="contenido">Contenido (HTML)</label>
-            <textarea id="contenido" name="contenido" rows="15"
+            <textarea id="contenido" name="contenido" class="editor-wysiwyg" rows="15"
                       style="font-family:monospace; font-size:0.85rem;"
             ><?= htmlspecialchars($pagina['contenido'] ?? '') ?></textarea>
         </div>
