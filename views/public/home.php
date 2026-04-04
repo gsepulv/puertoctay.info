@@ -1,26 +1,51 @@
-<section class="hero">
+<?php
+$__heroTitulo = htmlspecialchars($heroData['titulo'] ?? 'Descubre Puerto Octay');
+$__heroSub = htmlspecialchars($heroData['subtitulo'] ?? 'Encuentra comercios, servicios y atractivos turísticos en nuestra ciudad');
+$__heroImg = $heroData['imagen'] ?? '';
+$__heroBtn = $heroData['texto_boton'] ?? '';
+$__heroBtnUrl = $heroData['url_boton'] ?? '';
+?>
+<section class="hero"<?php if ($__heroImg): ?> style="background:none;padding:0;"<?php endif; ?>>
+    <?php if ($__heroImg): ?>
+    <div style="position:relative;min-height:480px;display:flex;align-items:center;overflow:hidden;">
+        <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($__heroImg) ?>" alt=""
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,42,0.7),rgba(27,73,101,0.55),rgba(45,106,79,0.45));"></div>
+        <div class="container" style="position:relative;z-index:1;padding:4rem 0;">
+    <?php else: ?>
     <div class="container">
-        <h1>Descubre Puerto Octay</h1>
-        <p>Encuentra comercios, servicios y atractivos turisticos en nuestra ciudad</p>
-        <form class="hero-search" action="<?= SITE_URL ?>/buscar" method="GET">
-            <input type="text" name="q" placeholder="Buscar negocios, servicios, turismo..." class="form-group">
-            <button type="submit" class="btn btn-accent">🔎 Buscar</button>
-        </form>
-        <div class="hero-stats">
-            <div>
-                <span class="hero-stat-value"><?= count($categorias) ?></span>
-                <span class="hero-stat-label">Categorias</span>
+    <?php endif; ?>
+            <h1><?= $__heroTitulo ?></h1>
+            <p><?= $__heroSub ?></p>
+            <form class="hero-search" action="<?= SITE_URL ?>/buscar" method="GET">
+                <input type="text" name="q" placeholder="Buscar negocios, servicios, turismo..." class="form-group">
+                <button type="submit" class="btn btn-accent">🔎 Buscar</button>
+            </form>
+            <?php if ($__heroBtn && $__heroBtnUrl): ?>
+            <a href="<?= htmlspecialchars($__heroBtnUrl) ?>" class="btn btn-accent" style="margin-top:1rem;font-size:1.05rem;padding:0.7rem 2rem;">
+                <?= htmlspecialchars($__heroBtn) ?>
+            </a>
+            <?php endif; ?>
+            <div class="hero-stats">
+                <div>
+                    <span class="hero-stat-value"><?= count($categorias) ?></span>
+                    <span class="hero-stat-label">Categorías</span>
+                </div>
+                <div>
+                    <span class="hero-stat-value"><?php $totalNeg = 0; foreach ($categorias as $c) $totalNeg += (int)($c['total_negocios'] ?? 0); echo $totalNeg; ?></span>
+                    <span class="hero-stat-label">Negocios</span>
+                </div>
+                <div>
+                    <span class="hero-stat-value">365</span>
+                    <span class="hero-stat-label">días</span>
+                </div>
             </div>
-            <div>
-                <span class="hero-stat-value"><?php $totalNeg = 0; foreach ($categorias as $c) $totalNeg += (int)($c['total_negocios'] ?? 0); echo $totalNeg; ?></span>
-                <span class="hero-stat-label">Negocios</span>
-            </div>
-            <div>
-                <span class="hero-stat-value">365</span>
-                <span class="hero-stat-label">dias</span>
-            </div>
+    <?php if ($__heroImg): ?>
         </div>
     </div>
+    <?php else: ?>
+    </div>
+    <?php endif; ?>
 </section>
 
 <section class="section section-warm">

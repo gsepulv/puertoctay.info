@@ -82,6 +82,8 @@ $router->add('GET', '/admin/logout', 'AdminAuthController@logout');
 $router->add('GET', '/admin', 'AdminDashboardController@index');
 
 // ── Admin: Negocios ───────────────────────────────────
+$router->add('GET', '/admin/hero', 'AdminHeroController@index');
+$router->add('POST', '/admin/hero', 'AdminHeroController@actualizar');
 $router->add('GET', '/admin/negocios', 'AdminNegocioController@index');
 $router->add('GET', '/admin/negocios/crear', 'AdminNegocioController@crear');
 $router->add('POST', '/admin/negocios/guardar', 'AdminNegocioController@guardar');
