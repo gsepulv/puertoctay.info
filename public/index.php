@@ -29,6 +29,7 @@ $router->add('GET', '/turismo', 'NegocioController@turismo');
 $router->add('GET', '/patrimonio', 'NegocioController@patrimonio');
 $router->add('GET', '/mapa', 'MapaController@index');
 $router->add('GET', '/buscar', 'BuscarController@index');
+$router->add("GET", "/paginas-amigas", "PaginaController@showAmigas");
 $router->add('GET', '/pagina/{slug}', 'PaginaController@show');
 $router->add('GET', '/noticias', 'NoticiaController@index');
 $router->add('GET', '/noticias/categoria/{slug}', 'NoticiaController@porCategoria');
