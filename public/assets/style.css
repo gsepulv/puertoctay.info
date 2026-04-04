@@ -418,3 +418,9 @@ p { margin-bottom: 1rem; }
     text-decoration: none; font-family: inherit;
 }
 .share-menu a:hover, .share-menu button:hover { background: var(--bg); }
+
+/* ── HERO IMAGE ANIMATION ─────────────────────────────── */
+@keyframes heroZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
