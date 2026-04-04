@@ -9,18 +9,7 @@ class NegocioController
         $this->db = $db;
     }
 
-    public function index(): void
-    {
-        $negocioModel = new Negocio($this->db);
-        $negocios = $negocioModel->findActivos();
-
-        $categoriaModel = new Categoria($this->db);
-        $categorias = $categoriaModel->findDirectorio();
-
-        $pageTitle = 'Directorio — ' . SITE_NAME;
-        $pageDescription = 'Directorio completo de negocios, comercios y servicios en Puerto Octay.';
-        $viewName = 'public/negocios/index';
-        require ROOT_PATH . '/views/layouts/main.php';
+public function index(): void    {        $negocioModel = new Negocio($this->db);        $perPage = 12;        $page = max(1, (int) ($_GET["page"] ?? 1));        $total = $negocioModel->countActivos();        $totalPages = max(1, (int) ceil($total / $perPage));        $page = min($page, $totalPages);        $negocios = $negocioModel->findActivos($perPage, ($page - 1) * $perPage);        $categoriaModel = new Categoria($this->db);        $categorias = $categoriaModel->findDirectorio();        $pageTitle = "Directorio — " . SITE_NAME;        $pageDescription = "Directorio completo de negocios, comercios y servicios en Puerto Octay.";        $viewName = "public/negocios/index";        $pagination = ["page" => $page, "totalPages" => $totalPages, "baseUrl" => SITE_URL . "/directorio"];        require ROOT_PATH . "/views/layouts/main.php";
     }
 
     public function show(string $slug): void

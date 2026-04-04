@@ -37,6 +37,7 @@ class Noticia extends Model
         return $stmt->fetchAll();
     }
 
+public function countPublicadas(): int    {        return (int) $this->db->query("SELECT COUNT(*) FROM noticias WHERE estado = 'publicado' AND (publicado_en IS NULL OR publicado_en <= NOW())")->fetchColumn();    }
     public function findDestacadas(int $limit = 1): array
     {
         $sql = "SELECT n.*, c.nombre AS categoria_nombre, c.slug AS categoria_slug, c.emoji AS categoria_emoji
