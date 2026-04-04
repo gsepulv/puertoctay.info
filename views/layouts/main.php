@@ -179,6 +179,7 @@ try {
     </div>
 </footer>
 
+<!-- Share button --><div class="share-menu" id="shareMenu">    <button onclick="navigator.clipboard.writeText(location.href);this.textContent='✓ Copiado';setTimeout(function(){document.getElementById('shareMenu').classList.remove('open');this.innerHTML='📋 Copiar enlace'}.bind(this),1000)">📋 Copiar enlace</button>    <a href="#" onclick="event.preventDefault();window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank')">💬 WhatsApp</a>    <a href="#" onclick="event.preventDefault();window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','width=600,height=400')">📘 Facebook</a></div><button class="share-fab" id="shareFab" onclick="document.getElementById('shareMenu').classList.toggle('open')" aria-label="Compartir">    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
 <!-- Scroll to top -->
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">&#8593;</button>
 
@@ -193,6 +194,7 @@ window.addEventListener('scroll', function() {
 // Close user dropdown on click outside
 document.addEventListener('click', function(e) {
     document.querySelectorAll('.nav-user-dropdown.open').forEach(function(d) {
+var sm = document.getElementById("shareMenu"); if (sm && !sm.contains(e.target) && !document.getElementById("shareFab").contains(e.target)) sm.classList.remove("open");
         if (!d.contains(e.target)) d.classList.remove('open');
     });
 });

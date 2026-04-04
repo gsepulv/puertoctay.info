@@ -392,3 +392,29 @@ p { margin-bottom: 1rem; }
 .banner-ejemplo a { color: #B45309; font-weight: 700; text-decoration: underline; }
 .nav-user-dropdown.open .nav-dropdown-menu { display: block !important; }
 .nav-dropdown-menu a:hover { background: var(--bg); }
+
+/* ── SHARE BUTTON ─────────────────────────────────────── */
+.share-fab {
+    position: fixed; bottom: 5rem; right: 2rem; z-index: 91;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--secondary); color: var(--white);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-md); transition: all var(--transition);
+}
+.share-fab:hover { background: var(--primary); transform: translateY(-2px); }
+.share-fab svg { width: 20px; height: 20px; }
+.share-menu {
+    display: none; position: fixed; bottom: 8.5rem; right: 2rem; z-index: 92;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+    overflow: hidden; min-width: 200px;
+}
+.share-menu.open { display: block; }
+.share-menu a, .share-menu button {
+    display: flex; align-items: center; gap: 0.6rem;
+    width: 100%; padding: 0.7rem 1rem; border: none; background: none;
+    font-size: 0.9rem; color: var(--text); cursor: pointer;
+    text-decoration: none; font-family: inherit;
+}
+.share-menu a:hover, .share-menu button:hover { background: var(--bg); }
