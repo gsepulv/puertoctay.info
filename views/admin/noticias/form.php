@@ -88,6 +88,7 @@
         <div class="form-group">
             <label for="foto_destacada">Foto destacada</label>
             <input type="file" id="foto_destacada" name="foto_destacada" accept="image/jpeg,image/png,image/webp">
+            <small style="color:var(--text-lighter);display:block;margin-top:0.3rem;line-height:1.5;">Recomendado: 1200 x 630 px · Máx. 2 MB · JPG, PNG o WebP</small>
             <?php if (!empty($noticia['foto_destacada'])): ?>
                 <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="Foto actual" style="max-width:300px; margin-top:0.5rem; border-radius:6px;">
             <?php endif; ?>

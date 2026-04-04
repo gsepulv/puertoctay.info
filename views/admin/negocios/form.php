@@ -208,7 +208,8 @@ $checked = fn(string $key, bool $defaultOn = false) =>
                     <br><small>Imagen actual. Sube otra para reemplazar.</small>
                 </div>
             <?php endif; ?>
-            <input type="file" id="foto_principal" name="foto_principal" class="form-input" accept="image/*">
+            <input type="file" id="foto_principal" name="foto_principal" class="form-input" accept=".jpg,.jpeg,.png,.webp">
+            <small style="color:var(--text-lighter);display:block;margin-top:0.3rem;line-height:1.5;">Recomendado: 1200 x 800 px · Máx. 2 MB · JPG, PNG o WebP</small>
         </div>
 
         <div class="form-group">
@@ -220,7 +221,8 @@ $checked = fn(string $key, bool $defaultOn = false) =>
                     <br><small>Imagen actual. Sube otra para reemplazar.</small>
                 </div>
             <?php endif; ?>
-            <input type="file" id="portada" name="portada" class="form-input" accept="image/*">
+            <input type="file" id="portada" name="portada" class="form-input" accept=".jpg,.jpeg,.png,.webp">
+            <small style="color:var(--text-lighter);display:block;margin-top:0.3rem;line-height:1.5;">Recomendado: 1200 x 400 px (panorámica) · Máx. 2 MB · JPG, PNG o WebP</small>
         </div>
 
         <div class="form-group">
@@ -232,7 +234,8 @@ $checked = fn(string $key, bool $defaultOn = false) =>
                     <br><small>Imagen actual. Sube otra para reemplazar.</small>
                 </div>
             <?php endif; ?>
-            <input type="file" id="logo" name="logo" class="form-input" accept="image/*">
+            <input type="file" id="logo" name="logo" class="form-input" accept=".jpg,.jpeg,.png,.webp">
+            <small style="color:var(--text-lighter);display:block;margin-top:0.3rem;line-height:1.5;">Recomendado: 800 x 800 px (cuadrado) · Máx. 2 MB · JPG, PNG o WebP</small>
         </div>
     </div>
 

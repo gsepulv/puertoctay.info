@@ -4,7 +4,7 @@ class ImageHelper
 {
     private static int $quality = 85;
     private static array $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    private static int $maxSize = 5 * 1024 * 1024; // 5MB
+    private static int $maxSize = 2 * 1024 * 1024; // 2MB
 
     /**
      * Upload and process image.
