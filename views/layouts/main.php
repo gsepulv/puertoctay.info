@@ -39,6 +39,7 @@ try {
         <meta property="og:url" content="<?= $_url ?>">
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="<?= $__siteName ?>">
+        <?php if (isset($pageImage) && $pageImage): ?>        <meta property="og:image" content="<?= htmlspecialchars($pageImage, ENT_QUOTES, "UTF-8") ?>">        <?php else: ?>        <meta property="og:image" content="<?= SITE_URL ?>/uploads/negocios/negocios_69d04de9340a51.51195841.webp">        <?php endif; ?>
         <?php if ($_img): ?><meta property="og:image" content="<?= $_img ?>"><?php endif; ?>
     <?php endif; ?>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛵</text></svg>">
