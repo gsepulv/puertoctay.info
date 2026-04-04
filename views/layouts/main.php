@@ -586,46 +586,50 @@ p { margin-bottom: 1rem; }
     </div>
 </footer>
 
-<!-- Share Bar -->
-<div class="share-bar" id="shareBar">
-    <a href="#" onclick="event.preventDefault();window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank')" class="share-btn share-wa" aria-label="Compartir en WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
-    <a href="#" onclick="event.preventDefault();window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','width=600,height=400')" class="share-btn share-fb" aria-label="Compartir en Facebook">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-    </a>
-    <a href="#" onclick="event.preventDefault();window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent(document.title),'_blank','width=600,height=400')" class="share-btn share-tw" aria-label="Compartir en X">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-    </a>
-    <button onclick="navigator.clipboard.writeText(location.href);this.classList.add('copied');setTimeout(function(){document.querySelector('.share-copy').classList.remove('copied')},2000)" class="share-btn share-copy" aria-label="Copiar enlace">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+<!-- Share FAB -->
+<div class="share-fab-wrap" id="shareFab">
+    <div class="share-fab-items">
+        <button onclick="navigator.clipboard.writeText(location.href);this.classList.add('copied');var b=this;setTimeout(function(){b.classList.remove('copied')},2000)" class="share-fab-btn share-copy" aria-label="Copiar enlace">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </button>
+        <a href="#" onclick="event.preventDefault();window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent(document.title),'_blank','width=600,height=400')" class="share-fab-btn share-tw" aria-label="X">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" onclick="event.preventDefault();window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','width=600,height=400')" class="share-fab-btn share-fb" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="#" onclick="event.preventDefault();window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank')" class="share-fab-btn share-wa" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+    </div>
+    <button class="share-fab-main" onclick="this.parentElement.classList.toggle('open')" aria-label="Compartir">
+        <svg class="icon-share" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
 </div>
 
 <style>
-.share-bar {
-    position: fixed; left: 1rem; top: 50%; transform: translateY(-50%);
-    z-index: 90; display: flex; flex-direction: column; gap: 0.5rem;
-}
-.share-btn {
-    width: 38px; height: 38px; border-radius: 50%; border: none;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; text-decoration: none; transition: all 0.2s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-.share-btn svg { width: 18px; height: 18px; }
-.share-btn:hover { transform: scale(1.15); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+.share-fab-wrap { position: fixed; bottom: 2rem; left: 2rem; z-index: 91; display: flex; flex-direction: column; align-items: center; }
+.share-fab-items { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.6rem; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.25s ease; }
+.share-fab-wrap.open .share-fab-items { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.share-fab-main { width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--primary-dark, #0D1B2A); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.25); transition: all 0.25s; }
+.share-fab-main:hover { transform: scale(1.08); }
+.share-fab-main svg { width: 22px; height: 22px; }
+.share-fab-main .icon-close { display: none; }
+.share-fab-wrap.open .share-fab-main .icon-share { display: none; }
+.share-fab-wrap.open .share-fab-main .icon-close { display: block; }
+.share-fab-wrap.open .share-fab-main { background: #6B7280; }
+.share-fab-btn { width: 40px; height: 40px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: transform 0.2s; }
+.share-fab-btn:hover { transform: scale(1.12); }
+.share-fab-btn svg { width: 18px; height: 18px; }
 .share-wa { background: #25D366; color: #fff; }
 .share-fb { background: #1877F2; color: #fff; }
 .share-tw { background: #0f1419; color: #fff; }
 .share-copy { background: #6B7280; color: #fff; }
 .share-copy.copied { background: #22C55E; }
-@media (max-width: 768px) {
-    .share-bar { left: 0.5rem; gap: 0.4rem; }
-    .share-btn { width: 32px; height: 32px; }
-    .share-btn svg { width: 14px; height: 14px; }
-}
+@media (max-width: 768px) { .share-fab-wrap { bottom: 1.2rem; left: 1rem; } .share-fab-main { width: 42px; height: 42px; } .share-fab-btn { width: 36px; height: 36px; } .share-fab-btn svg { width: 16px; height: 16px; } }
 </style>
+
 
 <!-- Scroll to top -->
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">&#8593;</button>
