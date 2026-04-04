@@ -359,7 +359,7 @@ p { margin-bottom: 1rem; }
 }
 .scroll-top:hover { background: var(--primary-light); transform: translateY(-2px); }
 .scroll-top.visible { display: flex; }
-.beta-bar { background: #0D1B2A; color: #E9C46A; text-align: center; font-size: 13px; padding: 6px 0; font-family: "Plus Jakarta Sans", sans-serif; width: 100%; }
+.beta-bar { position: sticky; top: 0; z-index: 9999; background: #0D1B2A; color: #E9C46A; text-align: center; font-size: 13px; padding: 6px 0; font-family: "Plus Jakarta Sans", sans-serif; width: 100%; }
 
 /* ── FOOTER ───────────────────────────────────────────── */
 .site-footer {
