@@ -34,12 +34,8 @@
                 'enlaces' => [
                     ['nombre' => 'Turismo Puerto Octay', 'url' => 'https://turismopuertoctay.cl', 'desc' => 'Guía turística especializada en Puerto Octay. Tours personalizados y experiencias.'],
                     ['nombre' => 'Ladera Sur', 'url' => 'https://laderasur.com', 'desc' => 'Medio de comunicación dedicado a naturaleza y vida al aire libre. Artículo: 7 paseos para conocer los atractivos de Puerto Octay.'],
-                    ['nombre' => 'RecorreChile', 'url' => 'https://recorrechile.com', 'desc' => 'Guía de turismo nacional. Artículo: Puerto Octay 2026, Playa Centinela, Quesos y Arquitectura Alemana.'],
-                    ['nombre' => 'Apuntes y Viajes', 'url' => 'https://apuntesyviajes.com', 'desc' => 'Blog de viajes. Artículo: Qué visitar en Puerto Octay, Lago Llanquihue.'],
                     ['nombre' => 'Visit Chile', 'url' => 'https://www.visitchile.com', 'desc' => 'Portal turístico de Chile. Información sobre Lagos Llanquihue y Todos los Santos.'],
                     ['nombre' => 'Welcome Chile', 'url' => 'https://www.welcomechile.com', 'desc' => 'Portal de turismo. Historia de Puerto Octay y leyendas de la zona.'],
-                    ['nombre' => 'Radio Chilena', 'url' => 'https://radiochilena.cl', 'desc' => 'Artículo: Viaja y conoce Puerto Octay, turismo en Chile.'],
-                    ['nombre' => 'Minube', 'url' => 'https://www.minube.com', 'desc' => 'Comunidad de viajeros. Experiencias y recomendaciones sobre Puerto Octay.'],
                 ],
             ],
             [
