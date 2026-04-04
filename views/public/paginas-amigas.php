@@ -22,7 +22,8 @@
                 'emoji' => '🏛',
                 'enlaces' => [
                     ['nombre' => 'Ilustre Municipalidad de Puerto Octay', 'url' => 'https://munipuertoctay.cl', 'desc' => 'Sitio oficial del municipio de Puerto Octay.'],
-                    ['nombre' => 'Chile es Tuyo (Sernatur)', 'url' => 'https://chiletourism.travel', 'desc' => 'Portal oficial de turismo de Chile.'],
+                    ['nombre' => 'Chile es Tuyo (Sernatur)', 'url' => 'https://chileestuyo.cl', 'desc' => 'Portal oficial de turismo de Chile del Servicio Nacional de Turismo (Sernatur).'],
+                    ['nombre' => 'Sernatur', 'url' => 'https://www.sernatur.cl', 'desc' => 'Servicio Nacional de Turismo de Chile.'],
                     ['nombre' => 'Registro de Museos de Chile', 'url' => 'https://www.registromuseoschile.cl', 'desc' => 'Catálogo nacional de museos y espacios culturales.'],
                 ],
             ],
