@@ -359,7 +359,7 @@ p { margin-bottom: 1rem; }
 }
 .scroll-top:hover { background: var(--primary-light); transform: translateY(-2px); }
 .scroll-top.visible { display: flex; }
-.beta-bar { position: sticky; top: 0; z-index: 9999; background: #0D1B2A; color: #E9C46A; text-align: center; font-size: 13px; padding: 6px 0; font-family: "Plus Jakarta Sans", sans-serif; width: 100%; }
+.badge-beta { position: fixed; top: 80px; right: 20px; z-index: 9999; background: #0D1B2A; color: #E9C46A; border-radius: 8px; padding: 6px 12px; font-family: "Plus Jakarta Sans", sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.15); text-align: center; max-width: 120px; pointer-events: none; }
 
 /* ── FOOTER ───────────────────────────────────────────── */
 .site-footer {
@@ -449,7 +449,7 @@ p { margin-bottom: 1rem; }
 <body>
 
 <!-- HEADER -->
-<?php if ($__modoBeta): ?><div class="beta-bar">🚧 Este sitio se encuentra en fase Beta · Podría presentar fallos · Estamos trabajando para mejorar</div><?php endif; ?>
+<?php if ($__modoBeta): ?><div class="badge-beta"><div style="font-size:9px;font-weight:400;letter-spacing:0.5px;text-transform:uppercase;opacity:0.7;">Estado del sitio</div><div style="font-size:12px;font-weight:700;">🚧 BETA</div></div><?php endif; ?>
 <header class="site-header" id="siteHeader">
     <div class="container">
         <div class="header-inner">
