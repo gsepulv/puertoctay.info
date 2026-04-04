@@ -16,6 +16,20 @@ try {
     $__betaRow = $__cfgModel->findBy("clave", "modo_beta");
     $__modoBeta = ($__betaRow["valor"] ?? "0") === "1";
 } catch (Exception $e) {}
+
+// Load page-specific SEO from seo_meta
+$__seoPage = null;
+try {
+    $__uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+    $__pageMap = ['/' => 'home', '/directorio' => 'directorio', '/turismo' => 'turismo',
+                  '/patrimonio' => 'patrimonio', '/noticias' => 'noticias', '/mapa' => 'mapa',
+                  '/contacto' => 'contacto', '/buscar' => 'buscar'];
+    $__pageId = $__pageMap[$__uri] ?? null;
+    if ($__pageId) {
+        $__seoModel = new SeoMeta(getDB());
+        $__seoPage = $__seoModel->getByPage($__pageId);
+    }
+} catch (Exception $e) {}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,16 +40,18 @@ try {
         <?= $seoTags ?>
     <?php else: ?>
         <?php
-        $_title = htmlspecialchars($pageTitle ?? SITE_NAME, ENT_QUOTES, 'UTF-8');
-        $_desc = htmlspecialchars($pageDescription ?? SITE_TAGLINE, ENT_QUOTES, 'UTF-8');
+        $_title = htmlspecialchars($__seoPage['meta_title'] ?? $pageTitle ?? SITE_NAME, ENT_QUOTES, 'UTF-8');
+        $_desc = htmlspecialchars($__seoPage['meta_description'] ?? $pageDescription ?? SITE_TAGLINE, ENT_QUOTES, 'UTF-8');
         $_url = htmlspecialchars(SITE_URL . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), ENT_QUOTES, 'UTF-8');
         $_img = isset($pageImage) ? htmlspecialchars($pageImage, ENT_QUOTES, 'UTF-8') : '';
         ?>
         <title><?= $_title ?></title>
         <meta name="description" content="<?= $_desc ?>">
+        <?php if (!empty($__seoPage['keywords'])): ?><meta name="keywords" content="<?= htmlspecialchars($__seoPage['keywords'], ENT_QUOTES, 'UTF-8') ?>"><?php endif; ?>
+        <?php if (!empty($__seoPage['robots'])): ?><meta name="robots" content="<?= htmlspecialchars($__seoPage['robots'], ENT_QUOTES, 'UTF-8') ?>"><?php endif; ?>
         <link rel="canonical" href="<?= $_url ?>">
-        <meta property="og:title" content="<?= $_title ?>">
-        <meta property="og:description" content="<?= $_desc ?>">
+        <meta property="og:title" content="<?= htmlspecialchars($__seoPage['og_title'] ?? '', ENT_QUOTES, 'UTF-8') ?: $_title ?>">
+        <meta property="og:description" content="<?= htmlspecialchars($__seoPage['og_description'] ?? '', ENT_QUOTES, 'UTF-8') ?: $_desc ?>">
         <meta property="og:url" content="<?= $_url ?>">
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="<?= $__siteName ?>">

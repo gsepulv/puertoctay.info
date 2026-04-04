@@ -159,6 +159,8 @@ $router->add('POST', '/admin/toggle-construccion', 'AdminConfiguracionController
 // ── Admin: SEO ────────────────────────────────────────
 $router->add('GET', '/admin/seo', 'AdminSeoController@index');
 $router->add('POST', '/admin/seo/guardar', 'AdminSeoController@guardar');
+$router->add('GET', '/admin/seo/{id}/editar', 'AdminSeoController@editar');
+$router->add('POST', '/admin/seo/{id}/actualizar', 'AdminSeoController@actualizar');
 
 // ── Admin: Redes Sociales ─────────────────────────────
 $router->add('GET', '/admin/redes-sociales', 'AdminRedesSocialesController@index');
