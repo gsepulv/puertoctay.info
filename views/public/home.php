@@ -179,7 +179,7 @@
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.6rem; text-align: left; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
             <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
-                <span style="color: #22C55E; font-weight: 700;">✓</span> Página exclusiva de tu negocio
+                <span style="color: #22C55E; font-weight: 700;">✓</span> Ficha exclusiva de tu negocio
             </div>
             <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
                 <span style="color: #22C55E; font-weight: 700;">✓</span> Logo y foto de portada
