@@ -16,7 +16,7 @@ class AdminHeroController
         $hero = $model->getActive();
 
         if (!$hero) {
-            $hero = ['titulo' => '', 'subtitulo' => '', 'imagen' => '', 'texto_boton' => '', 'url_boton' => '', 'activo' => 1];
+            $hero = [];
         }
 
         $pageTitle = 'Hero Home — Admin';
@@ -33,7 +33,7 @@ class AdminHeroController
 
         $data = Sanitizer::cleanArray($_POST);
 
-        // Handle image upload
+        // Handle hero image upload
         if (!empty($_FILES['imagen']['name']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $path = ImageHelper::upload($_FILES['imagen'], 'hero');
             if ($path) {
@@ -44,8 +44,19 @@ class AdminHeroController
             }
         }
 
+        // Handle og:image upload
+        if (!empty($_FILES['og_image_file']['name']) && $_FILES['og_image_file']['error'] === UPLOAD_ERR_OK) {
+            $path = ImageHelper::upload($_FILES['og_image_file'], 'hero');
+            if ($path) {
+                if (!empty($hero['og_image'])) {
+                    ImageHelper::delete($hero['og_image']);
+                }
+                $data['og_image'] = $path;
+            }
+        }
+
         $data['activo'] = 1;
-        unset($data['csrf_token']);
+        unset($data['csrf_token'], $data['og_image_file']);
 
         if ($hero && isset($hero['id'])) {
             $model->update((int) $hero['id'], $data);
