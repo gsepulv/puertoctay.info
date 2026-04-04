@@ -104,6 +104,7 @@ p { margin-bottom: 1rem; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
 .container-narrow { max-width: 800px; margin: 0 auto; padding: 0 1.25rem; }
 .container-narrow h3 { margin-top: 1.8rem; margin-bottom: 0.75rem; font-size: 1.3rem; color: var(--primary-dark); }.container-narrow p { margin-bottom: 1rem; line-height: 1.7; }.container-narrow ul { margin-left: 1.25rem; margin-bottom: 1rem; }.container-narrow li { margin-bottom: 0.5rem; line-height: 1.6; list-style: disc; }
+.noticia-contenido h3 { font-size: 1.3rem; font-weight: 700; margin: 28px 0 12px; color: var(--primary-dark); }.noticia-contenido p { margin-bottom: 16px; line-height: 1.8; }.noticia-contenido ul { margin: 16px 0 16px 24px; }.noticia-contenido li { margin-bottom: 8px; list-style-type: disc; line-height: 1.6; }.noticia-contenido strong { font-weight: 700; }.noticia-contenido a { color: #2D6A4F; text-decoration: underline; }.noticia-contenido em { font-style: italic; }
 
 /* ── HEADER / NAVBAR ──────────────────────────────────── */
 .site-header {

@@ -51,7 +51,7 @@
         </div>
         <?php endif; ?>
 
-        <div class="mb-3">
+        <div class="noticia-contenido mb-3">
             <?= $noticia['contenido'] ?>
         </div>
 
