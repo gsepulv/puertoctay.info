@@ -61,4 +61,5 @@
         </div>
         <?php endif; ?>
     </div>
+<?php if (!empty($esTurismo)): ?>        <?php $fuentes = [            ["nombre" => "Turismo Puerto Octay", "url" => "https://turismopuertoctay.cl"],            ["nombre" => "Ladera Sur", "url" => "https://laderasur.com"],            ["nombre" => "RecorreChile", "url" => "https://recorrechile.com"],            ["nombre" => "Apuntes y Viajes", "url" => "https://apuntesyviajes.com"],            ["nombre" => "Municipalidad de Puerto Octay", "url" => "https://munipuertoctay.cl"],        ]; ?>        <?php require ROOT_PATH . "/views/partials/fuentes.php"; ?>        <?php endif; ?>
 </section>

@@ -43,4 +43,5 @@
         </div>
         <?php endif; ?>
     </div>
+<?php $fuentes = [            ["nombre" => "Municipalidad de Puerto Octay", "url" => "https://munipuertoctay.cl"],            ["nombre" => "Wikipedia", "url" => "https://es.wikipedia.org/wiki/Puerto_Octay"],            ["nombre" => "Revista ED", "url" => "https://www.ed.cl"],            ["nombre" => "Consejo de Monumentos Nacionales", "url" => "https://www.monumentos.gob.cl"],        ]; ?>        <?php require ROOT_PATH . "/views/partials/fuentes.php"; ?>
 </section>

@@ -12,5 +12,13 @@
         <div>
             <?= $pagina['contenido'] ?>
         </div>
+        <?php if (($pagina['slug'] ?? '') === 'acerca-de'): ?>
+        <?php $fuentes = [
+            ['nombre' => 'Municipalidad de Puerto Octay', 'url' => 'https://munipuertoctay.cl'],
+            ['nombre' => 'Wikipedia', 'url' => 'https://es.wikipedia.org/wiki/Puerto_Octay'],
+            ['nombre' => 'Chile es Tuyo', 'url' => 'https://chileestuyo.cl'],
+        ]; ?>
+        <?php require ROOT_PATH . '/views/partials/fuentes.php'; ?>
+        <?php endif; ?>
     </div>
 </section>

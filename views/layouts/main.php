@@ -545,7 +545,7 @@ p { margin-bottom: 1rem; }
                 <a href="<?= SITE_URL ?>/noticias">Noticias</a>
                 <a href="<?= SITE_URL ?>/contacto">Contacto</a>
                 <a href="<?= SITE_URL ?>/pagina/acerca-de">Acerca de</a>
-                <a href="<?= SITE_URL ?>/paginas-amigas">Paginas Amigas</a>
+                <a href="<?= SITE_URL ?>/paginas-amigas">Páginas Amigas</a>
             </div>
             <div class="footer-col">
                 <h4>Legal</h4>

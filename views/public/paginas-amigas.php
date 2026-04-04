@@ -2,57 +2,67 @@
     <nav class="breadcrumb">
         <a href="<?= SITE_URL ?>">Inicio</a>
         <span class="sep">/</span>
-        <span>Páginas Amigas</span>
+        <span>Páginas Amigas y Bibliografía</span>
     </nav>
 </div>
 
 <section class="section">
     <div class="container" style="max-width: 900px;">
         <div style="text-align: center; margin-bottom: 2.5rem;">
-            <h1 style="margin-bottom: 0.5rem;">Páginas Amigas</h1>
+            <h1 style="margin-bottom: 0.5rem;">Páginas Amigas y Bibliografía</h1>
             <p style="color: var(--text-light); font-size: 1.05rem; max-width: 700px; margin: 0 auto; line-height: 1.7;">
-                Sitios web que recomendamos y que nos han inspirado con información valiosa sobre Puerto Octay y la Región de Los Lagos.
+                Sitios web que recomendamos y que han sido fuente de información para el contenido de Visita Puerto Octay. Agradecemos a cada una de estas fuentes por su valioso aporte.
             </p>
         </div>
 
         <?php
         $secciones = [
             [
-                'titulo' => 'Institucionales',
+                'titulo' => 'Fuentes Institucionales',
                 'emoji' => '🏛',
                 'enlaces' => [
-                    ['nombre' => 'Ilustre Municipalidad de Puerto Octay', 'url' => 'https://munipuertoctay.cl', 'desc' => 'Sitio oficial del municipio de Puerto Octay.'],
-                    ['nombre' => 'Chile es Tuyo (Sernatur)', 'url' => 'https://chileestuyo.cl', 'desc' => 'Portal oficial de turismo de Chile del Servicio Nacional de Turismo (Sernatur).'],
+                    ['nombre' => 'Ilustre Municipalidad de Puerto Octay', 'url' => 'https://munipuertoctay.cl', 'desc' => 'Sitio oficial de la municipalidad. Fuente de información sobre historia, servicios públicos, DAEM, salud y programas municipales.'],
+                    ['nombre' => 'Chile es Tuyo (Sernatur)', 'url' => 'https://chileestuyo.cl', 'desc' => 'Servicio Nacional de Turismo. Información oficial sobre destinos turísticos de Chile.'],
                     ['nombre' => 'Sernatur', 'url' => 'https://www.sernatur.cl', 'desc' => 'Servicio Nacional de Turismo de Chile.'],
-                    ['nombre' => 'Registro de Museos de Chile', 'url' => 'https://www.registromuseoschile.cl', 'desc' => 'Catálogo nacional de museos y espacios culturales.'],
+                    ['nombre' => 'Registro de Museos de Chile', 'url' => 'https://www.registromuseoschile.cl', 'desc' => 'Información sobre el Museo El Colono de Puerto Octay.'],
+                    ['nombre' => 'Consejo de Monumentos Nacionales', 'url' => 'https://www.monumentos.gob.cl', 'desc' => 'Declaratoria de Zona Típica de Puerto Octay (2010).'],
                 ],
             ],
             [
-                'titulo' => 'Turismo y Viajes',
+                'titulo' => 'Fuentes de Turismo y Viajes',
                 'emoji' => '🌄',
                 'enlaces' => [
-                    ['nombre' => 'Turismo Puerto Octay', 'url' => 'https://turismopuertoctay.cl', 'desc' => 'Guía turística dedicada a Puerto Octay.'],
-                    ['nombre' => 'Ladera Sur', 'url' => 'https://laderasur.com', 'desc' => 'Medio sobre naturaleza, viajes y vida al aire libre en Chile.'],
-                    ['nombre' => 'RecorreChile', 'url' => 'https://recorrechile.com', 'desc' => 'Rutas, destinos y experiencias de viaje por Chile.'],
-                    ['nombre' => 'Apuntes y Viajes', 'url' => 'https://apuntesyviajes.com', 'desc' => 'Blog de viajes con guías detalladas del sur de Chile.'],
-                    ['nombre' => 'Visit Chile', 'url' => 'https://www.visitchile.com', 'desc' => 'Portal de turismo con información de destinos chilenos.'],
-                    ['nombre' => 'Welcome Chile', 'url' => 'https://www.welcomechile.com', 'desc' => 'Guía de alojamientos y turismo en Chile.'],
+                    ['nombre' => 'Turismo Puerto Octay', 'url' => 'https://turismopuertoctay.cl', 'desc' => 'Guía turística especializada en Puerto Octay. Tours personalizados y experiencias.'],
+                    ['nombre' => 'Ladera Sur', 'url' => 'https://laderasur.com', 'desc' => 'Medio de comunicación dedicado a naturaleza y vida al aire libre. Artículo: 7 paseos para conocer los atractivos de Puerto Octay.'],
+                    ['nombre' => 'RecorreChile', 'url' => 'https://recorrechile.com', 'desc' => 'Guía de turismo nacional. Artículo: Puerto Octay 2026, Playa Centinela, Quesos y Arquitectura Alemana.'],
+                    ['nombre' => 'Apuntes y Viajes', 'url' => 'https://apuntesyviajes.com', 'desc' => 'Blog de viajes. Artículo: Qué visitar en Puerto Octay, Lago Llanquihue.'],
+                    ['nombre' => 'Visit Chile', 'url' => 'https://www.visitchile.com', 'desc' => 'Portal turístico de Chile. Información sobre Lagos Llanquihue y Todos los Santos.'],
+                    ['nombre' => 'Welcome Chile', 'url' => 'https://www.welcomechile.com', 'desc' => 'Portal de turismo. Historia de Puerto Octay y leyendas de la zona.'],
+                    ['nombre' => 'Radio Chilena', 'url' => 'https://radiochilena.cl', 'desc' => 'Artículo: Viaja y conoce Puerto Octay, turismo en Chile.'],
+                    ['nombre' => 'Minube', 'url' => 'https://www.minube.com', 'desc' => 'Comunidad de viajeros. Experiencias y recomendaciones sobre Puerto Octay.'],
                 ],
             ],
             [
-                'titulo' => 'Cultura y Patrimonio',
+                'titulo' => 'Fuentes Enciclopédicas',
                 'emoji' => '📚',
                 'enlaces' => [
-                    ['nombre' => 'Wikipedia: Puerto Octay', 'url' => 'https://es.wikipedia.org/wiki/Puerto_Octay', 'desc' => 'Historia, geografía y datos generales de Puerto Octay.'],
-                    ['nombre' => 'Consejo de Monumentos Nacionales', 'url' => 'https://www.monumentos.gob.cl', 'desc' => 'Patrimonio cultural y monumentos protegidos de Chile.'],
+                    ['nombre' => 'Wikipedia', 'url' => 'https://es.wikipedia.org/wiki/Puerto_Octay', 'desc' => 'Artículo enciclopédico sobre la comuna de Puerto Octay: historia, geografía, demografía, patrimonio.'],
+                    ['nombre' => 'EcuRed', 'url' => 'https://www.ecured.cu/Puerto_Octay', 'desc' => 'Enciclopedia colaborativa. Datos generales de la comuna.'],
+                ],
+            ],
+            [
+                'titulo' => 'Fuentes de Arquitectura y Patrimonio',
+                'emoji' => '🏗',
+                'enlaces' => [
+                    ['nombre' => 'Revista ED', 'url' => 'https://www.ed.cl', 'desc' => 'Artículo: Puerto Octay, un tesoro oculto en la ribera del Lago Llanquihue. Arquitectura, diseño y decoración.'],
                 ],
             ],
             [
                 'titulo' => 'Nuestros Proyectos',
                 'emoji' => '⛵',
                 'enlaces' => [
-                    ['nombre' => 'PurranQUE.INFO', 'url' => 'https://www.purranque.info', 'desc' => 'Portal de información y servicios de Purranque.'],
-                    ['nombre' => 'Regalos Purranque', 'url' => 'https://regalospurranque.cl', 'desc' => 'Directorio de comercios y regalos en Purranque.'],
+                    ['nombre' => 'PurranQUE.INFO', 'url' => 'https://www.purranque.info', 'desc' => 'Plataforma de servicios digitales para el sur de Chile. Empresa desarrolladora de Visita Puerto Octay.'],
+                    ['nombre' => 'Regalos Purranque', 'url' => 'https://regalospurranque.cl', 'desc' => 'Directorio comercial de Purranque. Proyecto hermano de Visita Puerto Octay.'],
                 ],
             ],
         ];
@@ -65,7 +75,7 @@
             </h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
                 <?php foreach ($seccion['enlaces'] as $enlace): ?>
-                <a href="<?= htmlspecialchars($enlace['url']) ?>" target="_blank" rel="noopener"
+                <a href="<?= htmlspecialchars($enlace['url']) ?>" target="_blank" rel="noopener noreferrer"
                    class="amiga-card">
                     <div style="font-weight: 600; color: var(--primary-dark); margin-bottom: 0.3rem; font-size: 0.95rem;">
                         <?= htmlspecialchars($enlace['nombre']) ?>
@@ -84,9 +94,11 @@
         <?php endforeach; ?>
 
         <div style="text-align: center; padding: 2rem; background: var(--bg); border-radius: var(--radius-lg); margin-top: 1rem;">
-            <p style="color: var(--text-light); font-size: 0.95rem;">
-                Si deseas que tu sitio web aparezca en esta sección, escríbenos a
-                <a href="mailto:contacto@purranque.info" style="color: var(--primary); font-weight: 600;">contacto@purranque.info</a>
+            <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.8;">
+                Todo el contenido publicado en Visita Puerto Octay ha sido elaborado a partir de información disponible públicamente en las fuentes aquí citadas.
+                Si eres autor o representante de alguna de estas fuentes y deseas que modifiquemos o retiremos algún contenido, escríbenos a
+                <a href="mailto:contacto@purranque.info" style="color: var(--primary); font-weight: 600;">contacto@purranque.info</a>.
+                <br>Si deseas que tu sitio web aparezca en esta sección, también contáctanos.
             </p>
         </div>
     </div>

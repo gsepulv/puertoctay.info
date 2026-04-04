@@ -91,4 +91,5 @@ n<?php /* Example banner */ ?>
         </div>
         <?php endif; ?>
     </div>
+<div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">            <p style="font-size: 0.85rem; color: var(--text-lighter); line-height: 1.8;">                📖 Contenido elaborado con información de fuentes públicas.                <a href="<?= SITE_URL ?>/paginas-amigas" style="color: var(--primary);">Ver todas nuestras fuentes en Páginas Amigas</a>.            </p>        </div>
 </section>

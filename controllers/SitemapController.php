@@ -24,6 +24,7 @@ class SitemapController
         $urls[] = ['loc' => SITE_URL . '/noticias', 'priority' => '0.8', 'changefreq' => 'daily'];
         $urls[] = ['loc' => SITE_URL . '/mapa', 'priority' => '0.7', 'changefreq' => 'weekly'];
         $urls[] = ['loc' => SITE_URL . '/buscar', 'priority' => '0.5', 'changefreq' => 'monthly'];
+        $urls[] = ["loc" => SITE_URL . "/paginas-amigas", "priority" => "0.5", "changefreq" => "monthly"];
 
         // Categorías
         $stmt = $this->db->query("SELECT slug, updated_at FROM categorias WHERE activo = 1 ORDER BY nombre");
