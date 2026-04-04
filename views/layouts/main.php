@@ -10,7 +10,12 @@ try {
         if (!empty($__s['valor'])) $__redes[$__s['clave']] = $__s['valor'];
     }
 } catch (Exception $e) {}
-// Beta mode$__modoBeta = false;try {    $__betaRow = $__cfgModel->findBy("clave", "modo_beta");    $__modoBeta = ($__betaRow["valor"] ?? "0") === "1";} catch (Exception $e) {}
+// Beta mode
+$__modoBeta = false;
+try {
+    $__betaRow = $__cfgModel->findBy("clave", "modo_beta");
+    $__modoBeta = ($__betaRow["valor"] ?? "0") === "1";
+} catch (Exception $e) {}
 ?>
 <!DOCTYPE html>
 <html lang="es">
