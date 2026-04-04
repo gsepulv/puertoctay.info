@@ -1,4 +1,4 @@
-<?= SeoHelper::metaTags($noticia['titulo'], $noticia['bajada'] ?? '', $noticia['foto_destacada'] ? SITE_URL.'/uploads/noticias/'.$noticia['foto_destacada'] : '') ?? '' ?>
+<?= SeoHelper::metaTags($noticia['titulo'], $noticia['bajada'] ?? '', $noticia['foto_destacada'] ? SITE_URL.'/uploads/'.$noticia['foto_destacada'] : '') ?? '' ?>
 <?= SeoHelper::schemaNewsArticle($noticia) ?? '' ?>
 
 <div class="container">
@@ -43,7 +43,7 @@
 
         <?php if (!empty($noticia['foto_destacada'])): ?>
         <div style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem;">
-            <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width: 100%; max-height: 480px; object-fit: cover; display: block;">
+            <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" style="width: 100%; max-height: 480px; object-fit: cover; display: block;">
         </div>
         <?php else: ?>
         <div style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius-lg); height: 300px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
@@ -70,7 +70,7 @@
                 <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($rel['slug']) ?>" class="card">
                     <?php if (!empty($rel['foto_destacada'])): ?>
                     <div class="card-img">
-                        <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($rel['foto_destacada']) ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" loading="lazy">
+                        <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($rel['foto_destacada']) ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" loading="lazy">
                     </div>
                     <?php else: ?>
                     <div class="card-img card-img-placeholder">

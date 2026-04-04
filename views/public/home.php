@@ -95,7 +95,7 @@
             <a href="<?= SITE_URL ?>/noticias/<?= htmlspecialchars($noticia['slug']) ?>" class="card">
                 <?php if (!empty($noticia['foto_destacada'])): ?>
                 <div class="card-img">
-                    <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy">
+                    <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy">
                 </div>
                 <?php else: ?>
                 <div class="card-img card-img-placeholder">

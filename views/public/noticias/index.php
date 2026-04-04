@@ -33,7 +33,7 @@
             <span class="card-ejemplo">EJEMPLO</span>
             <?php if (!empty($destacada['foto_destacada'])): ?>
             <div class="card-img" style="height: 100%; min-height: 280px;">
-                <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($destacada['foto_destacada']) ?>" alt="<?= htmlspecialchars($destacada['titulo']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($destacada['foto_destacada']) ?>" alt="<?= htmlspecialchars($destacada['titulo']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <?php else: ?>
             <div class="card-img card-img-placeholder" style="height: 100%; min-height: 280px;">
@@ -65,7 +65,7 @@
                 <span class="card-ejemplo">EJEMPLO</span>
                 <?php if (!empty($noticia['foto_destacada'])): ?>
                 <div class="card-img">
-                    <img src="<?= SITE_URL ?>/uploads/noticias/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy">
+                    <img src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($noticia['foto_destacada']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy">
                 </div>
                 <?php else: ?>
                 <div class="card-img card-img-placeholder">
