@@ -85,10 +85,10 @@ $__flashError = $_SESSION['flash_error'] ?? ''; unset($_SESSION['flash_error']);
     </div>
 
     <?php if ($__flashSuccess): ?>
-        <div class="flash-success"><?= $__flashSuccess ?></div>
+        <div class="flash-success"><?= htmlspecialchars($__flashSuccess ?? "") ?></div>
     <?php endif; ?>
     <?php if ($__flashError): ?>
-        <div class="flash-error"><?= $__flashError ?></div>
+        <div class="flash-error"><?= htmlspecialchars($__flashError ?? "") ?></div>
     <?php endif; ?>
 
     <?php require ROOT_PATH . '/views/' . $viewName . '.php'; ?>
