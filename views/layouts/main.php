@@ -358,7 +358,7 @@ p { margin-bottom: 1rem; }
 }
 .scroll-top:hover { background: var(--primary-light); transform: translateY(-2px); }
 .scroll-top.visible { display: flex; }
-.badge-beta {    position: fixed; bottom: 80px; left: 20px; z-index: 9998;    background: #E9C46A; color: #0D1B2A;    padding: 8px 16px; border-radius: 8px;    font-size: 12px; font-weight: 700;    font-family: "Plus Jakarta Sans", sans-serif;    text-transform: uppercase; letter-spacing: 1px;    box-shadow: 0 2px 8px rgba(0,0,0,0.2);    cursor: default; transition: all 0.3s ease;    max-width: 200px;}.badge-beta .beta-tooltip {    display: none; font-size: 11px; font-weight: 400;    text-transform: none; letter-spacing: 0;    line-height: 1.4; margin-top: 6px; color: #1a2a3a;}.badge-beta:hover .beta-tooltip { display: block; }.badge-beta:hover { max-width: 300px; padding: 10px 16px; }
+.badge-beta {    position: fixed; top: 80px; right: 20px; z-index: 9998;    background: #E9C46A; color: #0D1B2A;    padding: 8px 16px; border-radius: 8px;    font-size: 12px; font-weight: 700;    font-family: "Plus Jakarta Sans", sans-serif;    text-transform: uppercase; letter-spacing: 1px;    box-shadow: 0 2px 8px rgba(0,0,0,0.2);    cursor: default; transition: all 0.3s ease;    max-width: 200px;}.badge-beta .beta-tooltip {    display: none; font-size: 11px; font-weight: 400;    text-transform: none; letter-spacing: 0;    line-height: 1.4; margin-top: 6px; color: #1a2a3a;}.badge-beta:hover .beta-tooltip { display: block; }.badge-beta:hover { max-width: 300px; padding: 10px 16px; }
 
 /* ── FOOTER ───────────────────────────────────────────── */
 .site-footer {
