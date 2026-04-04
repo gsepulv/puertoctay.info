@@ -449,6 +449,7 @@ p { margin-bottom: 1rem; }
     <?php if (isset($extraHead)) echo $extraHead; ?>
 </head>
 <body>
+<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:0;z-index:10000;padding:8px 16px;background:var(--primary);color:#fff;font-size:14px;text-decoration:none;" onfocus="this.style.left="0"" onblur="this.style.left="-9999px"">Saltar al contenido</a>
 
 <!-- HEADER -->
 <?php if ($__modoBeta): ?><div class="badge-beta"><div style="font-size:9px;font-weight:400;letter-spacing:0.5px;text-transform:uppercase;opacity:0.7;">Estado del sitio</div><div style="font-size:12px;font-weight:700;">🚧 BETA</div></div><?php endif; ?>
@@ -467,11 +468,12 @@ p { margin-bottom: 1rem; }
             <button class="menu-toggle" onclick="document.querySelector('.site-nav').classList.toggle('open')" aria-label="Menú">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
-            <nav class="site-nav" id="siteNav">
-                <a href="<?= SITE_URL ?>/directorio">Directorio</a>
-                <a href="<?= SITE_URL ?>/turismo">Turismo</a>
-                <a href="<?= SITE_URL ?>/noticias">Noticias</a>
-                <a href="<?= SITE_URL ?>/mapa">Mapa</a>
+            <nav class="site-nav" id="siteNav" aria-label="Menú principal">
+                <?php $__uri = parse_url($_SERVER["REQUEST_URI"] ?? "/", PHP_URL_PATH); ?>
+                <a href="<?= SITE_URL ?>/directorio"<?= str_starts_with($__uri, "/directorio") ? " aria-current=\"page\"" : "" ?>>Directorio</a>
+                <a href="<?= SITE_URL ?>/turismo"<?= str_starts_with($__uri, "/turismo") ? " aria-current=\"page\"" : "" ?>>Turismo</a>
+                <a href="<?= SITE_URL ?>/noticias"<?= str_starts_with($__uri, "/noticias") ? " aria-current=\"page\"" : "" ?>>Noticias</a>
+                <a href="<?= SITE_URL ?>/mapa"<?= $__uri === "/mapa" ? " aria-current=\"page\"" : "" ?>>Mapa</a>
                 <a href="<?= SITE_URL ?>/contacto" class="nav-cta">Contacto</a>
                 <?php if (!empty($_SESSION['usuario_id'])): ?>
                     <?php
@@ -502,7 +504,7 @@ p { margin-bottom: 1rem; }
 </header>
 
 <!-- MAIN CONTENT -->
-<main>
+<main id="main-content">
     <?php
     $viewFile = ROOT_PATH . '/views/public/home.php';
     if (isset($viewName)) {
@@ -546,14 +548,15 @@ p { margin-bottom: 1rem; }
             </div>
             <div class="footer-col">
                 <h4>Explora</h4>
-                <a href="<?= SITE_URL ?>/directorio">Directorio</a>
-                <a href="<?= SITE_URL ?>/turismo">Turismo</a>
+                <?php $__uri = parse_url($_SERVER["REQUEST_URI"] ?? "/", PHP_URL_PATH); ?>
+                <a href="<?= SITE_URL ?>/directorio"<?= str_starts_with($__uri, "/directorio") ? " aria-current=\"page\"" : "" ?>>Directorio</a>
+                <a href="<?= SITE_URL ?>/turismo"<?= str_starts_with($__uri, "/turismo") ? " aria-current=\"page\"" : "" ?>>Turismo</a>
                 <a href="<?= SITE_URL ?>/patrimonio">Patrimonio</a>
-                <a href="<?= SITE_URL ?>/mapa">Mapa</a>
+                <a href="<?= SITE_URL ?>/mapa"<?= $__uri === "/mapa" ? " aria-current=\"page\"" : "" ?>>Mapa</a>
             </div>
             <div class="footer-col">
                 <h4>Información</h4>
-                <a href="<?= SITE_URL ?>/noticias">Noticias</a>
+                <a href="<?= SITE_URL ?>/noticias"<?= str_starts_with($__uri, "/noticias") ? " aria-current=\"page\"" : "" ?>>Noticias</a>
                 <a href="<?= SITE_URL ?>/contacto">Contacto</a>
                 <a href="<?= SITE_URL ?>/pagina/acerca-de">Acerca de</a>
             </div>
