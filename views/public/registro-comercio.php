@@ -145,6 +145,9 @@
         <div class="form-group">
             <label>Cómo llegar</label>
             <textarea name="como_llegar" rows="2" placeholder="Indicaciones de acceso: desde la plaza, tomar calle..." maxlength="500"><?= htmlspecialchars($d['como_llegar'] ?? '') ?></textarea>
+        <div class="form-group">
+            <label>Horario de atención</label>
+            <input type="text" name="horario" value="<?= htmlspecialchars($d['horario'] ?? '') ?>" placeholder="Ej: Lun-Vie 09:00-18:00, Sáb 10:00-14:00" maxlength="255">
         </div>
 
         <!-- SECCION 4: Temporadas -->

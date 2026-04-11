@@ -179,6 +179,7 @@ class RegistroController
             'plan_id'           => 1,
             'propietario_id'    => $userId,
             'idiomas'           => $idiomas,
+            'horario'           => !empty($data['horario']) ? mb_substr($data['horario'], 0, 255) : null,
         ];
         if ($logoPath) $negocioData['logo'] = $logoPath;
         if ($portadaPath) $negocioData['portada'] = $portadaPath;

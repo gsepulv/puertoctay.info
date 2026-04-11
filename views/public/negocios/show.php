@@ -198,6 +198,9 @@ $tipo = $tipoBadges[$negocio['tipo'] ?? 'comercio'] ?? $tipoBadges['comercio'];
                     <?php if (!empty($negocio['direccion'])): ?>
                         <div class="ficha-contact-item"><span>📍</span><span><?= htmlspecialchars($negocio['direccion']) ?></span></div>
                     <?php endif; ?>
+                    <?php if (!empty($negocio['horario'])): ?>
+                        <div class="ficha-contact-item"><span>🕐</span><span><?= htmlspecialchars($negocio['horario']) ?></span></div>
+                    <?php endif; ?>
                     <?php if (!empty($negocio['como_llegar'])): ?>
                         <div class="ficha-contact-item"><span>🗺️</span><span style="line-height:1.6;"><?= nl2br(htmlspecialchars($negocio['como_llegar'])) ?></span></div>
                     <?php endif; ?>
