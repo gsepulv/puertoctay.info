@@ -60,6 +60,27 @@ class NegocioController
         $tempModel = new Temporada($this->db);
         $negocioTemporadas = $tempModel->findForNegocio((int) $negocio['id']);
 
+        // Negocios similares (misma categoría, excluir actual)
+        $similares = [];
+        if (!empty($negocio['categoria_id'])) {
+            $stmtSim = $this->db->prepare(
+                "SELECT n.*, c.nombre AS categoria_nombre, c.emoji AS categoria_emoji
+                 FROM negocios n
+                 LEFT JOIN categorias c ON c.id = n.categoria_id
+                 WHERE n.activo = 1 AND n.categoria_id = :cid AND n.id != :nid
+                 ORDER BY RAND() LIMIT 3"
+            );
+            $stmtSim->execute(['cid' => $negocio['categoria_id'], 'nid' => $negocio['id']]);
+            $similares = $stmtSim->fetchAll();
+        }
+
+        // Galería (decodificar JSON)
+        $galeria = [];
+        if (!empty($negocio['galeria'])) {
+            $decoded = json_decode($negocio['galeria'], true);
+            if (is_array($decoded)) $galeria = $decoded;
+        }
+
         $pageTitle = htmlspecialchars($negocio['nombre']) . ' — ' . SITE_NAME;
         $pageDescription = $negocio['descripcion_corta'] ?? "Información de {$negocio['nombre']} en Puerto Octay.";
         $usarLeaflet = !empty($negocio['lat']) && !empty($negocio['lng']);
