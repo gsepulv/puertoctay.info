@@ -61,6 +61,9 @@ $router->add('GET', '/reset-password/{token}', 'RecuperarController@resetForm');
 $router->add('POST', '/reset-password/{token}', 'RecuperarController@reset');
 
 // ── Panel Comerciante ────────────────────────────────
+$router->add('GET', '/mi-comercio/login', 'PanelComercianteController@loginForm');
+$router->add('POST', '/mi-comercio/login', 'PanelComercianteController@login');
+$router->add('GET', '/mi-comercio/logout', 'PanelComercianteController@logout');
 $router->add('GET', '/mi-comercio', 'PanelComercianteController@dashboard');
 $router->add('GET', '/mi-comercio/editar', 'PanelComercianteController@editarNegocio');
 $router->add('POST', '/mi-comercio/editar', 'PanelComercianteController@actualizarNegocio');

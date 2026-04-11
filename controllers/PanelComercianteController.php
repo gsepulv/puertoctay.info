@@ -7,7 +7,79 @@ class PanelComercianteController
     public function __construct(PDO $db)
     {
         $this->db = $db;
-        RolMiddleware::check('comerciante');
+        // Auth check is per-method: login/logout don't require session
+    }
+
+    private function requireAuth(): void
+    {
+        if (empty($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] ?? '') !== 'comerciante') {
+            header('Location: ' . SITE_URL . '/mi-comercio/login');
+            exit;
+        }
+    }
+
+    public function loginForm(): void
+    {
+        if (!empty($_SESSION['usuario_id']) && ($_SESSION['usuario_rol'] ?? '') === 'comerciante') {
+            header('Location: ' . SITE_URL . '/mi-comercio');
+            exit;
+        }
+
+        $pageTitle = 'Acceder a mi comercio — ' . SITE_NAME;
+        $viewName = 'comerciante/login';
+        require ROOT_PATH . '/views/layouts/main.php';
+    }
+
+    public function login(): void
+    {
+        CsrfMiddleware::validate();
+
+        $email    = strtolower(trim($_POST['email'] ?? ''));
+        $password = $_POST['password'] ?? '';
+
+        if (empty($email) || empty($password)) {
+            $_SESSION['flash_error'] = 'Ingresa tu email y contraseña.';
+            header('Location: ' . SITE_URL . '/mi-comercio/login');
+            exit;
+        }
+
+        $stmt = $this->db->prepare(
+            "SELECT * FROM usuarios WHERE email = ? AND rol = 'comerciante' AND activo = 1 LIMIT 1"
+        );
+        $stmt->execute([$email]);
+        $usuario = $stmt->fetch();
+
+        if (!$usuario || !password_verify($password, $usuario['password_hash'])) {
+            $_SESSION['flash_error'] = 'Email o contraseña incorrectos.';
+            header('Location: ' . SITE_URL . '/mi-comercio/login');
+            exit;
+        }
+
+        session_regenerate_id(true);
+        $_SESSION['usuario_id']     = (int) $usuario['id'];
+        $_SESSION['usuario_nombre'] = $usuario['nombre'];
+        $_SESSION['usuario_rol']    = 'comerciante';
+
+        header('Location: ' . SITE_URL . '/mi-comercio');
+        exit;
+    }
+
+    public function logout(): void
+    {
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params['path'], $params['domain'],
+                $params['secure'], $params['httponly']
+            );
+        }
+        session_destroy();
+        // Restart session for flash message
+        session_start();
+        $_SESSION['flash_success'] = 'Has cerrado sesión correctamente.';
+        header('Location: ' . SITE_URL . '/mi-comercio/login');
+        exit;
     }
 
     private function getMiNegocio(): ?array
@@ -27,6 +99,7 @@ class PanelComercianteController
 
     public function dashboard(): void
     {
+        $this->requireAuth();
         $negocio = $this->getMiNegocio();
         $stats = [];
 
@@ -52,6 +125,7 @@ class PanelComercianteController
 
     public function editarNegocio(): void
     {
+        $this->requireAuth();
         $negocio = $this->getMiNegocio();
         if (!$negocio) {
             $_SESSION['flash_error'] = 'No tienes un negocio registrado.';
@@ -77,6 +151,7 @@ class PanelComercianteController
 
     public function actualizarNegocio(): void
     {
+        $this->requireAuth();
         CsrfMiddleware::validate();
 
         $negocio = $this->getMiNegocio();
@@ -147,6 +222,7 @@ class PanelComercianteController
 
     public function perfil(): void
     {
+        $this->requireAuth();
         $usuarioModel = new Usuario($this->db);
         $usuario = $usuarioModel->find((int) $_SESSION['usuario_id']);
 
@@ -156,6 +232,7 @@ class PanelComercianteController
 
     public function actualizarPerfil(): void
     {
+        $this->requireAuth();
         CsrfMiddleware::validate();
 
         $data = Sanitizer::cleanArray($_POST);

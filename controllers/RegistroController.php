@@ -99,7 +99,7 @@ class RegistroController
             'telefono'      => $data['telefono_propietario'],
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
             'rol'           => 'comerciante',
-            'activo'        => 0,
+            'activo'        => 1,
         ]);
 
         // Registrar políticas si fueron aceptadas
