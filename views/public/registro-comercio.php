@@ -45,43 +45,14 @@
         </div>
     <?php endif; ?>
 
-    <form method="POST" action="<?= SITE_URL ?>/registrar-comercio" id="registroForm"
+    <form method="POST" action="<?= SITE_URL ?>/registrar-comercio" id="registroForm" enctype="multipart/form-data"
           style="background: var(--white); border-radius: var(--radius-lg); padding: 2rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
         <?= csrf_field() ?>
         <div style="position: absolute; left: -9999px;">
             <input type="text" name="website_url" tabindex="-1" autocomplete="off">
         </div>
 
-        <!-- SECCION 1: Políticas -->
-        <div style="background: #FEF3C7; border: 2px dashed #F59E0B; border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 0.3rem; font-size: 0.95rem; color: #92400E; text-transform: uppercase; letter-spacing: 0.5px;">Términos y Políticas — Lectura Obligatoria</h3>
-            <p style="margin: 0 0 1rem; font-size: 0.8rem; color: #B45309;">Antes de continuar, lee cada política y selecciona tu decisión. Debes aceptar todas para registrarte.</p>
-
-            <?php
-            $pols = [
-                ['politica_terminos', 'Términos y Condiciones', SITE_URL . '/terminos-y-condiciones'],
-                ['politica_privacidad', 'Política de Privacidad', SITE_URL . '/politica-de-privacidad'],
-                ['politica_cookies', 'Política de Cookies', SITE_URL . '/politica-de-cookies'],
-            ];
-            foreach ($pols as [$name, $label, $url]):
-            ?>
-            <div style="background: #fff; border: 1px solid #FED7AA; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-                    <a href="<?= $url ?>" target="_blank" style="font-weight: 600; font-size: 0.9rem; color: var(--primary); text-decoration: underline;"><?= $label ?></a>
-                    <div style="display: flex; gap: 1rem;">
-                        <label style="display: flex; align-items: center; gap: 0.3rem; cursor: pointer; font-size: 0.85rem; color: #15803D; font-weight: 600;">
-                            <input type="radio" name="<?= $name ?>" value="acepto" class="policy-radio" <?= ($d[$name] ?? '') === 'acepto' ? 'checked' : '' ?> required> Acepto
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.3rem; cursor: pointer; font-size: 0.85rem; color: #DC2626; font-weight: 600;">
-                            <input type="radio" name="<?= $name ?>" value="rechazo" class="policy-radio" <?= ($d[$name] ?? '') === 'rechazo' ? 'checked' : '' ?>> Rechazo
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-
-        <!-- SECCION 2: Datos del propietario -->
+        <!-- SECCION 1: Datos del propietario -->
         <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Datos del propietario</h3>
 
         <div class="form-group">
@@ -117,6 +88,16 @@
         <div class="form-group">
             <label>Nombre del comercio <span style="color: #DC2626;">*</span></label>
             <input type="text" name="nombre_comercio" value="<?= htmlspecialchars($d['nombre_comercio'] ?? '') ?>" placeholder="Ej: Restaurante El Lago" minlength="3" maxlength="150" required>
+        </div>
+        <div class="form-group">
+            <label>Tipo de establecimiento <span style="color: #DC2626;">*</span></label>
+            <select name="tipo" required>
+                <option value="">Selecciona el tipo...</option>
+                <option value="comercio" <?= ($d['tipo'] ?? '') === 'comercio' ? 'selected' : '' ?>>Comercio local</option>
+                <option value="atractivo" <?= ($d['tipo'] ?? '') === 'atractivo' ? 'selected' : '' ?>>Atractivo turístico</option>
+                <option value="gastronomia" <?= ($d['tipo'] ?? '') === 'gastronomia' ? 'selected' : '' ?>>Gastronomía</option>
+                <option value="servicio" <?= ($d['tipo'] ?? '') === 'servicio' ? 'selected' : '' ?>>Servicio turístico</option>
+            </select>
         </div>
         <div class="form-group">
             <label>Categoría <span style="color: #DC2626;">*</span></label>
@@ -192,7 +173,134 @@
         </div>
         <?php endif; ?>
 
-        <!-- SECCION 5: Nota y envío -->
+        <!-- SECCION 5: Imágenes -->
+        <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Imágenes</h3>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Plan Freemium permite 2 imágenes: logo y portada. JPG, PNG o WebP, máximo 2 MB cada una.</p>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Logo</label>
+                <input type="file" name="logo" accept="image/jpeg,image/png,image/webp">
+                <small class="text-light">Ideal: 800x800px. Se muestra circular.</small>
+            </div>
+            <div class="form-group">
+                <label>Foto de portada</label>
+                <input type="file" name="portada" accept="image/jpeg,image/png,image/webp">
+                <small class="text-light">Ideal: 1200x400px. Se muestra como banner.</small>
+            </div>
+        </div>
+
+        <!-- SECCION 6: Red social -->
+        <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Red social</h3>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Plan Freemium permite 1 red social. Elige la más importante para tu negocio.</p>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Red social</label>
+                <select name="red_social_tipo">
+                    <option value="">— Seleccionar —</option>
+                    <option value="facebook" <?= ($d['red_social_tipo'] ?? '') === 'facebook' ? 'selected' : '' ?>>Facebook</option>
+                    <option value="instagram" <?= ($d['red_social_tipo'] ?? '') === 'instagram' ? 'selected' : '' ?>>Instagram</option>
+                    <option value="tiktok" <?= ($d['red_social_tipo'] ?? '') === 'tiktok' ? 'selected' : '' ?>>TikTok</option>
+                    <option value="youtube" <?= ($d['red_social_tipo'] ?? '') === 'youtube' ? 'selected' : '' ?>>YouTube</option>
+                    <option value="twitter" <?= ($d['red_social_tipo'] ?? '') === 'twitter' ? 'selected' : '' ?>>X / Twitter</option>
+                    <option value="linkedin" <?= ($d['red_social_tipo'] ?? '') === 'linkedin' ? 'selected' : '' ?>>LinkedIn</option>
+                    <option value="otra" <?= ($d['red_social_tipo'] ?? '') === 'otra' ? 'selected' : '' ?>>Otra</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>URL del perfil</label>
+                <input type="url" name="red_social_url" value="<?= htmlspecialchars($d['red_social_url'] ?? '') ?>" placeholder="https://...">
+            </div>
+        </div>
+
+        <!-- SECCION 7: Idiomas -->
+        <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Idiomas</h3>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">¿Qué idiomas hablan en tu negocio?</p>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+            <?php
+            $idiomasOpts = [
+                'es' => '🇪🇸 Español',
+                'en' => '🇬🇧 Inglés',
+                'de' => '🇩🇪 Alemán',
+                'fr' => '🇫🇷 Francés',
+                'pt' => '🇧🇷 Portugués',
+            ];
+            $idiomasSel = (array)($d['idiomas'] ?? []);
+            foreach ($idiomasOpts as $code => $label):
+            ?>
+            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem;">
+                <input type="checkbox" name="idiomas[]" value="<?= $code ?>" <?= in_array($code, $idiomasSel) ? 'checked' : '' ?>>
+                <?= $label ?>
+            </label>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- SECCION 8: Términos y Políticas (card con modales) -->
+        <?php
+        $pols = [
+            ['politica_terminos', 'Términos y Condiciones', SITE_URL . '/terminos-y-condiciones'],
+            ['politica_privacidad', 'Política de Privacidad', SITE_URL . '/politica-de-privacidad'],
+            ['politica_contenidos', 'Política de Contenidos', SITE_URL . '/pagina/politica-de-contenidos'],
+            ['politica_derechos', 'Ejercicio de Derechos', SITE_URL . '/pagina/ejercicio-de-derechos'],
+            ['politica_cookies', 'Política de Cookies', SITE_URL . '/politica-de-cookies'],
+        ];
+        ?>
+        <div id="politicasCard" style="margin-top: 2rem; border: 2.5px solid #f97316; border-radius: 16px; padding: 24px 28px 28px; background: #fffbf0; transition: all 0.3s ease;">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+                <span style="font-size: 20px;">📋</span>
+                <span style="font-weight: 800; font-size: 16px; letter-spacing: 0.5px; color: #1f2937;">TÉRMINOS Y POLÍTICAS</span>
+                <span id="polCountBadge" style="background: #fff3e0; color: #ea580c; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 20px;">0 de 5 aceptadas</span>
+                <span id="polStatusIcon" style="margin-left: auto; font-size: 20px;">⚠️</span>
+            </div>
+            <p style="font-size: 14px; color: #6b7280; margin: 0 0 20px; line-height: 1.5;">Lee cada política y selecciona tu decisión. <strong style="color: #374151;">Debes aceptar todas para registrarte.</strong></p>
+
+            <!-- Policy rows -->
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <?php foreach ($pols as [$name, $label, $url]): ?>
+                <div class="pol-row" data-pol="<?= $name ?>" style="display: flex; align-items: center; justify-content: space-between; border: 1.5px solid #fddcb5; border-radius: 10px; padding: 12px 18px; background: #fff; transition: all 0.2s ease; flex-wrap: wrap; gap: 8px;">
+                    <button type="button" onclick="openPolModal('<?= $name ?>')" style="background: none; border: none; color: #2563eb; font-size: 15px; font-weight: 500; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; text-align: left; min-width: 200px;">
+                        <?= $label ?>
+                    </button>
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: #374151;">
+                            <input type="radio" name="<?= $name ?>" value="acepto" class="policy-radio" style="accent-color: #16a34a; width: 16px; height: 16px;" <?= ($d[$name] ?? '') === 'acepto' ? 'checked' : '' ?> required> Acepto
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: #dc2626;">
+                            <input type="radio" name="<?= $name ?>" value="rechazo" class="policy-radio" style="accent-color: #dc2626; width: 16px; height: 16px;" <?= ($d[$name] ?? '') === 'rechazo' ? 'checked' : '' ?>> Rechazo
+                        </label>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- Messages -->
+            <div id="polMsgReject" style="display: none; margin-top: 16px; padding: 10px 14px; background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; font-size: 13px; color: #991b1b; align-items: center; gap: 8px;">
+                <span>❌</span> Debes aceptar todas las políticas para poder registrarte. Si rechazas alguna, no podrás continuar con el registro.
+            </div>
+            <div id="polMsgOk" style="display: none; margin-top: 16px; padding: 10px 14px; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; font-size: 13px; color: #166534; align-items: center; gap: 8px;">
+                <span>✅</span> Has aceptado todas las políticas. Puedes continuar con el registro.
+            </div>
+        </div>
+
+        <!-- Modal de política (hidden by default) -->
+        <div id="polModal" onclick="closePolModal()" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000; padding: 16px;">
+            <div onclick="event.stopPropagation()" style="background: #fff; border-radius: 16px; max-width: 680px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 25px 50px rgba(0,0,0,0.25);">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #e5e7eb; flex-shrink: 0;">
+                    <h2 id="polModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; color: #1f2937;">📋 Política</h2>
+                    <button type="button" onclick="closePolModal()" style="background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; color: #6b7280;">✕</button>
+                </div>
+                <div id="polModalBody" style="padding: 24px; overflow-y: auto; flex: 1; font-size: 14px; line-height: 1.7; color: #374151; white-space: pre-wrap;"></div>
+                <div style="display: flex; gap: 12px; padding: 16px 24px; border-top: 1px solid #e5e7eb; flex-shrink: 0; justify-content: flex-end;">
+                    <button type="button" id="polModalReject" onclick="polModalDecide('rechazo')" style="padding: 10px 24px; border-radius: 8px; border: 1.5px solid #fca5a5; background: #fff; color: #dc2626; font-weight: 600; font-size: 14px; cursor: pointer;">Rechazo</button>
+                    <button type="button" id="polModalAccept" onclick="polModalDecide('acepto')" style="padding: 10px 24px; border-radius: 8px; border: none; background: #16a34a; color: #fff; font-weight: 600; font-size: 14px; cursor: pointer;">Acepto</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nota y envío -->
         <div style="margin-top: 2rem; padding: 1rem; background: var(--bg); border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.85rem; color: var(--text-light);">
             <span style="font-size: 1.2rem;">🔒</span>
             <div>
@@ -258,19 +366,117 @@ if (descEl && descCount) {
     descEl.addEventListener('input', function() { descCount.textContent = this.value.length; });
 }
 
-// Policy validation - disable submit if any policy rejected
-document.querySelectorAll('.policy-radio').forEach(function(r) {
-    r.addEventListener('change', checkPolicies);
-});
-function checkPolicies() {
-    var allAccepted = true;
-    ['politica_terminos', 'politica_privacidad', 'politica_cookies'].forEach(function(name) {
-        var checked = document.querySelector('input[name="' + name + '"]:checked');
-        if (!checked || checked.value !== 'acepto') allAccepted = false;
+// === Policies: modal + dynamic styling ===
+var policyNames = ['politica_terminos', 'politica_privacidad', 'politica_contenidos', 'politica_derechos', 'politica_cookies'];
+var policyLabels = {'politica_terminos':'Términos y Condiciones','politica_privacidad':'Política de Privacidad','politica_contenidos':'Política de Contenidos','politica_derechos':'Ejercicio de Derechos','politica_cookies':'Política de Cookies'};
+var currentPolName = null;
+
+function openPolModal(name) {
+    currentPolName = name;
+    document.getElementById('polModalTitle').textContent = '📋 ' + (policyLabels[name] || name);
+    document.getElementById('polModalBody').textContent = 'Cargando...';
+    document.getElementById('polModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    // Load content via fetch from the policy page
+    var urls = {
+        'politica_terminos': '<?= SITE_URL ?>/terminos-y-condiciones',
+        'politica_privacidad': '<?= SITE_URL ?>/politica-de-privacidad',
+        'politica_contenidos': '<?= SITE_URL ?>/pagina/politica-de-contenidos',
+        'politica_derechos': '<?= SITE_URL ?>/pagina/ejercicio-de-derechos',
+        'politica_cookies': '<?= SITE_URL ?>/politica-de-cookies'
+    };
+    fetch(urls[name]).then(function(r) { return r.text(); }).then(function(html) {
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        var content = tmp.querySelector('.container-narrow, .noticia-contenido, article, .section .container');
+        document.getElementById('polModalBody').innerHTML = content ? content.innerHTML : '<p>Contenido no disponible. <a href="' + urls[name] + '" target="_blank">Abrir en nueva pestaña</a></p>';
+    }).catch(function() {
+        document.getElementById('polModalBody').innerHTML = '<p>No se pudo cargar. <a href="' + (urls[name]||'#') + '" target="_blank">Abrir en nueva pestaña</a></p>';
     });
-    var btn = document.getElementById('submitBtn');
-    btn.disabled = !allAccepted;
-    btn.style.opacity = allAccepted ? '1' : '0.5';
 }
-checkPolicies();
+
+function closePolModal() {
+    document.getElementById('polModal').style.display = 'none';
+    document.body.style.overflow = '';
+    currentPolName = null;
+}
+
+function polModalDecide(value) {
+    if (!currentPolName) return;
+    var radios = document.querySelectorAll('input[name="' + currentPolName + '"]');
+    radios.forEach(function(r) { r.checked = (r.value === value); });
+    closePolModal();
+    updatePoliciesUI();
+}
+
+document.querySelectorAll('.policy-radio').forEach(function(r) {
+    r.addEventListener('change', updatePoliciesUI);
+});
+
+function updatePoliciesUI() {
+    var accepted = 0;
+    var rejected = false;
+    policyNames.forEach(function(name) {
+        var checked = document.querySelector('input[name="' + name + '"]:checked');
+        var row = document.querySelector('.pol-row[data-pol="' + name + '"]');
+        if (checked && checked.value === 'acepto') {
+            accepted++;
+            if (row) { row.style.borderColor = '#86efac'; row.style.background = '#f0fdf4'; }
+            var lbl = row ? row.querySelector('label:first-of-type') : null;
+            if (lbl) { lbl.style.fontWeight = '700'; lbl.style.color = '#16a34a'; }
+        } else if (checked && checked.value === 'rechazo') {
+            rejected = true;
+            if (row) { row.style.borderColor = '#fca5a5'; row.style.background = '#fef2f2'; }
+        } else {
+            if (row) { row.style.borderColor = '#fddcb5'; row.style.background = '#fff'; }
+        }
+    });
+    var allOk = (accepted === 5);
+    var card = document.getElementById('politicasCard');
+    var badge = document.getElementById('polCountBadge');
+    var icon = document.getElementById('polStatusIcon');
+    var msgOk = document.getElementById('polMsgOk');
+    var msgReject = document.getElementById('polMsgReject');
+    var btn = document.getElementById('submitBtn');
+
+    badge.textContent = accepted + ' de 5 aceptadas';
+    if (allOk) {
+        card.style.borderColor = '#22c55e'; card.style.background = '#f0fdf4';
+        badge.style.background = '#dcfce7'; badge.style.color = '#16a34a';
+        icon.textContent = '✅';
+        msgOk.style.display = 'flex'; msgReject.style.display = 'none';
+    } else if (rejected) {
+        card.style.borderColor = '#ef4444'; card.style.background = '#fef2f2';
+        badge.style.background = '#fee2e2'; badge.style.color = '#dc2626';
+        icon.textContent = '⚠️';
+        msgOk.style.display = 'none'; msgReject.style.display = 'flex';
+    } else {
+        card.style.borderColor = '#f97316'; card.style.background = '#fffbf0';
+        badge.style.background = '#fff3e0'; badge.style.color = '#ea580c';
+        icon.textContent = '⚠️';
+        msgOk.style.display = 'none'; msgReject.style.display = 'none';
+    }
+    btn.disabled = !allOk;
+    btn.style.opacity = allOk ? '1' : '0.5';
+}
+updatePoliciesUI();
+
+// On submit: scroll to policies if not all accepted
+document.getElementById('registroForm').addEventListener('submit', function(e) {
+    updatePoliciesUI();
+    var accepted = 0;
+    policyNames.forEach(function(name) {
+        var c = document.querySelector('input[name="' + name + '"]:checked');
+        if (c && c.value === 'acepto') accepted++;
+    });
+    if (accepted < 5) {
+        e.preventDefault();
+        document.getElementById('politicasCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+
+// Close modal on Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePolModal();
+});
 </script>

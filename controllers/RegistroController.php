@@ -67,6 +67,12 @@ class RegistroController
         if (($data['politica_cookies'] ?? '') !== 'acepto') {
             $errores[] = 'Debes aceptar la Política de Cookies.';
         }
+        if (($data['politica_contenidos'] ?? '') !== 'acepto') {
+            $errores[] = 'Debes aceptar la Política de Contenidos.';
+        }
+        if (($data['politica_derechos'] ?? '') !== 'acepto') {
+            $errores[] = 'Debes aceptar la Política de Ejercicio de Derechos.';
+        }
 
         // 5. Validate owner fields
         if (empty($data['nombre_propietario']) || mb_strlen($data['nombre_propietario']) < 3 || mb_strlen($data['nombre_propietario']) > 100) {
@@ -127,13 +133,35 @@ class RegistroController
             'activo'        => 0,
         ]);
 
-        // 10. Create negocio
+        // 10. Upload images (logo, portada)
+        $logoPath = null;
+        $portadaPath = null;
+        if (!empty($_FILES['logo']['name'])) {
+            $logoPath = ImageHelper::upload($_FILES['logo'], 'negocios');
+        }
+        if (!empty($_FILES['portada']['name'])) {
+            $portadaPath = ImageHelper::upload($_FILES['portada'], 'negocios');
+        }
+
+        // 10b. Red social
+        $redSocialField = null;
+        $redSocialUrl = !empty($data['red_social_url']) ? $data['red_social_url'] : null;
+        $redSocialTipo = $data['red_social_tipo'] ?? '';
+        $redSocialMap = [
+            'facebook' => 'facebook', 'instagram' => 'instagram', 'tiktok' => 'tiktok',
+            'youtube' => 'youtube', 'twitter' => 'twitter', 'linkedin' => 'linkedin',
+        ];
+
+        // 10c. Idiomas
+        $idiomas = !empty($_POST['idiomas']) && is_array($_POST['idiomas']) ? json_encode($_POST['idiomas']) : null;
+
+        // 11. Create negocio
         $slug = SlugHelper::unique($this->db, 'negocios', $data['nombre_comercio']);
         $negocioModel = new Negocio($this->db);
-        $negocioId = $negocioModel->create([
+        $negocioData = [
             'nombre'            => $data['nombre_comercio'],
             'slug'              => $slug,
-            'tipo'              => 'comercio',
+            'tipo'              => in_array($data['tipo'] ?? '', ['comercio','atractivo','gastronomia','servicio']) ? $data['tipo'] : 'comercio',
             'categoria_id'      => (int) $data['categoria_id'],
             'descripcion_corta' => mb_substr($data['descripcion_comercio'], 0, 300),
             'descripcion_larga' => $data['descripcion_comercio'],
@@ -150,9 +178,18 @@ class RegistroController
             'status'            => 'pendiente',
             'plan_id'           => 1,
             'propietario_id'    => $userId,
-        ]);
+            'idiomas'           => $idiomas,
+        ];
+        if ($logoPath) $negocioData['logo'] = $logoPath;
+        if ($portadaPath) $negocioData['portada'] = $portadaPath;
+        if ($redSocialUrl && isset($redSocialMap[$redSocialTipo])) {
+            $negocioData[$redSocialMap[$redSocialTipo]] = $redSocialUrl;
+        } elseif ($redSocialUrl && $redSocialTipo === 'otra') {
+            $negocioData['red_social_1'] = $redSocialUrl;
+        }
+        $negocioId = $negocioModel->create($negocioData);
 
-        // 11. Save temporadas
+        // 12. Save temporadas
         $temporadaIds = $_POST['temporadas'] ?? [];
         $promociones = $_POST['temporada_promocion'] ?? [];
         if (!empty($temporadaIds) && is_array($temporadaIds)) {
@@ -160,10 +197,10 @@ class RegistroController
             $tempModel->syncNegocioTemporadas($negocioId, $temporadaIds, $promociones);
         }
 
-        // 12. Audit log
+        // 13. Audit log
         $this->logRegistro($data['email_propietario'], 'exitoso', $negocioId);
 
-        // 13. Send emails
+        // 14. Send emails
         $catNombre = '';
         if (!empty($data['categoria_id'])) {
             $cat = (new Categoria($this->db))->find((int) $data['categoria_id']);
@@ -214,7 +251,7 @@ class RegistroController
         );
         EmailHelper::send($data['email_propietario'], 'Solicitud de registro recibida — ' . SITE_NAME, $welcomeBody);
 
-        // 14. Set success data for dedicated page
+        // 15. Set success data for dedicated page
         $_SESSION['registro_exito'] = true;
         $_SESSION['registro_email'] = $data['email_propietario'];
         $_SESSION['registro_nombre'] = $data['nombre_comercio'];
