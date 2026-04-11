@@ -202,7 +202,7 @@ try {
                     <?php if ($badges['mensajes']): ?><span class="nav-badge warn"><?= $badges['mensajes'] ?></span><?php endif; ?>
                 </a>
                 <a href="<?= SITE_URL ?>/admin/estadisticas">📈 Estadísticas</a>
-                <a href="<?= SITE_URL ?>/admin/planes">💰 Planes</a>
+                <a href="<?= SITE_URL ?>/admin/planes-config" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/planes-config') ? 'active' : '' ?>">📋 Planes</a>
             </div>
 
             <!-- CONFIGURACIÓN -->
@@ -215,6 +215,7 @@ try {
                 <a href="<?= SITE_URL ?>/admin/paginas">📃 Páginas</a>
                 <a href="<?= SITE_URL ?>/admin/usuarios">👥 Usuarios</a>
                 <a href="<?= SITE_URL ?>/admin/mantenimiento">🔧 Mantenimiento</a>
+                <a href="<?= SITE_URL ?>/admin/backups">💾 Backups</a>
             </div>
         </nav>
 
@@ -243,6 +244,20 @@ try {
 </div>
 
 <?php if (isset($extraScripts)) echo $extraScripts; ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js"></script><script>if (document.querySelector("textarea.editor-wysiwyg")) {    tinymce.init({        selector: "textarea.editor-wysiwyg",        language: "es",        height: 400,        menubar: false,        plugins: "lists link image table code wordcount fullscreen",        toolbar: "undo redo | blocks | bold italic underline | bullist numlist | link image table | alignleft aligncenter alignright | code fullscreen",        content_style: "body { font-family: Plus Jakarta Sans, sans-serif; font-size: 16px; line-height: 1.7; }",        branding: false,        promotion: false    });}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js"></script>
+<script>
+if (document.querySelector("textarea.editor-wysiwyg")) {
+    tinymce.init({
+        selector: "textarea.editor-wysiwyg",
+        height: 400,
+        menubar: false,
+        plugins: "lists link image table code wordcount fullscreen",
+        toolbar: "undo redo | blocks | bold italic underline | bullist numlist | link image table | alignleft aligncenter alignright | code fullscreen",
+        content_style: "body { font-family: Plus Jakarta Sans, sans-serif; font-size: 16px; line-height: 1.7; }",
+        branding: false,
+        promotion: false
+    });
+}
+</script>
 </body>
 </html>

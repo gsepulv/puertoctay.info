@@ -194,6 +194,12 @@ $router->add('POST', '/admin/usuarios/{id}/eliminar', 'AdminUsuarioController@el
 // ── Admin: Mantenimiento ──────────────────────────────
 $router->add('GET', '/admin/mantenimiento', 'AdminMantenimientoController@index');
 
+// ── Admin: Backups ────────────────────────────────────
+$router->add('GET',  '/admin/backups',            'AdminBackupController@index');
+$router->add('POST', '/admin/backups/run-local',  'AdminBackupController@runLocal');
+$router->add('POST', '/admin/backups/run-gdrive', 'AdminBackupController@runGdrive');
+$router->add('POST', '/admin/backups/delete',     'AdminBackupController@delete');
+
 // Aliases: singular -> plural redirects
 $router->add('GET', '/noticia/{slug}', 'NoticiaController@showRedirect');
 // Despachar
