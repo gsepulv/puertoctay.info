@@ -134,24 +134,23 @@
 
         <!-- SECCION 4: Temporadas -->
         <?php if (!empty($temporadas)): ?>
-        <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Temporadas turísticas</h3>
-        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Selecciona las temporadas en las que tu comercio tiene actividad. Puedes agregar una promoción especial para cada temporada.</p>
+        <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">🗓️ Temporadas turísticas</h3>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Selecciona las temporadas en que tu comercio opera. Puedes agregar una promoción especial para cada una.</p>
 
-        <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+        <div class="temporadas-grid">
             <?php foreach ($temporadas as $temp): ?>
-            <div class="temp-item" style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.75rem 1rem; transition: all 0.2s;">
-                <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.9rem;">
-                    <input type="checkbox" name="temporadas[]" value="<?= $temp['id'] ?>" class="temp-check"
-                        <?= in_array($temp['id'], (array)($d['temporadas'] ?? [])) ? 'checked' : '' ?>
-                        onchange="this.closest('.temp-item').querySelector('.temp-promo').style.display=this.checked?'block':'none'">
-                    <span style="font-size: 1.2rem;"><?= $temp['emoji'] ?></span>
-                    <span><strong><?= htmlspecialchars($temp['nombre']) ?></strong></span>
+            <div class="temporada-card" id="card-<?= $temp['id'] ?>">
+                <label class="temporada-label">
+                    <input type="checkbox" name="temporadas[]" value="<?= $temp['id'] ?>"
+                           <?= in_array($temp['id'], (array)($d['temporadas'] ?? [])) ? 'checked' : '' ?>
+                           onchange="togglePromo(<?= $temp['id'] ?>)">
+                    <span class="temporada-emoji"><?= $temp['emoji'] ?? '📅' ?></span>
+                    <span class="temporada-nombre"><?= htmlspecialchars($temp['nombre']) ?></span>
                 </label>
-                <div class="temp-promo" style="display: <?= in_array($temp['id'], (array)($d['temporadas'] ?? [])) ? 'block' : 'none' ?>; margin-top: 0.5rem; padding-left: 2.2rem;">
+                <div class="promo-campo" id="promo-<?= $temp['id'] ?>" style="display:<?= in_array($temp['id'], (array)($d['temporadas'] ?? [])) ? 'block' : 'none' ?>;">
                     <input type="text" name="temporada_promocion[<?= $temp['id'] ?>]"
                            value="<?= htmlspecialchars($d['temporada_promocion'][$temp['id']] ?? '') ?>"
-                           placeholder="Promoción especial (ej: 20% descuento)"
-                           style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                           placeholder="Promoción especial (opcional)" maxlength="150">
                 </div>
             </div>
             <?php endforeach; ?>
@@ -200,26 +199,35 @@
         </div>
 
         <!-- SECCION 7: Idiomas -->
-        <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Idiomas</h3>
-        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">¿Qué idiomas hablan en tu negocio?</p>
+        <h3 style="margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">🌐 Idiomas de atención</h3>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">¿En qué idiomas pueden comunicarse los turistas contigo?</p>
 
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
-            <?php
-            $idiomasOpts = [
-                'es' => '🇪🇸 Español',
-                'en' => '🇬🇧 Inglés',
-                'de' => '🇩🇪 Alemán',
-                'fr' => '🇫🇷 Francés',
-                'pt' => '🇧🇷 Portugués',
-            ];
-            $idiomasSel = (array)($d['idiomas'] ?? []);
-            foreach ($idiomasOpts as $code => $label):
-            ?>
-            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem;">
-                <input type="checkbox" name="idiomas[]" value="<?= $code ?>" <?= in_array($code, $idiomasSel) ? 'checked' : '' ?>>
-                <?= $label ?>
+        <div class="idiomas-grid">
+            <label class="idioma-card">
+                <input type="checkbox" name="idiomas[]" value="es" <?= in_array('es', (array)($d['idiomas'] ?? [])) ? 'checked' : '' ?>>
+                <span class="idioma-bandera">🇨🇱</span>
+                <span class="idioma-nombre">Español</span>
             </label>
-            <?php endforeach; ?>
+            <label class="idioma-card">
+                <input type="checkbox" name="idiomas[]" value="en" <?= in_array('en', (array)($d['idiomas'] ?? [])) ? 'checked' : '' ?>>
+                <span class="idioma-bandera">🇬🇧</span>
+                <span class="idioma-nombre">English</span>
+            </label>
+            <label class="idioma-card">
+                <input type="checkbox" name="idiomas[]" value="de" <?= in_array('de', (array)($d['idiomas'] ?? [])) ? 'checked' : '' ?>>
+                <span class="idioma-bandera">🇩🇪</span>
+                <span class="idioma-nombre">Deutsch</span>
+            </label>
+            <label class="idioma-card">
+                <input type="checkbox" name="idiomas[]" value="fr" <?= in_array('fr', (array)($d['idiomas'] ?? [])) ? 'checked' : '' ?>>
+                <span class="idioma-bandera">🇫🇷</span>
+                <span class="idioma-nombre">Français</span>
+            </label>
+            <label class="idioma-card">
+                <input type="checkbox" name="idiomas[]" value="pt" <?= in_array('pt', (array)($d['idiomas'] ?? [])) ? 'checked' : '' ?>>
+                <span class="idioma-bandera">🇧🇷</span>
+                <span class="idioma-nombre">Português</span>
+            </label>
         </div>
 
         <!-- SECCION 8: Términos y Políticas (card con modales) -->
@@ -304,7 +312,38 @@
     </div>
 
 </div>
+
+<style>
+/* TEMPORADAS */
+.temporadas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px}
+.temporada-card{border:2px solid #e5e7eb;border-radius:10px;padding:10px 12px;transition:border-color 0.2s,background 0.2s}
+.temporada-card:has(input:checked){border-color:var(--primary);background:#fff8f0}
+.temporada-label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.9rem;font-weight:500}
+.temporada-label input[type="checkbox"]{width:18px;height:18px;accent-color:var(--primary);flex-shrink:0}
+.temporada-emoji{font-size:1.4rem;line-height:1}
+.temporada-nombre{flex:1;line-height:1.2}
+.promo-campo{margin-top:8px}
+.promo-campo input{width:100%;font-size:0.8rem;padding:6px 8px;border:1px solid #d1d5db;border-radius:6px;box-sizing:border-box}
+/* IDIOMAS */
+.idiomas-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.idioma-card{display:flex;align-items:center;gap:8px;border:2px solid #e5e7eb;border-radius:10px;padding:10px 16px;cursor:pointer;transition:border-color 0.2s,background 0.2s;min-width:130px}
+.idioma-card:has(input:checked){border-color:var(--primary);background:#fff8f0}
+.idioma-card input[type="checkbox"]{width:16px;height:16px;accent-color:var(--primary)}
+.idioma-bandera{font-size:1.5rem;line-height:1}
+.idioma-nombre{font-size:0.9rem;font-weight:500}
+</style>
 </section>
+
+
+<script>
+function togglePromo(id) {
+    var checkbox = document.querySelector('input[name="temporadas[]"][value="' + id + '"]');
+    var promo = document.getElementById('promo-' + id);
+    if (checkbox && promo) {
+        promo.style.display = checkbox.checked ? 'block' : 'none';
+    }
+}
+</script>
 
 <script>
 // Password strength indicator
