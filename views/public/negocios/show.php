@@ -157,6 +157,25 @@ $tipo = $tipoBadges[$negocio['tipo'] ?? 'comercio'] ?? $tipoBadges['comercio'];
                 </div>
             <?php endif; ?>
 
+
+            <!-- Idiomas -->
+            <?php
+            $idiomasRaw = $negocio['idiomas'] ?? '';
+            $idiomasList = [];
+            if (!empty($idiomasRaw)) {
+                $decoded = json_decode($idiomasRaw, true);
+                if (is_array($decoded)) $idiomasList = $decoded;
+            }
+            $idiomasMap = ['es'=>'🇨🇱 Español','en'=>'🇬🇧 English','de'=>'🇩🇪 Deutsch','fr'=>'🇫🇷 Français','pt'=>'🇧🇷 Português'];
+            ?>
+            <?php if (!empty($idiomasList)): ?>
+                <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+                    <span style="font-size:0.9rem;color:var(--text-light);font-weight:600;">Idiomas:</span>
+                    <?php foreach ($idiomasList as $code): ?>
+                        <span style="padding:0.2rem 0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:50px;font-size:0.82rem;"><?= $idiomasMap[$code] ?? $code ?></span>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
             <!-- Contacto (inline en columna principal para mobile) -->
             <?php if (!empty($negocio['direccion']) || !empty($negocio['telefono']) || !empty($negocio['whatsapp']) || !empty($negocio['email']) || !empty($negocio['sitio_web']) || !empty($negocio['como_llegar'])): ?>
                 <div class="ficha-section">
@@ -185,6 +204,23 @@ $tipo = $tipoBadges[$negocio['tipo'] ?? 'comercio'] ?? $tipoBadges['comercio'];
                 </div>
             <?php endif; ?>
 
+
+            <!-- Temporadas -->
+            <?php if (!empty($negocioTemporadas)): ?>
+                <div class="ficha-section">
+                    <h2>🌤️ Temporadas de operación</h2>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                        <?php foreach ($negocioTemporadas as $nt): ?>
+                        <div style="display:flex;flex-direction:column;align-items:center;padding:0.6rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:50px;font-size:0.85rem;">
+                            <span style="display:flex;align-items:center;gap:0.3rem;"><span style="font-size:1.1rem;"><?= $nt['emoji'] ?? '📅' ?></span> <strong><?= htmlspecialchars($nt['nombre']) ?></strong></span>
+                            <?php if (!empty($nt['promocion'])): ?>
+                            <span style="font-size:0.78rem;color:#92400E;margin-top:0.2rem;">🏷️ <?= htmlspecialchars($nt['promocion']) ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
             <!-- Mapa -->
             <?php if ($hasCoords): ?>
                 <div class="ficha-section">
