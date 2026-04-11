@@ -19,20 +19,20 @@ $dbPass = '+D0$OBgwYl.o';
 $dbName = 'visitapuertoctay_puertoctay';
 
 // 1. Backup de base de datos
-$dbFile = "$storageBackups/backup_db_{$fecha}.sql.gz";
+$dbFile = "$storageBackups/vpo_backup_db_{$fecha}.sql.gz";
 $cmd = "mysqldump --no-tablespaces -h$dbHost -u$dbUser -p'$dbPass' $dbName | gzip > $dbFile 2>&1";
 exec($cmd, $out, $code);
 $dbOk = ($code === 0 && file_exists($dbFile));
 
 // 2. Backup de uploads
-$uploadsFile = "$storageBackups/backup_uploads_{$fecha}.tar.gz";
+$uploadsFile = "$storageBackups/vpo_backup_uploads_{$fecha}.tar.gz";
 $uploadsDir  = '/home/visitapuertoctay/public_html/uploads';
 $cmd2 = "tar -czf $uploadsFile -C $uploadsDir . 2>&1";
 exec($cmd2, $out2, $code2);
 $uploadsOk = ($code2 === 0 && file_exists($uploadsFile));
 
 // 3. Rotación: eliminar backups con más de 30 días
-$archivos = glob("$storageBackups/backup_*.{sql.gz,tar.gz}", GLOB_BRACE);
+$archivos = glob("$storageBackups/vpo_backup_*.{sql.gz,tar.gz}", GLOB_BRACE);
 foreach ($archivos as $archivo) {
     if (filemtime($archivo) < strtotime('-30 days')) {
         unlink($archivo);

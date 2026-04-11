@@ -9,3 +9,8 @@ public/uploads/*
 .DS_Store
 Thumbs.db
 error_log
+config/backup.php
+config/google-credentials.json
+storage/backups/*.sql.gz
+storage/backups/*.tar.gz
+storage/backups/*.log
