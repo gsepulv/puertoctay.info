@@ -26,6 +26,9 @@
             <p style="color: #15803D; margin-bottom: 1.5rem; line-height: 1.6;">
                 Nuestro equipo revisará tu solicitud y te informaremos en un máximo de <strong>48 horas</strong> si tu registro fue aprobado.
             </p>
+            <div style="background: #EFF6FF; border: 1px solid #93C5FD; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem; text-align: left; font-size: 0.9rem; color: #1E40AF;">
+                <p style="margin: 0;">💡 Una vez que tu comercio sea aprobado, podrás agregar más fotos a tu galería, actualizar horarios y gestionar reseñas desde tu panel de comerciante.</p>
+            </div>
             <div style="background: #fff; border: 1px solid #BBF7D0; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; text-align: left; font-size: 0.9rem; color: #166534;">
                 <p style="margin: 0 0 0.5rem;"><strong>¿Tienes consultas?</strong></p>
                 <p style="margin: 0.25rem 0;">Email: <a href="mailto:contacto@purranque.info" style="color: #166534;">contacto@purranque.info</a></p>
