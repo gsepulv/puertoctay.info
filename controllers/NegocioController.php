@@ -81,6 +81,10 @@ class NegocioController
             if (is_array($decoded)) $galeria = $decoded;
         }
 
+        // Inject rating data into negocio for Schema.org
+        $negocio['_rating_avg'] = $rating;
+        $negocio['_rating_count'] = (int) ($ratingData['total'] ?? 0);
+
         $pageTitle = htmlspecialchars($negocio['nombre']) . ' — ' . SITE_NAME;
         $pageDescription = $negocio['descripcion_corta'] ?? "Información de {$negocio['nombre']} en Puerto Octay.";
         $usarLeaflet = !empty($negocio['lat']) && !empty($negocio['lng']);

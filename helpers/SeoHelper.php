@@ -72,6 +72,17 @@ class SeoHelper
             $schema['openingHours'] = $negocio['horario'];
         }
 
+        // AggregateRating si hay reseñas
+        if (!empty($negocio['_rating_avg']) && !empty($negocio['_rating_count'])) {
+            $schema['aggregateRating'] = [
+                '@type' => 'AggregateRating',
+                'ratingValue' => round((float) $negocio['_rating_avg'], 1),
+                'reviewCount' => (int) $negocio['_rating_count'],
+                'bestRating' => 5,
+                'worstRating' => 1,
+            ];
+        }
+
         return '<script type="application/ld+json">' . json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
     }
 
