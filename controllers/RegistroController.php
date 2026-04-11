@@ -37,7 +37,7 @@ class RegistroController
         // 1. Honeypot
         if (!empty($_POST['website_url'])) {
             $this->logRegistro($_POST['email_propietario'] ?? '', 'bloqueado_honeypot');
-            header('Location: ' . SITE_URL . '/registrar-comercio');
+            header('Location: ' . SITE_URL . '/registrar-comercio/gracias');
             exit;
         }
 
@@ -256,8 +256,25 @@ class RegistroController
         $_SESSION['registro_exito'] = true;
         $_SESSION['registro_email'] = $data['email_propietario'];
         $_SESSION['registro_nombre'] = $data['nombre_comercio'];
-        header('Location: ' . SITE_URL . '/registrar-comercio');
+        header('Location: ' . SITE_URL . '/registrar-comercio/gracias');
         exit;
+    }
+
+    public function gracias(): void
+    {
+        if (empty($_SESSION['registro_exito'])) {
+            header('Location: ' . SITE_URL . '/registrar-comercio');
+            exit;
+        }
+
+        $email = $_SESSION['registro_email'] ?? '';
+        $nombre = $_SESSION['registro_nombre'] ?? '';
+        unset($_SESSION['registro_exito'], $_SESSION['registro_email'], $_SESSION['registro_nombre']);
+
+        $pageTitle = '¡Registro recibido! — ' . SITE_NAME;
+        $pageDescription = 'Tu comercio ha sido registrado exitosamente.';
+        $viewName = 'public/registro-gracias';
+        require ROOT_PATH . '/views/layouts/main.php';
     }
 
     private function logRegistro(string $email, string $resultado, ?int $negocioId = null): void

@@ -40,6 +40,7 @@ $router->add('GET', '/politica-de-cookies', 'PaginaController@showLegal');
 $router->add('GET', '/planes', 'PlanController@index');
 $router->add('GET', '/registrar-comercio', 'RegistroController@index');
 $router->add('POST', '/registrar-comercio', 'RegistroController@store');
+$router->add('GET', '/registrar-comercio/gracias', 'RegistroController@gracias');
 $router->add('GET', '/contacto', 'ContactoController@index');
 $router->add('POST', '/contacto', 'ContactoController@enviar');
 $router->add('GET', '/sitemap.xml', 'SitemapController@index');
