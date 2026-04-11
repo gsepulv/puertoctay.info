@@ -316,7 +316,78 @@ $tipo = $tipoBadges[$negocio['tipo'] ?? 'comercio'] ?? $tipoBadges['comercio'];
                     <p class="text-light">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
                 <?php endif; ?>
 
-                <!-- formulario reseñas: pendiente prompt 3 -->
+
+                <!-- FORMULARIO DE RESEÑA -->
+                <div id="dejar-resena" style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+                    <h3 style="margin-bottom:1rem;">Deja tu opinión</h3>
+
+                    <?php if (!empty($_SESSION['flash_success'])): ?>
+                        <div style="background:#F0FDF4;border:1px solid #22C55E;border-radius:8px;padding:1rem;margin-bottom:1rem;color:#166534;">
+                            ✅ <?= htmlspecialchars($_SESSION['flash_success']) ?>
+                        </div>
+                        <?php unset($_SESSION['flash_success']); ?>
+                    <?php endif; ?>
+                    <?php if (!empty($_SESSION['flash_error'])): ?>
+                        <div style="background:#FEF2F2;border:1px solid #EF4444;border-radius:8px;padding:1rem;margin-bottom:1rem;color:#991B1B;">
+                            ⚠️ <?= htmlspecialchars($_SESSION['flash_error']) ?>
+                        </div>
+                        <?php unset($_SESSION['flash_error']); ?>
+                    <?php endif; ?>
+
+                    <form method="POST" action="<?= SITE_URL ?>/negocio/<?= htmlspecialchars($negocio['slug']) ?>/resena">
+                        <?= csrf_field() ?>
+                        <div style="position:absolute;left:-9999px;"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>
+
+                        <!-- Estrellas -->
+                        <div class="form-group">
+                            <label>Calificación *</label>
+                            <div id="starPickerForm" style="font-size:1.8rem;cursor:pointer;letter-spacing:4px;">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <span data-star="<?= $i ?>" style="color:var(--border);transition:color 0.15s;">&#9733;</span>
+                                <?php endfor; ?>
+                            </div>
+                            <input type="hidden" name="puntuacion" id="starValueForm" value="0" required>
+                        </div>
+
+                        <?php if (empty($_SESSION['usuario_id'])): ?>
+                        <!-- Campos visitante anónimo -->
+                        <div class="form-group">
+                            <label>Nombre completo *</label>
+                            <input type="text" name="visitante_nombre" required minlength="2" maxlength="100" placeholder="Tu nombre">
+                        </div>
+                        <div class="form-group">
+                            <label>Email * <small style="color:var(--text-lighter);">(no se publicará)</small></label>
+                            <input type="email" name="visitante_email" required maxlength="150" placeholder="tu@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>¿De dónde vienes? <small style="color:var(--text-lighter);">(opcional)</small></label>
+                            <input type="text" name="visitante_origen" maxlength="100" placeholder="Ej: Santiago, Chile">
+                        </div>
+                        <?php else: ?>
+                        <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">Publicando como <strong><?= htmlspecialchars($_SESSION['usuario_nombre'] ?? '') ?></strong></p>
+                        <?php endif; ?>
+
+                        <!-- Comentario -->
+                        <div class="form-group">
+                            <label>Tu experiencia * <small style="color:var(--text-lighter);">(mín. 20 caracteres)</small></label>
+                            <textarea name="comentario" id="resenaComentario" required minlength="20" maxlength="500" rows="4" placeholder="Cuéntanos tu experiencia..."></textarea>
+                            <small style="color:var(--text-lighter);float:right;"><span id="resenaCount">0</span>/500</small>
+                        </div>
+
+                        <?php if (empty($_SESSION['usuario_id'])): ?>
+                        <!-- Aceptación -->
+                        <div class="form-group" style="margin-top:0.5rem;">
+                            <label style="display:flex;align-items:flex-start;gap:0.5rem;cursor:pointer;font-size:0.88rem;">
+                                <input type="checkbox" name="acepta_publicacion" required style="margin-top:3px;">
+                                Acepto que mi nombre y comentario sean publicados en este sitio
+                            </label>
+                        </div>
+                        <?php endif; ?>
+
+                        <button type="submit" class="btn btn-accent" style="margin-top:0.5rem;">Enviar reseña</button>
+                    </form>
+                </div>
+
             </div>
 
             <!-- Similares -->
@@ -417,4 +488,9 @@ if (!empty($galeria)) {
     document.addEventListener("keydown", function(e) { if (!document.getElementById("fichaLightbox").classList.contains("active")) return; if (e.key === "Escape") closeLightbox(); if (e.key === "ArrowRight") navLightbox(1); if (e.key === "ArrowLeft") navLightbox(-1); });
     </script>';
 }
+
+$extraScripts .= '<script>
+if(document.getElementById("starPickerForm")){document.querySelectorAll("#starPickerForm span").forEach(function(star){star.addEventListener("click",function(){var val=parseInt(this.dataset.star);document.getElementById("starValueForm").value=val;document.querySelectorAll("#starPickerForm span").forEach(function(s,i){s.style.color=(i<val)?"var(--accent)":"var(--border)";});});star.addEventListener("mouseenter",function(){var val=parseInt(this.dataset.star);document.querySelectorAll("#starPickerForm span").forEach(function(s,i){s.style.color=(i<val)?"var(--accent)":"var(--border)";});});});document.getElementById("starPickerForm").addEventListener("mouseleave",function(){var val=parseInt(document.getElementById("starValueForm").value)||0;document.querySelectorAll("#starPickerForm span").forEach(function(s,i){s.style.color=(i<val)?"var(--accent)":"var(--border)";});});}
+var rc=document.getElementById("resenaComentario"),rcC=document.getElementById("resenaCount");if(rc&&rcC){rc.addEventListener("input",function(){rcC.textContent=this.value.length;});}
+</script>';
 ?>

@@ -44,4 +44,27 @@ class Resena extends Model
     {
         $this->update($id, ['estado' => 'rechazada']);
     }
+
+    /**
+     * Crear reseña de visitante anónimo (sin cuenta)
+     */
+    public function crearDeVisitante(array $datos): int
+    {
+        $stmt = $this->db->prepare(
+            "INSERT INTO resenas (negocio_id, usuario_id, nombre_autor, email_autor, puntuacion,
+                                  comentario, estado, ip_address, user_agent, visitante_origen)
+             VALUES (:nid, NULL, :nombre, :email, :punt, :com, 'pendiente', :ip, :ua, :origen)"
+        );
+        $stmt->execute([
+            'nid'    => $datos['negocio_id'],
+            'nombre' => $datos['nombre_autor'],
+            'email'  => $datos['email_autor'],
+            'punt'   => $datos['puntuacion'],
+            'com'    => $datos['comentario'],
+            'ip'     => $datos['ip_address'],
+            'ua'     => $datos['user_agent'],
+            'origen' => $datos['visitante_origen'],
+        ]);
+        return (int) $this->db->lastInsertId();
+    }
 }
