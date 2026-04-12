@@ -34,7 +34,7 @@ class AdminEventoController
         CsrfMiddleware::validate();
         $data = Sanitizer::cleanArray($_POST);
 // Raw HTML content (WYSIWYG)
-        $data["descripcion"] = $_POST["descripcion"] ?? "";
+        $data["descripcion"] = HtmlSanitizer::clean($_POST["descripcion"] ?? "");
 
         $errores = [];
         if (empty($data['nombre'])) $errores[] = 'El nombre es obligatorio.';
@@ -99,7 +99,7 @@ class AdminEventoController
 
         $data = Sanitizer::cleanArray($_POST);
 // Raw HTML content (WYSIWYG)
-        $data["descripcion"] = $_POST["descripcion"] ?? "";
+        $data["descripcion"] = HtmlSanitizer::clean($_POST["descripcion"] ?? "");
 
         if (empty($data['nombre'])) {
             $errores = ['El nombre es obligatorio.'];

@@ -87,8 +87,8 @@ class AdminNegocioController
         $data['fecha_inicio_contrato'] = !empty($data['fecha_inicio_contrato']) ? $data['fecha_inicio_contrato'] : null;
 
         // Raw content fields (not sanitized by Sanitizer)
-        $data['descripcion_larga'] = $_POST['descripcion_larga'] ?? '';
-        $data['como_llegar'] = $_POST['como_llegar'] ?? '';
+        $data['descripcion_larga'] = HtmlSanitizer::clean($_POST['descripcion_larga'] ?? '');
+        $data['como_llegar'] = HtmlSanitizer::clean($_POST['como_llegar'] ?? '');
 
         unset($data["csrf_token"], $data["temporadas"], $data["temporada_promocion"]);
 
@@ -195,8 +195,8 @@ class AdminNegocioController
         $data['fecha_inicio_contrato'] = !empty($data['fecha_inicio_contrato']) ? $data['fecha_inicio_contrato'] : null;
 
         // Raw content fields
-        $data['descripcion_larga'] = $_POST['descripcion_larga'] ?? '';
-        $data['como_llegar'] = $_POST['como_llegar'] ?? '';
+        $data['descripcion_larga'] = HtmlSanitizer::clean($_POST['descripcion_larga'] ?? '');
+        $data['como_llegar'] = HtmlSanitizer::clean($_POST['como_llegar'] ?? '');
 
         unset($data["csrf_token"], $data["temporadas"], $data["temporada_promocion"]);
 

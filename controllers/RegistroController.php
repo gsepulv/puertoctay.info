@@ -233,7 +233,7 @@ class RegistroController
             'sitio_web'         => !empty($data['sitio_web_comercio']) ? $data['sitio_web_comercio'] : null,
             'lat'               => !empty($data['lat']) ? (float) $data['lat'] : null,
             'lng'               => !empty($data['lng']) ? (float) $data['lng'] : null,
-            'como_llegar'       => !empty($_POST['como_llegar']) ? $_POST['como_llegar'] : null,
+            'como_llegar'       => !empty($_POST['como_llegar']) ? HtmlSanitizer::clean($_POST['como_llegar']) : null,
             'horario'           => !empty($data['horario']) ? mb_substr($data['horario'], 0, 255) : null,
             'activo'            => 0,
             'verificado'        => 0,

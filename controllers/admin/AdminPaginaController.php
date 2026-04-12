@@ -48,7 +48,7 @@ class AdminPaginaController
         }
 
         $data['slug'] = SlugHelper::unique($this->db, 'paginas', $data['titulo']);
-        $data['contenido'] = $_POST['contenido'] ?? '';
+        $data['contenido'] = HtmlSanitizer::clean($_POST['contenido'] ?? '');
         $data['orden'] = !empty($data['orden']) ? (int) $data['orden'] : 0;
         $data['activo'] = isset($data['activo']) ? 1 : 0;
         unset($data['csrf_token']);
@@ -105,7 +105,7 @@ class AdminPaginaController
             $data['slug'] = SlugHelper::unique($this->db, 'paginas', $data['titulo'], (int) $id);
         }
 
-        $data['contenido'] = $_POST['contenido'] ?? '';
+        $data['contenido'] = HtmlSanitizer::clean($_POST['contenido'] ?? '');
         $data['orden'] = !empty($data['orden']) ? (int) $data['orden'] : 0;
         $data['activo'] = isset($data['activo']) ? 1 : 0;
         unset($data['csrf_token']);
