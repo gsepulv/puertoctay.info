@@ -18,6 +18,23 @@ class AuthMiddleware
     }
 
     /**
+     * Verificar que el usuario sea admin/editor/moderador.
+     */
+    public static function checkAdmin(): void
+    {
+        self::check();
+
+        $rolesAdmin = ['admin', 'editor', 'moderador'];
+        if (!in_array($_SESSION['usuario_rol'] ?? '', $rolesAdmin, true)) {
+            $_SESSION = [];
+            session_destroy();
+            session_start();
+            header('Location: ' . SITE_URL . '/');
+            exit;
+        }
+    }
+
+    /**
      * Iniciar sesión: guardar datos y regenerar ID.
      */
     public static function login(array $usuario): void
