@@ -12,7 +12,7 @@ class AdminPlaceholderController
     public function __construct(PDO $db)
     {
         $this->db = $db;
-        AuthMiddleware::check();
+        AuthMiddleware::checkAdmin();
     }
 
     /**
