@@ -47,7 +47,7 @@
     <div class="stat-card">
         <div class="stat-icon">👥</div>
         <div class="stat-value"><?= $counts['propietarios'] ?></div>
-        <div class="stat-label">Propietarios registrados</div>
+        <div class="stat-label">Comerciantes registrados</div>
     </div>
     <div class="stat-card">
         <div class="stat-icon">✓</div>

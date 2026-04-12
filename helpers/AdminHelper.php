@@ -17,7 +17,7 @@ class AdminHelper
             'noticias_publicadas'=> "SELECT COUNT(*) FROM noticias WHERE estado = 'publicado'",
             'resenas_pendientes' => "SELECT COUNT(*) FROM resenas WHERE estado = 'pendiente'",
             'eventos_proximos'   => "SELECT COUNT(*) FROM eventos WHERE estado = 'publicado' AND fecha_inicio >= CURDATE()",
-            'propietarios'       => "SELECT COUNT(*) FROM propietarios WHERE activo = 1",
+            'propietarios'       => "SELECT COUNT(*) FROM usuarios WHERE rol = 'comerciante' AND activo = 1",
             'usuarios'           => "SELECT COUNT(*) FROM usuarios WHERE activo = 1",
         ];
 
