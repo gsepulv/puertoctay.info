@@ -31,7 +31,7 @@ class AdminNegocioController
     public function crear(): void
     {
         $categorias = (new Categoria($this->db))->findDirectorio();
-        $planes = (new Plan($this->db))->findActivos();
+        $planes = (new PlanConfig($this->db))->findActivos();
         $negocio = [];
         $errores = [];
 
@@ -56,7 +56,7 @@ class AdminNegocioController
 
         if (!empty($errores)) {
             $categorias = (new Categoria($this->db))->findDirectorio();
-            $planes = (new Plan($this->db))->findActivos();
+            $planes = (new PlanConfig($this->db))->findActivos();
             $negocio = $data;
             $tempModel = new Temporada($this->db);
             $temporadas = $tempModel->findActivas();
@@ -80,7 +80,7 @@ class AdminNegocioController
 
         // Nullable fields
         $data['categoria_id'] = !empty($data['categoria_id']) ? (int)$data['categoria_id'] : null;
-        $data['plan_id'] = !empty($data['plan_id']) ? (int)$data['plan_id'] : 1;
+        $data['plan'] = !empty($data['plan']) ? $data['plan'] : 'freemium';
         $data['lat'] = !empty($data['lat']) ? $data['lat'] : null;
         $data['lng'] = !empty($data['lng']) ? $data['lng'] : null;
         $data['monto_mensual'] = (int)($data['monto_mensual'] ?? 0);
@@ -121,7 +121,7 @@ class AdminNegocioController
         }
 
         $categorias = (new Categoria($this->db))->findDirectorio();
-        $planes = (new Plan($this->db))->findActivos();
+        $planes = (new PlanConfig($this->db))->findActivos();
         $errores = [];
 
         $tempModel = new Temporada($this->db);
@@ -157,7 +157,7 @@ class AdminNegocioController
 
         if (!empty($errores)) {
             $categorias = (new Categoria($this->db))->findDirectorio();
-            $planes = (new Plan($this->db))->findActivos();
+            $planes = (new PlanConfig($this->db))->findActivos();
             $negocio = array_merge($negocio, $data);
             $tempModel = new Temporada($this->db);
             $temporadas = $tempModel->findActivas();
@@ -188,7 +188,7 @@ class AdminNegocioController
 
         // Nullable fields
         $data['categoria_id'] = !empty($data['categoria_id']) ? (int)$data['categoria_id'] : null;
-        $data['plan_id'] = !empty($data['plan_id']) ? (int)$data['plan_id'] : 1;
+        $data['plan'] = !empty($data['plan']) ? $data['plan'] : 'freemium';
         $data['lat'] = !empty($data['lat']) ? $data['lat'] : null;
         $data['lng'] = !empty($data['lng']) ? $data['lng'] : null;
         $data['monto_mensual'] = (int)($data['monto_mensual'] ?? 0);

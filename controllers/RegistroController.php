@@ -237,7 +237,7 @@ class RegistroController
             'horario'           => !empty($data['horario']) ? mb_substr($data['horario'], 0, 255) : null,
             'activo'            => 0,
             'verificado'        => 0,
-            'plan_id'           => 1,
+            'plan'              => 'freemium',
             'propietario_id'    => $userId,
             'idiomas'           => $idiomas,
         ];

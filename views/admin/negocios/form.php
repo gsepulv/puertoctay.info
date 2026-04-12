@@ -66,8 +66,8 @@ $checked = fn(string $key, bool $defaultOn = false) =>
                 </select>
             </div>
             <div class="form-group">
-                <label for="plan_id">Plan</label>
-                <select id="plan_id" name="plan_id" class="form-input">
+                <label for="plan">Plan</label>
+                <select id="plan" name="plan" class="form-input">
                     <option value="">Sin plan</option>
                     <?php foreach ($planes as $plan): ?>
                     <option value="<?= $plan['id'] ?>" <?= (($negocio['plan_id'] ?? '') == $plan['id']) ? 'selected' : '' ?>>

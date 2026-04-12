@@ -149,13 +149,9 @@ $router->add('POST', '/admin/mensajes/{id}/eliminar', 'AdminMensajeController@el
 $router->add('GET', '/admin/estadisticas', 'AdminEstadisticasController@index');
 
 // ── Admin: Planes ─────────────────────────────────────
-$router->add('GET', '/admin/planes', 'AdminPlanController@index');
-$router->add('GET', '/admin/planes/crear', 'AdminPlanController@crear');
-$router->add('POST', '/admin/planes/guardar', 'AdminPlanController@guardar');
-$router->add('GET', '/admin/planes/{id}/editar', 'AdminPlanController@editar');
-$router->add('POST', '/admin/planes/{id}/actualizar', 'AdminPlanController@actualizar');
-$router->add('POST', '/admin/planes/{id}/eliminar', 'AdminPlanController@eliminar');
-$router->add('POST', '/admin/planes/{id}/toggle', 'AdminPlanController@toggleActivo');
+$router->add('GET', '/admin/planes', 'AdminPlanConfigController@index');
+$router->add('GET', '/admin/planes/{id}/editar', 'AdminPlanConfigController@editar');
+$router->add('POST', '/admin/planes/{id}/actualizar', 'AdminPlanConfigController@actualizar');
 
 // ── Admin: Configuración ──────────────────────────────
 $router->add('GET', '/admin/configuracion', 'AdminConfiguracionController@index');

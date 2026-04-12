@@ -10,7 +10,7 @@ class Negocio extends Model
                        p.nombre AS plan_nombre, p.badge AS plan_badge
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
-                LEFT JOIN planes p ON p.id = n.plan_id
+                LEFT JOIN planes_config p ON p.slug = n.plan
                 WHERE n.slug = :slug AND n.activo = 1
                 LIMIT 1";
         $stmt = $this->db->prepare($sql);
@@ -23,7 +23,7 @@ class Negocio extends Model
     {
         $sql = "SELECT n.*, p.prioridad AS plan_prioridad, p.badge AS plan_badge
                 FROM negocios n
-                LEFT JOIN planes p ON p.id = n.plan_id
+                LEFT JOIN planes_config p ON p.slug = n.plan
                 WHERE n.categoria_id = :cid AND n.activo = 1
                 ORDER BY p.prioridad DESC, n.nombre ASC";
         $params = ['cid' => $categoriaId];
@@ -46,7 +46,7 @@ class Negocio extends Model
                        p.prioridad AS plan_prioridad, p.badge AS plan_badge
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
-                LEFT JOIN planes p ON p.id = n.plan_id
+                LEFT JOIN planes_config p ON p.slug = n.plan
                 WHERE n.activo = 1
                 ORDER BY p.prioridad DESC, n.nombre ASC";
 
@@ -68,7 +68,7 @@ class Negocio extends Model
                        p.nombre AS plan_nombre, p.badge AS plan_badge
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
-                LEFT JOIN planes p ON p.id = n.plan_id
+                LEFT JOIN planes_config p ON p.slug = n.plan
                 WHERE n.activo = 1 AND p.prioridad >= 1
                 ORDER BY p.prioridad DESC, n.visitas DESC
                 LIMIT :lim";
@@ -136,7 +136,7 @@ class Negocio extends Model
         $sql = "SELECT n.*, c.nombre AS categoria_nombre, p.nombre AS plan_nombre
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
-                LEFT JOIN planes p ON p.id = n.plan_id";
+                LEFT JOIN planes_config p ON p.slug = n.plan";
 
         $params = [];
         if ($statusFilter !== null) {

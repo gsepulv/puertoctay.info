@@ -202,7 +202,7 @@ try {
                     <?php if ($badges['mensajes']): ?><span class="nav-badge warn"><?= $badges['mensajes'] ?></span><?php endif; ?>
                 </a>
                 <a href="<?= SITE_URL ?>/admin/estadisticas">📈 Estadísticas</a>
-                <a href="<?= SITE_URL ?>/admin/planes-config" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/planes-config') ? 'active' : '' ?>">📋 Planes</a>
+                <a href="<?= SITE_URL ?>/admin/planes" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/planes') ? 'active' : '' ?>">📋 Planes</a>
             </div>
 
             <!-- CONFIGURACIÓN -->
