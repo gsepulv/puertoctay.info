@@ -7,7 +7,7 @@ class Negocio extends Model
     public function findBySlug(string $slug): ?array
     {
         $sql = "SELECT n.*, c.nombre AS categoria_nombre, c.slug AS categoria_slug, c.emoji AS categoria_emoji,
-                       p.nombre AS plan_nombre, p.badge AS plan_badge
+                       p.nombre AS plan_nombre, p.tiene_sello AS plan_badge
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
                 LEFT JOIN planes_config p ON p.slug = n.plan
@@ -21,11 +21,11 @@ class Negocio extends Model
 
     public function findByCategoria(int $categoriaId, int $limit = 0, int $offset = 0): array
     {
-        $sql = "SELECT n.*, p.prioridad AS plan_prioridad, p.badge AS plan_badge
+        $sql = "SELECT n.*, p.orden AS plan_prioridad, p.tiene_sello AS plan_badge
                 FROM negocios n
                 LEFT JOIN planes_config p ON p.slug = n.plan
                 WHERE n.categoria_id = :cid AND n.activo = 1
-                ORDER BY p.prioridad DESC, n.nombre ASC";
+                ORDER BY p.orden DESC, n.nombre ASC";
         $params = ['cid' => $categoriaId];
 
         if ($limit > 0) {
@@ -43,12 +43,12 @@ class Negocio extends Model
     public function findActivos(int $limit = 0, int $offset = 0): array
     {
         $sql = "SELECT n.*, c.nombre AS categoria_nombre, c.emoji AS categoria_emoji,
-                       p.prioridad AS plan_prioridad, p.badge AS plan_badge
+                       p.orden AS plan_prioridad, p.tiene_sello AS plan_badge
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
                 LEFT JOIN planes_config p ON p.slug = n.plan
                 WHERE n.activo = 1
-                ORDER BY p.prioridad DESC, n.nombre ASC";
+                ORDER BY p.orden DESC, n.nombre ASC";
 
         if ($limit > 0) {
             $sql .= " LIMIT {$limit}";
@@ -65,12 +65,12 @@ class Negocio extends Model
     public function findDestacados(int $limit = 6): array
     {
         $sql = "SELECT n.*, c.nombre AS categoria_nombre, c.emoji AS categoria_emoji,
-                       p.nombre AS plan_nombre, p.badge AS plan_badge
+                       p.nombre AS plan_nombre, p.tiene_sello AS plan_badge
                 FROM negocios n
                 LEFT JOIN categorias c ON c.id = n.categoria_id
                 LEFT JOIN planes_config p ON p.slug = n.plan
-                WHERE n.activo = 1 AND p.prioridad >= 1
-                ORDER BY p.prioridad DESC, n.visitas DESC
+                WHERE n.activo = 1 AND p.orden >= 1
+                ORDER BY p.orden DESC, n.visitas DESC
                 LIMIT :lim";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue('lim', $limit, PDO::PARAM_INT);
