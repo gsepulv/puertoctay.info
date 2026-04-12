@@ -86,6 +86,151 @@ $camposConfig = CamposHelper::getCamposParaSubtipo($negocio['tipo'] ?? null, $ne
         </div>
     </div>
 
+
+    <!-- GALERÍA DE FOTOS -->
+    <div class="card" id="seccion-galeria">
+        <h2 style="margin-bottom:0.5rem;">📸 Galería de Fotos</h2>
+        <?php
+        $galeriaActual = json_decode($negocio['galeria'] ?? '[]', true) ?: [];
+        $fotosActuales = count($galeriaActual);
+        $maxFotos = (int) ($planConfig['max_fotos'] ?? 3);
+        $disponibles = $maxFotos - $fotosActuales;
+        ?>
+        <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem;">
+            <strong style="color:var(--primary);"><?= $fotosActuales ?></strong> / <?= $maxFotos ?> fotos
+            <?php if ($disponibles > 0): ?>
+                <span style="color:#38A169;"> — puedes agregar <?= $disponibles ?> más</span>
+            <?php else: ?>
+                <span style="color:#E53E3E;"> — límite alcanzado</span>
+            <?php endif; ?>
+        </p>
+
+        <?php if (!empty($galeriaActual)): ?>
+        <div id="galeria-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.75rem;margin-bottom:1.25rem;">
+            <?php foreach ($galeriaActual as $idx => $foto): ?>
+            <div class="galeria-item" data-foto="<?= htmlspecialchars($foto) ?>" draggable="true"
+                 style="position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;cursor:grab;box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                <img src="<?= SITE_URL ?>/uploads/galeria/<?= htmlspecialchars($foto) ?>" alt="Foto <?= $idx+1 ?>"
+                     style="width:100%;height:100%;object-fit:cover;">
+                <div style="position:absolute;top:0;right:0;padding:0.35rem;opacity:0;transition:opacity 0.2s;"
+                     class="foto-overlay">
+                    <button type="button" class="btn-eliminar-foto" data-foto="<?= htmlspecialchars($foto) ?>"
+                            style="width:28px;height:28px;border:none;border-radius:6px;background:rgba(255,255,255,0.9);cursor:pointer;font-size:0.85rem;"
+                            title="Eliminar">🗑️</button>
+                </div>
+                <?php if ($idx === 0): ?>
+                <span style="position:absolute;bottom:4px;left:4px;background:#3182CE;color:#fff;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;">Principal</span>
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <style>
+        .galeria-item:hover .foto-overlay{opacity:1;}
+        .galeria-item.dragging{opacity:0.4;}
+        .btn-eliminar-foto:hover{background:#FED7D7!important;}
+        </style>
+        <?php endif; ?>
+
+        <?php if ($disponibles > 0): ?>
+        <div id="zona-upload" style="border:2px dashed #CBD5E0;border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:0.75rem;"
+             onclick="document.getElementById('input-fotos').click()">
+            <input type="file" id="input-fotos" name="fotos[]" multiple accept="image/jpeg,image/png,image/webp" style="display:none;">
+            <div id="upload-placeholder">
+                <span style="font-size:2rem;display:block;margin-bottom:0.25rem;">📤</span>
+                <span style="font-weight:600;color:#2D3748;">Haz clic o arrastra fotos aquí</span><br>
+                <span style="font-size:0.8rem;color:#718096;">JPG, PNG o WebP — máx 2MB cada una</span>
+            </div>
+            <div id="upload-progreso" style="display:none;">
+                <div style="height:8px;background:#E2E8F0;border-radius:4px;overflow:hidden;margin-bottom:0.5rem;">
+                    <div id="progreso-fill" style="height:100%;background:#3182CE;width:0%;transition:width 0.3s;"></div>
+                </div>
+                <span style="font-size:0.85rem;color:#718096;">Subiendo...</span>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <p style="font-size:0.8rem;color:#718096;">💡 La primera foto será la imagen principal. Arrastra para reordenar.</p>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFotos = document.getElementById('input-fotos');
+        var zonaUpload = document.getElementById('zona-upload');
+        var galeriaGrid = document.getElementById('galeria-grid');
+
+        if (inputFotos) {
+            inputFotos.addEventListener('change', function() { if (this.files.length > 0) subirFotos(this.files); });
+        }
+        if (zonaUpload) {
+            zonaUpload.addEventListener('dragover', function(e) { e.preventDefault(); this.style.borderColor='#3182CE'; this.style.background='#EBF8FF'; });
+            zonaUpload.addEventListener('dragleave', function() { this.style.borderColor='#CBD5E0'; this.style.background=''; });
+            zonaUpload.addEventListener('drop', function(e) { e.preventDefault(); this.style.borderColor='#CBD5E0'; this.style.background=''; if (e.dataTransfer.files.length > 0) subirFotos(e.dataTransfer.files); });
+        }
+
+        function subirFotos(files) {
+            var fd = new FormData();
+            for (var i = 0; i < files.length; i++) fd.append('fotos[]', files[i]);
+            document.getElementById('upload-placeholder').style.display = 'none';
+            document.getElementById('upload-progreso').style.display = 'block';
+            fetch('<?= SITE_URL ?>/mi-comercio/galeria/subir', { method: 'POST', body: fd })
+                .then(function(r) { return r.json(); })
+                .then(function(data) { if (data.success) location.reload(); else { alert(data.error || 'Error'); resetUpload(); } })
+                .catch(function() { alert('Error de conexion'); resetUpload(); });
+        }
+
+        function resetUpload() {
+            document.getElementById('upload-placeholder').style.display = 'block';
+            document.getElementById('upload-progreso').style.display = 'none';
+        }
+
+        document.querySelectorAll('.btn-eliminar-foto').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!confirm('¿Eliminar esta foto?')) return;
+                var foto = this.dataset.foto;
+                var item = this.closest('.galeria-item');
+                fetch('<?= SITE_URL ?>/mi-comercio/galeria/eliminar', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: 'foto=' + encodeURIComponent(foto)
+                }).then(function(r) { return r.json(); }).then(function(data) {
+                    if (data.success) item.remove();
+                    else alert(data.error || 'Error');
+                });
+            });
+        });
+
+        // Drag to reorder
+        if (galeriaGrid) {
+            var dragged = null;
+            galeriaGrid.querySelectorAll('.galeria-item').forEach(function(item) {
+                item.addEventListener('dragstart', function() { dragged = this; this.classList.add('dragging'); });
+                item.addEventListener('dragend', function() { this.classList.remove('dragging'); guardarOrden(); });
+                item.addEventListener('dragover', function(e) { e.preventDefault(); });
+                item.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    if (this !== dragged) {
+                        var all = Array.from(galeriaGrid.children);
+                        if (all.indexOf(dragged) < all.indexOf(this)) this.after(dragged);
+                        else this.before(dragged);
+                    }
+                });
+            });
+        }
+
+        function guardarOrden() {
+            var items = document.querySelectorAll('.galeria-item');
+            var params = [];
+            items.forEach(function(item) { params.push('orden[]=' + encodeURIComponent(item.dataset.foto)); });
+            fetch('<?= SITE_URL ?>/mi-comercio/galeria/reordenar', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: params.join('&')
+            });
+        }
+    });
+    </script>
+
     <!-- CAMPOS ESPECÍFICOS DEL TIPO/SUBTIPO -->
     <?php if (!empty($camposConfig)): ?>
     <div class="card">

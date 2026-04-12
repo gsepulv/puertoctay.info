@@ -71,6 +71,11 @@ $router->add('POST', '/mi-comercio/editar', 'PanelComercianteController@actualiz
 $router->add('GET', '/mi-comercio/perfil', 'PanelComercianteController@perfil');
 $router->add('POST', '/mi-comercio/perfil', 'PanelComercianteController@actualizarPerfil');
 
+// Galeria de fotos (AJAX)
+$router->add('POST', '/mi-comercio/galeria/subir', 'PanelComercianteController@subirFotosGaleria');
+$router->add('POST', '/mi-comercio/galeria/eliminar', 'PanelComercianteController@eliminarFotoGaleria');
+$router->add('POST', '/mi-comercio/galeria/reordenar', 'PanelComercianteController@reordenarGaleria');
+
 // ── Panel Visitante ──────────────────────────────────
 $router->add('GET', '/mi-cuenta', 'PanelVisitanteController@dashboard');
 $router->add('GET', '/mi-cuenta/favoritos', 'PanelVisitanteController@favoritos');

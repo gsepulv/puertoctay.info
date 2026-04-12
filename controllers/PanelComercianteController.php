@@ -282,6 +282,126 @@ class PanelComercianteController
         exit;
     }
 
+
+    /**
+     * POST /mi-comercio/galeria/subir — Subir fotos (AJAX)
+     */
+    public function subirFotosGaleria(): void
+    {
+        $this->requireAuth();
+        header('Content-Type: application/json');
+
+        $negocio = $this->getMiNegocio();
+        if (!$negocio) {
+            echo json_encode(['error' => 'Negocio no encontrado']);
+            return;
+        }
+
+        $planConfig = $this->getPlanConfig($negocio['plan'] ?? 'freemium');
+        $maxFotos = (int) ($planConfig['max_fotos'] ?? 3);
+        $maxTamano = 2 * 1024 * 1024; // 2MB
+
+        $galeriaActual = json_decode($negocio['galeria'] ?? '[]', true) ?: [];
+        $fotosActuales = count($galeriaActual);
+
+        if (empty($_FILES['fotos']) || empty($_FILES['fotos']['name'][0])) {
+            echo json_encode(['error' => 'No se recibieron archivos']);
+            return;
+        }
+
+        $archivos = $_FILES['fotos'];
+        $totalArchivos = count($archivos['name']);
+
+        if ($fotosActuales + $totalArchivos > $maxFotos) {
+            $disponibles = $maxFotos - $fotosActuales;
+            echo json_encode(['error' => "Tu plan permite {$maxFotos} fotos. Tienes {$fotosActuales}, puedes subir {$disponibles} mas."]);
+            return;
+        }
+
+        $uploadDir = ROOT_PATH . '/public/uploads/galeria/';
+        $tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
+        $fotosSubidas = [];
+        $errores = [];
+
+        for ($i = 0; $i < $totalArchivos; $i++) {
+            if ($archivos['error'][$i] !== UPLOAD_ERR_OK) { $errores[] = $archivos['name'][$i] . ': Error de subida'; continue; }
+            if (!in_array($archivos['type'][$i], $tiposPermitidos)) { $errores[] = $archivos['name'][$i] . ': Solo JPG, PNG, WebP'; continue; }
+            if ($archivos['size'][$i] > $maxTamano) { $errores[] = $archivos['name'][$i] . ': Excede 2MB'; continue; }
+
+            $ext = strtolower(pathinfo($archivos['name'][$i], PATHINFO_EXTENSION));
+            $nuevoNombre = 'n' . $negocio['id'] . '_' . uniqid() . '.' . $ext;
+
+            if (move_uploaded_file($archivos['tmp_name'][$i], $uploadDir . $nuevoNombre)) {
+                $fotosSubidas[] = $nuevoNombre;
+                $galeriaActual[] = $nuevoNombre;
+            } else {
+                $errores[] = $archivos['name'][$i] . ': Error al guardar';
+            }
+        }
+
+        if (!empty($fotosSubidas)) {
+            $stmt = $this->db->prepare("UPDATE negocios SET galeria = ? WHERE id = ?");
+            $stmt->execute([json_encode($galeriaActual), $negocio['id']]);
+        }
+
+        echo json_encode(['success' => true, 'subidas' => count($fotosSubidas), 'total' => count($galeriaActual), 'limite' => $maxFotos, 'errores' => $errores]);
+    }
+
+    /**
+     * POST /mi-comercio/galeria/eliminar — Eliminar foto (AJAX)
+     */
+    public function eliminarFotoGaleria(): void
+    {
+        $this->requireAuth();
+        header('Content-Type: application/json');
+
+        $foto = basename($_POST['foto'] ?? '');
+        if (empty($foto)) { echo json_encode(['error' => 'Foto no especificada']); return; }
+
+        $negocio = $this->getMiNegocio();
+        if (!$negocio) { echo json_encode(['error' => 'Negocio no encontrado']); return; }
+
+        $galeria = json_decode($negocio['galeria'] ?? '[]', true) ?: [];
+        $index = array_search($foto, $galeria);
+        if ($index === false) { echo json_encode(['error' => 'Foto no encontrada']); return; }
+
+        array_splice($galeria, $index, 1);
+        $stmt = $this->db->prepare("UPDATE negocios SET galeria = ? WHERE id = ?");
+        $stmt->execute([json_encode($galeria), $negocio['id']]);
+
+        $rutaArchivo = ROOT_PATH . '/public/uploads/galeria/' . $foto;
+        if (file_exists($rutaArchivo)) unlink($rutaArchivo);
+
+        echo json_encode(['success' => true, 'total' => count($galeria)]);
+    }
+
+    /**
+     * POST /mi-comercio/galeria/reordenar — Reordenar fotos (AJAX)
+     */
+    public function reordenarGaleria(): void
+    {
+        $this->requireAuth();
+        header('Content-Type: application/json');
+
+        $orden = $_POST['orden'] ?? [];
+        if (empty($orden) || !is_array($orden)) { echo json_encode(['error' => 'Orden no especificado']); return; }
+
+        $orden = array_map('basename', $orden);
+
+        $negocio = $this->getMiNegocio();
+        if (!$negocio) { echo json_encode(['error' => 'Negocio no encontrado']); return; }
+
+        $galeriaActual = json_decode($negocio['galeria'] ?? '[]', true) ?: [];
+        $ordenValido = array_filter($orden, function($f) use ($galeriaActual) { return in_array($f, $galeriaActual); });
+
+        if (count($ordenValido) !== count($galeriaActual)) { echo json_encode(['error' => 'Orden invalido']); return; }
+
+        $stmt = $this->db->prepare("UPDATE negocios SET galeria = ? WHERE id = ?");
+        $stmt->execute([json_encode(array_values($ordenValido)), $negocio['id']]);
+
+        echo json_encode(['success' => true]);
+    }
+
     public function perfil(): void
     {
         $this->requireAuth();
