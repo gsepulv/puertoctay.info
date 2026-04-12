@@ -34,6 +34,14 @@ class PanelComercianteController
     {
         CsrfMiddleware::validate();
 
+        // Rate limiting: max 5 intentos en 15 minutos
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        if (!RateLimiter::check('login_comerciante_' . $ip, 5, 900)) {
+            $_SESSION['flash_error'] = 'Demasiados intentos. Espera 15 minutos.';
+            header('Location: ' . SITE_URL . '/mi-comercio/login');
+            exit;
+        }
+
         $email    = strtolower(trim($_POST['email'] ?? ''));
         $password = $_POST['password'] ?? '';
 
