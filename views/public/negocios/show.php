@@ -1,7 +1,7 @@
 <?php
 /**
  * Ficha de negocio — visitapuertoctay.cl
- * Variables: $negocio, $resenas, $rating, $ratingData, $negocioTemporadas, $similares, $galeria
+ * Variables: $negocio, $resenas, $rating, $ratingData, $negocioTemporadas, $similares, $galeria, $camposEspecificos, $sectorNombre
  */
 $shareUrl = SITE_URL . '/negocio/' . htmlspecialchars($negocio['slug']);
 $shareTitle = htmlspecialchars($negocio['nombre'], ENT_QUOTES);
@@ -176,7 +176,33 @@ $tipo = $tipoBadges[$negocio['tipo'] ?? 'comercio'] ?? $tipoBadges['comercio'];
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
-            <!-- Contacto (inline en columna principal para mobile) -->
+            <!-- Campos especÃ­ficos del tipo/subtipo -->
+            <?php if (!empty($camposEspecificos)): ?>
+                <div class="ficha-section">
+                    <h2>â¹ï¸ InformaciÃ³n del <?= htmlspecialchars(ucfirst($negocio['subtipo'] ?? $negocio['tipo'] ?? 'negocio')) ?></h2>
+                    <?= FichaCamposHelper::renderDatosBasicos($camposEspecificos) ?>
+                    <?= FichaCamposHelper::renderAmenities($camposEspecificos) ?>
+                    <?= FichaCamposHelper::renderCheckboxGroup($camposEspecificos, 'tipo_cocina', 'ð³ Tipo de cocina', [
+                        'chilena'=>'ð¨ð± Chilena','alemana'=>'ð©ðª Alemana','mariscos'=>'ð¦ Mariscos',
+                        'carnes'=>'ð¥© Carnes','vegetariana'=>'ð¥ Vegetariana','internacional'=>'ð Internacional',
+                    ]) ?>
+                    <?= FichaCamposHelper::renderCheckboxGroup($camposEspecificos, 'idiomas_guia', 'ð£ï¸ Idiomas del guÃ­a', [
+                        'espanol'=>'ð¨ð± EspaÃ±ol','ingles'=>'ð¬ð§ InglÃ©s','aleman'=>'ð©ðª AlemÃ¡n','frances'=>'ð«ð· FrancÃ©s',
+                    ]) ?>
+                    <?= FichaCamposHelper::renderServicios($camposEspecificos) ?>
+                    <?= FichaCamposHelper::renderTextos($camposEspecificos) ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- Sector -->
+            <?php if (!empty($sectorNombre)): ?>
+                <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;">
+                    <span style="font-size:0.9rem;color:var(--text-light);font-weight:600;">ð Sector:</span>
+                    <span style="padding:0.2rem 0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:50px;font-size:0.85rem;"><?= htmlspecialchars($sectorNombre) ?></span>
+                </div>
+            <?php endif; ?>
+
+                        <!-- Contacto (inline en columna principal para mobile) -->
             <?php if (!empty($negocio['direccion']) || !empty($negocio['telefono']) || !empty($negocio['whatsapp']) || !empty($negocio['email']) || !empty($negocio['sitio_web']) || !empty($negocio['como_llegar'])): ?>
                 <div class="ficha-section">
                     <h2>📞 Contacto</h2>
