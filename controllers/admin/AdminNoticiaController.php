@@ -54,12 +54,22 @@ class AdminNoticiaController
             return;
         }
 
-        $data['slug'] = SlugHelper::unique($this->db, 'noticias', $data['titulo']);
+        // Slug: usar el enviado por el form, o generar desde título
+        if (!empty($data['slug'])) {
+            $data['slug'] = SlugHelper::unique($this->db, 'noticias', $data['slug']);
+        } else {
+            $data['slug'] = SlugHelper::unique($this->db, 'noticias', $data['titulo']);
+        }
 // Raw HTML content (WYSIWYG)
         $data["contenido"] = $_POST["contenido"] ?? "";
         $data['tiempo_lectura'] = Noticia::calcularTiempoLectura($data['contenido'] ?? '');
         $data['categoria_id'] = !empty($data['categoria_id']) ? (int) $data['categoria_id'] : null;
         $data['featured'] = isset($data['featured']) ? 1 : 0;
+
+        // SEO
+        $data['meta_titulo'] = !empty($data['meta_titulo']) ? mb_substr($data['meta_titulo'], 0, 60) : null;
+        $data['meta_descripcion'] = !empty($data['meta_descripcion']) ? mb_substr($data['meta_descripcion'], 0, 160) : null;
+        $data['keywords'] = !empty($data['keywords']) ? $data['keywords'] : null;
 
         // Publicación programada
         if (empty($data['publicado_en'])) {
@@ -138,8 +148,13 @@ class AdminNoticiaController
             return;
         }
 
-        if ($data['titulo'] !== $noticia['titulo']) {
+        // Slug: si el usuario lo editó manualmente, usarlo; si cambió el título y slug está vacío, regenerar
+        if (!empty($data['slug']) && $data['slug'] !== $noticia['slug']) {
+            $data['slug'] = SlugHelper::unique($this->db, 'noticias', $data['slug'], (int) $id);
+        } elseif ($data['titulo'] !== $noticia['titulo'] && (empty($data['slug']) || $data['slug'] === $noticia['slug'])) {
             $data['slug'] = SlugHelper::unique($this->db, 'noticias', $data['titulo'], (int) $id);
+        } else {
+            unset($data['slug']);
         }
 
 // Raw HTML content (WYSIWYG)
@@ -147,6 +162,11 @@ class AdminNoticiaController
         $data['tiempo_lectura'] = Noticia::calcularTiempoLectura($data['contenido'] ?? '');
         $data['categoria_id'] = !empty($data['categoria_id']) ? (int) $data['categoria_id'] : null;
         $data['featured'] = isset($data['featured']) ? 1 : 0;
+
+        // SEO
+        $data['meta_titulo'] = !empty($data['meta_titulo']) ? mb_substr($data['meta_titulo'], 0, 60) : null;
+        $data['meta_descripcion'] = !empty($data['meta_descripcion']) ? mb_substr($data['meta_descripcion'], 0, 160) : null;
+        $data['keywords'] = !empty($data['keywords']) ? $data['keywords'] : null;
 
         if (empty($data['publicado_en'])) {
             if ($data['estado'] === 'publicado' && empty($noticia['publicado_en'])) {

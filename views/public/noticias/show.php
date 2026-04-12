@@ -1,4 +1,12 @@
-<?= SeoHelper::metaTags($noticia['titulo'], $noticia['bajada'] ?? '', $noticia['foto_destacada'] ? SITE_URL.'/uploads/'.$noticia['foto_destacada'] : '') ?? '' ?>
+<?php
+$seoTitle = !empty($noticia['meta_titulo']) ? $noticia['meta_titulo'] : $noticia['titulo'];
+$seoDesc = !empty($noticia['meta_descripcion']) ? $noticia['meta_descripcion'] : ($noticia['bajada'] ?? '');
+$seoImage = $noticia['foto_destacada'] ? SITE_URL . '/uploads/' . $noticia['foto_destacada'] : '';
+?>
+<?= SeoHelper::metaTags($seoTitle, $seoDesc, $seoImage) ?>
+<?php if (!empty($noticia['keywords'])): ?>
+    <meta name="keywords" content="<?= htmlspecialchars($noticia['keywords'], ENT_QUOTES, 'UTF-8') ?>">
+<?php endif; ?>
 <?= SeoHelper::schemaNewsArticle($noticia) ?? '' ?>
 
 <div class="container">

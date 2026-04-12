@@ -95,8 +95,92 @@
         </div>
     </div>
 
+    <!-- ══ SEO ══ -->
+    <details class="form-card" style="margin-bottom:1.5rem;">
+        <summary style="cursor:pointer; font-weight:600; font-size:1.1em;">SEO</summary>
+
+        <div class="form-group" style="margin-top:1rem;">
+            <label for="meta_titulo">Meta título</label>
+            <input type="text" id="meta_titulo" name="meta_titulo"
+                   value="<?= htmlspecialchars($noticia['meta_titulo'] ?? '') ?>"
+                   maxlength="60"
+                   placeholder="Si queda vacío se usa el título de la noticia">
+            <small id="meta_titulo_counter" style="color:#888;">0/60</small>
+        </div>
+
+        <div class="form-group">
+            <label for="meta_descripcion">Meta descripción</label>
+            <textarea id="meta_descripcion" name="meta_descripcion" rows="3"
+                      maxlength="160"
+                      placeholder="Si queda vacío se usa la bajada"><?= htmlspecialchars($noticia['meta_descripcion'] ?? '') ?></textarea>
+            <small id="meta_desc_counter" style="color:#888;">0/160</small>
+        </div>
+
+        <div class="form-group">
+            <label for="keywords">Palabras clave</label>
+            <input type="text" id="keywords" name="keywords"
+                   value="<?= htmlspecialchars($noticia['keywords'] ?? '') ?>"
+                   maxlength="255"
+                   placeholder="Separadas por coma">
+        </div>
+
+        <div class="form-group">
+            <label for="slug">Slug / URL amigable</label>
+            <input type="text" id="slug" name="slug"
+                   value="<?= htmlspecialchars($noticia['slug'] ?? '') ?>"
+                   maxlength="200"
+                   placeholder="Se genera automáticamente desde el título">
+            <small style="color:#888;">URL: <?= SITE_URL ?>/noticias/<span id="slug_preview"><?= htmlspecialchars($noticia['slug'] ?? '...') ?></span></small>
+        </div>
+    </details>
+
     <div style="display:flex; gap:1rem; align-items:center;">
         <button type="submit" class="btn btn-primary"><?= $esEdicion ? 'Guardar cambios' : 'Crear noticia' ?></button>
         <a href="<?= SITE_URL ?>/admin/noticias" style="color:#888;">Cancelar</a>
     </div>
 </form>
+
+<script>
+// Contadores SEO
+function seoCounter(inputId, counterId, max) {
+    var el = document.getElementById(inputId);
+    var counter = document.getElementById(counterId);
+    if (!el || !counter) return;
+    function update() {
+        var len = el.value.length;
+        counter.textContent = len + '/' + max;
+        counter.style.color = len > max * 0.9 ? '#c00' : '#888';
+    }
+    el.addEventListener('input', update);
+    update();
+}
+seoCounter('meta_titulo', 'meta_titulo_counter', 60);
+seoCounter('meta_descripcion', 'meta_desc_counter', 160);
+
+// Auto-generar slug desde título
+var tituloEl = document.getElementById('titulo');
+var slugEl = document.getElementById('slug');
+var slugPreview = document.getElementById('slug_preview');
+var slugManual = false;
+
+if (slugEl) {
+    slugEl.addEventListener('input', function() {
+        slugManual = this.value !== '';
+        if (slugPreview) slugPreview.textContent = this.value || '...';
+    });
+}
+if (tituloEl && slugEl) {
+    tituloEl.addEventListener('input', function() {
+        if (slugManual) return;
+        var s = this.value.toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '')
+            .substring(0, 200);
+        slugEl.value = s;
+        if (slugPreview) slugPreview.textContent = s || '...';
+    });
+}
+</script>
