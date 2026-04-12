@@ -85,6 +85,18 @@ class NegocioController
         $negocio['_rating_avg'] = $rating;
         $negocio['_rating_count'] = (int) ($ratingData['total'] ?? 0);
 
+        // Campos especificos del tipo/subtipo
+        $camposEspecificos = json_decode($negocio['campos_especificos'] ?? '{}', true) ?: [];
+
+        // Sector
+        $sectorNombre = '';
+        if (!empty($negocio['sector_id'])) {
+            $stmtSec = $this->db->prepare('SELECT nombre FROM sectores WHERE id = ?');
+            $stmtSec->execute([$negocio['sector_id']]);
+            $secRow = $stmtSec->fetch();
+            $sectorNombre = $secRow['nombre'] ?? '';
+        }
+
         $pageTitle = htmlspecialchars($negocio['nombre']) . ' — ' . SITE_NAME;
         $pageDescription = $negocio['descripcion_corta'] ?? "Información de {$negocio['nombre']} en Puerto Octay.";
         $usarLeaflet = !empty($negocio['lat']) && !empty($negocio['lng']);
