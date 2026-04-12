@@ -105,6 +105,31 @@ class PanelComercianteController
         return $row ?: null;
     }
 
+    private function getPlanConfig(string $planSlug): array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM planes_config WHERE slug = ? LIMIT 1");
+        $stmt->execute([$planSlug]);
+        return $stmt->fetch() ?: ['max_fotos' => 3, 'max_redes' => 1, 'tiene_horarios' => 0, 'tiene_mapa' => 1, 'tiene_sello' => 0];
+    }
+
+    private function calcularProgreso(array $negocio, array $camposEspecificos): int
+    {
+        $total = 10;
+        $completados = 0;
+        if (!empty($negocio['nombre'])) $completados++;
+        if (!empty($negocio['descripcion_corta'])) $completados++;
+        if (!empty($negocio['direccion'])) $completados++;
+        if (!empty($negocio['telefono']) || !empty($negocio['whatsapp'])) $completados++;
+        if (!empty($negocio['lat']) && !empty($negocio['lng'])) $completados++;
+        if (!empty($negocio['logo'])) $completados++;
+        if (!empty($negocio['portada'])) $completados++;
+        if (!empty($negocio['facebook']) || !empty($negocio['instagram'])) $completados++;
+        $camposLlenos = count(array_filter($camposEspecificos, fn($v) => !empty($v)));
+        if ($camposLlenos >= 3) $completados++;
+        if (!empty($negocio['horario'])) $completados++;
+        return (int) round(($completados / $total) * 100);
+    }
+
     public function dashboard(): void
     {
         $this->requireAuth();
@@ -141,8 +166,16 @@ class PanelComercianteController
             exit;
         }
 
+        $planConfig = $this->getPlanConfig($negocio['plan'] ?? 'freemium');
+        $camposEspecificos = json_decode($negocio['campos_especificos'] ?? '{}', true) ?: [];
+        $progreso = $this->calcularProgreso($negocio, $camposEspecificos);
+
         $catModel = new Categoria($this->db);
         $categorias = $catModel->findDirectorio();
+
+        $stmt = $this->db->prepare("SELECT id, nombre FROM sectores WHERE activo = 1 ORDER BY orden");
+        $stmt->execute();
+        $sectores = $stmt->fetchAll();
 
         $tempModel = new Temporada($this->db);
         $temporadas = $tempModel->findActivas();
@@ -189,6 +222,7 @@ class PanelComercianteController
             'descripcion_corta' => mb_substr($data['descripcion_corta'], 0, 300),
             'descripcion_larga' => HtmlSanitizer::clean($_POST['descripcion_larga'] ?? $negocio['descripcion_larga']),
             'direccion'         => $data['direccion'] ?? $negocio['direccion'],
+            'como_llegar'       => HtmlSanitizer::clean($_POST['como_llegar'] ?? $negocio['como_llegar']),
             'telefono'          => $data['telefono'] ?? $negocio['telefono'],
             'whatsapp'          => $data['whatsapp'] ?? $negocio['whatsapp'],
             'email'             => $data['email'] ?? $negocio['email'],
@@ -198,6 +232,9 @@ class PanelComercianteController
             'instagram'         => $data['instagram'] ?? null,
             'tiktok'            => $data['tiktok'] ?? null,
             'youtube'           => $data['youtube'] ?? null,
+            'lat'               => !empty($data['lat']) ? (float) $data['lat'] : $negocio['lat'],
+            'lng'               => !empty($data['lng']) ? (float) $data['lng'] : $negocio['lng'],
+            'sector_id'         => !empty($data['sector_id']) ? (int) $data['sector_id'] : $negocio['sector_id'],
         ];
 
         if (!empty($data['categoria_id'])) {
@@ -208,6 +245,23 @@ class PanelComercianteController
         if ($data['nombre'] !== $negocio['nombre']) {
             $updateData['slug'] = SlugHelper::unique($this->db, 'negocios', $data['nombre'], (int) $negocio['id']);
         }
+
+        // Upload logo/portada
+        foreach (['logo' => 'logos', 'portada' => 'portadas'] as $field => $subdir) {
+            if (!empty($_FILES[$field]['name']) && $_FILES[$field]['error'] === UPLOAD_ERR_OK) {
+                $path = ImageHelper::upload($_FILES[$field], $subdir);
+                if ($path) {
+                    if (!empty($negocio[$field])) {
+                        ImageHelper::delete($negocio[$field]);
+                    }
+                    $updateData[$field] = $path;
+                }
+            }
+        }
+
+        // Campos específicos del tipo/subtipo
+        $camposRaw = $_POST['campos'] ?? [];
+        $updateData['campos_especificos'] = json_encode($camposRaw, JSON_UNESCAPED_UNICODE);
 
         $negocioModel = new Negocio($this->db);
         $negocioModel->update((int) $negocio['id'], $updateData);
