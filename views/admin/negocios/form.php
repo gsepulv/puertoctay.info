@@ -70,8 +70,8 @@ $checked = fn(string $key, bool $defaultOn = false) =>
                 <select id="plan" name="plan" class="form-input">
                     <option value="">Sin plan</option>
                     <?php foreach ($planes as $plan): ?>
-                    <option value="<?= $plan['id'] ?>" <?= (($negocio['plan_id'] ?? '') == $plan['id']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($plan['nombre']) ?> ($<?= number_format($plan['precio'], 0, ',', '.') ?>)
+                    <option value="<?= $plan['slug'] ?>" <?= (($negocio['plan'] ?? '') == $plan['slug']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($plan['nombre']) ?> ($<?= number_format($plan['precio_regular'], 0, ',', '.') ?>)
                     </option>
                     <?php endforeach; ?>
                 </select>
