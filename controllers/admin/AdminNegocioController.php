@@ -264,20 +264,21 @@ class AdminNegocioController
                 'verificado'=> 1,
                 'status'    => 'activo',
             ]);
-            // Also activate the owner user account if linked
+
+            // Generate temp password, activate user, send credentials
             if (!empty($negocio['propietario_id'])) {
-                $stmt = $this->db->prepare("UPDATE usuarios SET activo = 1 WHERE id = ?");
-                $stmt->execute([$negocio['propietario_id']]);
+                $usuario = (new Usuario($this->db))->find((int) $negocio['propietario_id']);
+                if ($usuario) {
+                    $tempPass = substr(str_shuffle('abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 10);
+                    $stmt = $this->db->prepare("UPDATE usuarios SET activo = 1, password_hash = ? WHERE id = ?");
+                    $stmt->execute([password_hash($tempPass, PASSWORD_DEFAULT), $negocio['propietario_id']]);
+
+                    EmailHelper::notificarAprobacionConCredenciales($usuario, $negocio, $tempPass);
+                }
             }
+
             AuditLog::log('aprobar', 'negocios', (int)$id, "Aprobado: {$negocio['nombre']}");
-
-            // Send approval email
-            $usuario = (new Usuario($this->db))->find((int) $negocio['propietario_id']);
-            if ($usuario) {
-                EmailHelper::notificarAprobacion($usuario, $negocio);
-            }
-
-            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" aprobado y publicado.";
+            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" aprobado. Credenciales enviadas por email.";
         }
         header('Location: ' . SITE_URL . '/admin/negocios');
         exit;
@@ -289,13 +290,7 @@ class AdminNegocioController
         $negocioModel = new Negocio($this->db);
         $negocio = $negocioModel->find((int)$id);
         if ($negocio) {
-            $negocioModel->update((int)$id, [
-                'activo' => 0,
-                'status' => 'rechazado',
-            ]);
-            AuditLog::log('rechazar', 'negocios', (int)$id, "Rechazado: {$negocio['nombre']}");
-
-            // Send rejection email
+            // Send rejection email before deleting
             if (!empty($negocio['propietario_id'])) {
                 $usuario = (new Usuario($this->db))->find((int) $negocio['propietario_id']);
                 if ($usuario) {
@@ -303,7 +298,20 @@ class AdminNegocioController
                 }
             }
 
-            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" rechazado.";
+            // Delete negocio
+            $negocioModel->delete((int)$id);
+
+            // Delete associated user (only if comerciante with no other negocios)
+            if (!empty($negocio['propietario_id'])) {
+                $stmtCount = $this->db->prepare("SELECT COUNT(*) FROM negocios WHERE propietario_id = ?");
+                $stmtCount->execute([$negocio['propietario_id']]);
+                if ((int) $stmtCount->fetchColumn() === 0) {
+                    $this->db->prepare("DELETE FROM usuarios WHERE id = ? AND rol = 'comerciante'")->execute([$negocio['propietario_id']]);
+                }
+            }
+
+            AuditLog::log('rechazar', 'negocios', (int)$id, "Rechazado y eliminado: {$negocio['nombre']}");
+            $_SESSION['flash_success'] = "Negocio \"{$negocio['nombre']}\" rechazado y eliminado.";
         }
         header('Location: ' . SITE_URL . '/admin/negocios');
         exit;

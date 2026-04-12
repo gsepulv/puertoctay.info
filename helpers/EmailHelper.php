@@ -146,6 +146,32 @@ class EmailHelper
     /**
      * Notify business owner that their comercio registration was rejected.
      */
+
+    /**
+     * Notificar aprobacion con credenciales temporales (nuevo flujo sin password en registro)
+     */
+    public static function notificarAprobacionConCredenciales(array $usuario, array $negocio, string $tempPassword): void
+    {
+        $body = self::wrap(
+            "<h2 style='color:#166534;'>¡Tu comercio fue aprobado!</h2>" .
+            "<p>¡Felicitaciones <strong>" . htmlspecialchars($usuario['nombre']) . "</strong>!</p>" .
+            "<p>Tu comercio <strong>" . htmlspecialchars($negocio['nombre']) . "</strong> ha sido aprobado y ya está visible en el directorio de Visita Puerto Octay.</p>" .
+            "<div style='background:#F0FDF4;border:1px solid #22C55E;border-radius:8px;padding:1.25rem;margin:1.5rem 0;'>" .
+            "<p style='margin:0 0 0.75rem;font-weight:600;color:#166534;'>Tus credenciales de acceso:</p>" .
+            "<p style='margin:0.25rem 0;'>Email: <strong>" . htmlspecialchars($usuario['email']) . "</strong></p>" .
+            "<p style='margin:0.25rem 0;'>Contraseña temporal: <strong style='font-family:monospace;font-size:1.1rem;letter-spacing:1px;'>" . htmlspecialchars($tempPassword) . "</strong></p>" .
+            "<p style='margin:0.75rem 0 0;'><a href='" . SITE_URL . "/mi-comercio/login' style='background:#1B4965;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;'>Acceder a mi panel</a></p>" .
+            "</div>" .
+            "<p style='color:#DC2626;font-weight:600;'>Te recomendamos cambiar tu contraseña en tu primer acceso.</p>" .
+            "<p>Desde tu panel puedes:</p>" .
+            "<ul style='margin:0.5rem 0 1rem;padding-left:1.5rem;'>" .
+            "<li>Completar tu ficha con fotos, horarios y redes sociales</li>" .
+            "<li>Editar la información de tu negocio</li>" .
+            "<li>Ver estadísticas de visitas</li>" .
+            "</ul>"
+        );
+        self::send($usuario['email'], '¡Tu comercio fue aprobado! — ' . SITE_NAME, $body);
+    }
     public static function notificarRechazo(array $usuario, array $negocio): void
     {
         $body = self::wrap(
