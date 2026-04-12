@@ -43,6 +43,7 @@ $router->add('POST', '/registrar-comercio', 'RegistroController@storeCuenta');
 $router->add('GET', '/registrar-comercio/datos', 'RegistroController@datos');
 $router->add('POST', '/registrar-comercio/datos', 'RegistroController@storeDatos');
 $router->add('GET', '/registrar-comercio/gracias', 'RegistroController@gracias');
+$router->add('GET', '/solicitud-recibida', 'RegistroController@solicitudRecibida');
 $router->add('GET', '/contacto', 'ContactoController@index');
 $router->add('POST', '/contacto', 'ContactoController@enviar');
 $router->add('GET', '/sitemap.xml', 'SitemapController@index');
